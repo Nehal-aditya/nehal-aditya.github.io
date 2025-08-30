@@ -3,7 +3,11 @@ title: My Site
 toc: false
 ---
 
-This is the landing page.
+## About this site
+
+This is our main website for our brands, software, projects and news and updates
+
+Feel free to explore this website .
 
 {{< callout type="info" >}}
   We have changed our website url from nehal-aditya.github.io to nehaladitya.github.io
