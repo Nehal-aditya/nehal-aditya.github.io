@@ -54,3 +54,9 @@ params:
   editURL:
     enable: true
     base: "https://github.com/imfing/hextra-starter-template/edit/main/content"
+
+  head =
+   { custom = [
+      # Google Search Console Verification
+      '<meta name="google-site-verification" content="Lo-VTlivLG93hJTgDEjV0SWXRPsgTCqvpoXpO3UzUCQ" />'
+    ] }
