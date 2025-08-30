@@ -45,11 +45,18 @@ menu:
 params:
   navbar:
     displayTitle: true
-    displayLogo: false
+    displayLogo: true
 
   footer:
     displayCopyright: false
     displayPoweredBy: true
+    logo:
+      path: images/logo.svg
+      dark: images/logo-dark.svg
+      width: 32
+      height: 32
+      # link: /
+    width: wide
 
   editURL:
     enable: true
