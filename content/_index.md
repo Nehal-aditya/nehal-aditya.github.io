@@ -5,6 +5,10 @@ toc: false
 
 This is the landing page.
 
+{{< callout type="info" >}}
+  We have changed our website url from nehal-aditya.github.io to nehaladitya.github.io
+{{< /callout >}}
+
 ## Explore
 
 {{< cards >}}
