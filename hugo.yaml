@@ -46,17 +46,17 @@ params:
   navbar:
     displayTitle: true
     displayLogo: true
-
-  footer:
-    displayCopyright: false
-    displayPoweredBy: true
     logo:
-      path: images/logo.svg
+      path: images/logo.png
       dark: images/logo-dark.svg
       width: 32
       height: 32
       # link: /
     width: wide
+
+  footer:
+    displayCopyright: false
+    displayPoweredBy: true
 
   editURL:
     enable: true
