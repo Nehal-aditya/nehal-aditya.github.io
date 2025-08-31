@@ -65,7 +65,6 @@ params:
   footer:
     enable: true
     displayCopyright: true
-    copyright: "© Nehal-aditya 2025. All rights reserved."
     displayPoweredBy: true
     width: wide
 
