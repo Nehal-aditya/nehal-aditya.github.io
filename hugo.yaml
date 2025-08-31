@@ -47,7 +47,7 @@ menu:
         icon: github
     - name: Youtube
       weight: 8
-      url: "https://www.youtube.com/@Quantumaxiom"
+      url: "https://www.youtube.com/@Quantaaxiom"
       params:
         icon: youtube
 
