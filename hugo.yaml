@@ -57,7 +57,8 @@ params:
     width: wide
 
   footer:
-    displayCopyright: false
+    enable: true
+    displayCopyright: true
     displayPoweredBy: true
 
   editURL:
