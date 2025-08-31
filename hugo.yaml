@@ -67,6 +67,7 @@ params:
     displayCopyright: true
     copyright: "© Nehal-aditya 2025. All rights reserved."
     displayPoweredBy: true
+    width: wide
 
   editURL:
     enable: true
