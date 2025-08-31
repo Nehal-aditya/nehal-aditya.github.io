@@ -18,6 +18,9 @@ markup:
 
 menu:
   main:
+    - name: Projects
+      pageRef: /projects
+      weight: -1
     - name: Docs
       pageRef: /docs
       weight: 1
@@ -27,20 +30,23 @@ menu:
     - name: Contact ↗
       url: "https://github.com/imfing"
       weight: 3
-    - name: Search
+    - name: Community 
+      pageRef: /community
       weight: 4
+    - name: Search
+      weight: 5
       params:
         type: search
     - name: GitHub
-      weight: 5
+      weight: 6
       url: "https://github.com/imfing/hextra-starter-template"
       params:
         icon: github
-    - name: Twitter
-      weight: 6
-      url: "https://twitter.com/"
+    - name: Youtube
+      weight: 7
+      url: "https://www.youtube.com/@Quantumaxiom"
       params:
-        icon: x-twitter
+        icon: youtube
 
 params:
   favicon: /favicon.png
@@ -59,6 +65,7 @@ params:
   footer:
     enable: true
     displayCopyright: true
+    copyright: "© Nehal-aditya 2025. All rights reserved."
     displayPoweredBy: true
 
   editURL:
