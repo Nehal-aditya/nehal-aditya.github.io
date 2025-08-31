@@ -43,6 +43,8 @@ menu:
         icon: x-twitter
 
 params:
+  favicon: /favicon-32x32.png
+  
   navbar:
     displayTitle: true
     displayLogo: true
