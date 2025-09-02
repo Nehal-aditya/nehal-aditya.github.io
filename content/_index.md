@@ -9,6 +9,10 @@ This is our main website for our brands, software, projects and news and updates
 
 Feel free to explore this website .
 
+{{< callout type="info" >}}
+  We were just testing **nehaladitya.github.io** but we are not changing our website url from **nehal-aditya.github.io** to **nehaladitya.github.io** 
+{{< /callout >}}
+
 ## Explore
 
 {{< cards >}}
