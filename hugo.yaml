@@ -52,6 +52,12 @@ menu:
         icon: youtube
 
 params:
+  favicon: /favicon-32x32.png
+
+  favicon: /favicon.ico
+
+  favicon: /favicon.png
+  
   favicon: /android-chrome-192x192.png
   
   navbar:
