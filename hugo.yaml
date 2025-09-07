@@ -52,6 +52,8 @@ menu:
         icon: youtube
 
 params:
+  favicon: /web-app-manifest-192x192.png
+  
   favicon: /android-chrome-512x512.png
   
   favicon: /favicon-32x32.png
