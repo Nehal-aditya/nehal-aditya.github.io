@@ -53,16 +53,20 @@ menu:
 
 params:
   favicon: /favicon-16x16.png
+
+  favicon: /favicon-32x32.png
   
   favicon: /favicon.svg
+
+  favicon: /favicon-v2.ico
   
-  # favicon: /icon.png
+  favicon: /icon.png
   
-  # svg_icon: /favicon.svg
+  svg_icon: /favicon.svg
   
-  # favicon: /android-chrome-512x512.png
+  favicon: /android-chrome-512x512.png
   
-  # favicon: /android-chrome-192x192.png
+  favicon: /android-chrome-192x192.png
 
   apple_touch_icon: /apple-touch-icon.png
   
