@@ -52,13 +52,15 @@ menu:
         icon: youtube
 
 params:
-  favicon: /icon.png
+  favicon: /favicon.svg
   
-  svg_icon: /favicon.svg
+  # favicon: /icon.png
   
-  favicon: /android-chrome-512x512.png
+  # svg_icon: /favicon.svg
   
-  favicon: /android-chrome-192x192.png
+  # favicon: /android-chrome-512x512.png
+  
+  # favicon: /android-chrome-192x192.png
 
   apple_touch_icon: /apple-touch-icon.png
   
