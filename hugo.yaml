@@ -52,6 +52,8 @@ menu:
         icon: youtube
 
 params:
+  favicon: /favicon-16x16.png
+  
   favicon: /favicon.svg
   
   # favicon: /icon.png
