@@ -18,6 +18,7 @@ Feel free to explore this website .
 {{< cards >}}
   {{< card link="docs" title="Docs" icon="book-open" >}}
   {{< card link="about" title="About" icon="user" >}}
+  {{< card link="community" title="Community" icon="users" >}}
 {{< /cards >}}
 
 ## Documentation
