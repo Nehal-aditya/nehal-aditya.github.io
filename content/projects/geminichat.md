@@ -1,6 +1,6 @@
 ---
 title: "Gemini chat"
-date: 2026-03-29
+date: 2026-01-01
 draft: false
 weight: 2
 ---
