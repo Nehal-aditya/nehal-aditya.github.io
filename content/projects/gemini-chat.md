@@ -38,5 +38,3 @@ This project brings the power of Gemini AI to a fast, secure, and minimal deskto
 - Fully reactive chat interface
 
 [Github Repo](https://www.github.com/Nehal-aditya/gemini-chat/)
-
-## 📁 Project Structure
