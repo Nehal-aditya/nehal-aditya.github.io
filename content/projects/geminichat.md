@@ -2,6 +2,7 @@
 title: "Gemini chat"
 date: 2026-03-29
 draft: false
+weight: 2
 ---
 
 # 🌟 Gemini Chat — Nuxt + Tauri + AI Desktop Chatbot
