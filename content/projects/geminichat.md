@@ -19,7 +19,7 @@ It is being developed in **two parallel implementations**, each exploring differ
   - Web‑first architecture with rapid prototyping.  
   - Lightweight binaries thanks to Tauri’s Rust core.  
   - Flexible styling and hot‑reload from the Nuxt ecosystem.  
-- **Repository:** [geminichat](https://github.com/Nehal-aditya/geminichat)
+- **Repository:** [geminichat](https://github.com/Nehal-aditya/gemini-chat)
 
 ---
 
