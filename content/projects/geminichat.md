@@ -5,37 +5,43 @@ draft: false
 weight: 2
 ---
 
-# 🌟 Gemini Chat — Nuxt + Tauri + AI Desktop Chatbot
+# GeminiChat
 
-A modern, lightweight, cross‑platform **AI chatbot desktop application** built using:
-
-- **Nuxt 3** (frontend)
-- **Tauri** (desktop wrapper)
-- **Google Gemini API** (AI model)
-
-This project brings the power of Gemini AI to a fast, secure, and minimal desktop app powered by Rust + WebView.
+GeminiChat is a cross‑platform chatbot application powered by Google’s Gemini API.  
+It is being developed in **two parallel implementations**, each exploring different strengths in architecture and workflow.
 
 ---
 
-## 🚀 Features
+## 🌐 Nuxt + Tauri Version
+- **Frontend:** Nuxt.js  
+- **Desktop shell:** Tauri (Rust + Node)  
+- **Highlights:**  
+  - Web‑first architecture with rapid prototyping.  
+  - Lightweight binaries thanks to Tauri’s Rust core.  
+  - Flexible styling and hot‑reload from the Nuxt ecosystem.  
+- **Repository:** [geminichat](https://github.com/Nehal-aditya/geminichat)
 
-### 🧠 AI Chatbot (Gemini)
-- Uses **Google Gemini API**
-- Fast, streaming responses
-- Clean chat UI
-- Error‑handled API calls
-- Easy to extend with custom prompts or personalities
+---
 
-### 💻 Desktop App (Tauri)
-- Cross‑platform builds (Windows, Linux, macOS)
-- Rust backend for secure API handling
-- Lightweight (Tauri apps are ~5–10 MB)
-- Auto‑reload during development
+## 💻 .NET + Avalonia Version
+- **Frontend/UI:** Avalonia UI  
+- **Core:** .NET C#  
+- **Highlights:**  
+  - Native cross‑platform desktop experience with strongly typed workflows.  
+  - Optimized for ARM64 hardware and bandwidth‑constrained environments.  
+  - Reproducible packaging pipelines with MSI/EXE installers.  
+- **Repository:** [geminichat‑net](https://github.com/Nehal-aditya/geminichat-net)
 
-### 🎨 Nuxt 3 Frontend
-- Modern Vue 3 composition API
-- TailwindCSS styling
-- Component‑based architecture
-- Fully reactive chat interface
+---
 
-[Github Repo](https://www.github.com/Nehal-aditya/gemini-chat/)
+## 📦 Downloads
+- **Windows builds** are available now.  
+- **macOS and Linux precompiled binaries** are coming soon.  
+
+---
+
+## 🔄 Why Two Versions?
+- **Nuxt + Tauri**: Best suited for developers who want web‑centric workflows and rapid iteration.  
+- **.NET + Avalonia**: Ideal for those who prefer native desktop performance, reproducible builds, and strong typing.  
+
+Both versions evolve in parallel, offering different perspectives on building accessible, efficient chatbot applications.
