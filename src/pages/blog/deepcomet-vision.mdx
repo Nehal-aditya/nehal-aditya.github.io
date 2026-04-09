@@ -21,27 +21,33 @@ Consider the typical AI development workflow today:
 
 Every layer adds latency, complexity, and potential failure points.
 
+The operating system doesn't understand your workload. The language doesn't understand your data types. The compiler doesn't understand your hardware. You're forced to bridge these gaps yourself — with configuration files, environment variables, and vendor-specific APIs that change every release cycle.
+
 ## The Deepcomet AI Solution
 
 We're building a **vertically integrated AI stack** — every layer designed from scratch for AI-native computation:
 
 ### Aurelia Language
-An AI-native systems programming language where tensors are first-class types, automatic differentiation is built-in, and code compiles directly to MLIR for NPU targeting. No wrappers, no overhead, no compromises.
+An AI-native systems programming language where `Tensor<f32, 2>` is as fundamental as `int`. Automatic differentiation is a compiler intrinsic — the compiler builds computation graphs and generates optimal backward passes. Code compiles through MLIR to target CPUs, GPUs, and NPUs directly. The `@target` attribute lets you specify hardware at the function level. No wrappers, no overhead, no compromises.
 
 ### Zenith Kernel
-A microkernel with probabilistic scheduling that predicts resource needs before they arise. Combined with an AI-Watchdog for intrinsic security, it provides the foundation for reliable, high-performance AI workloads.
+A capability-based microkernel with probabilistic scheduling that uses ML models trained on workload patterns to predict resource needs 10ms in advance. The AI-Watchdog — a formally verified security subsystem — monitors system calls using anomaly detection and can terminate zero-day exploits in microseconds. Every process runs within a capability space of unforgeable tokens. No ambient privileges, no root user.
 
 ### SkyOS
-A generative operating system powered by Large Action Models. Instead of static menus and fixed interfaces, SkyOS generates the optimal interface for every task in real-time.
+A generative operating system powered by Large Action Models (LAMs). LAMs are trained on billions of interaction sequences and generate actions, not text. Instead of static menus and fixed interfaces, SkyOS generates the optimal workspace for every task in real-time. Describe your intent — "analyze this dataset and create a report" — and the OS assembles the tools, wires the data pipeline, and presents a coherent workspace.
 
 ### The Forge
-Automated migration tooling that transpiles legacy C++ and Java codebases to Aurelia using AI. Because the future shouldn't require abandoning the past.
+An AI-powered transpilation engine that converts legacy C++, Java, and Python codebases to idiomatic Aurelia. It builds semantic models of entire codebases — understanding data flow, type relationships, and concurrency patterns — then generates Aurelia code with automated test suites verifying behavioral equivalence. Because the future shouldn't require abandoning the past.
 
 ## Why Vertical Integration Matters
 
-When you control every layer of the stack, you can optimize across boundaries that are invisible to others. A language feature can be designed with kernel scheduling in mind. An OS feature can leverage hardware capabilities that general-purpose systems ignore.
+When you control every layer of the stack, you can optimize across boundaries that are invisible to others:
 
-This is the **Deepcomet AI difference**: not just better tools, but a better architecture.
+- **Language ↔ Kernel**: Aurelia's `@target` annotations resolve at the kernel level. Zenith can transparently migrate workloads between NPUs and GPUs based on load conditions — something impossible when the language and kernel are developed independently.
+- **Kernel ↔ Hardware**: Zenith's probabilistic scheduler understands NPU memory hierarchies because it was designed alongside Aurelia's compilation pipeline. GPU memory is pre-allocated before inference requests arrive.
+- **OS ↔ Language**: SkyOS's native apps are written in Aurelia. The entire stack shares a unified type system, memory model, and compilation pipeline. No serialization boundaries, no language interop overhead.
+
+This is the **Deepcomet AI difference**: not just better tools, but a better architecture. Every optimization compounds across layers.
 
 ## What's Next
 

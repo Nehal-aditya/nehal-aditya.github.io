@@ -14,6 +14,8 @@ The question we hear most often is: "Why not just use Rust or C++ with ML librar
 
 Current languages treat tensors as library objects. They handle automatic differentiation through runtime tracing. They target GPUs through thick abstraction layers. Every one of these choices introduces overhead.
 
+Python gives you expressiveness but not performance. C++ gives you performance but not safety. Rust gives you safety but has no native understanding of neural computation. You're always trading something essential away.
+
 **Aurelia starts from different assumptions:**
 
 - Tensors are first-class types, not library objects
@@ -38,7 +40,11 @@ let output = (input @ weights) + biases;
 
 ### Automatic Differentiation
 
-Gradients are computed by the compiler, not by a runtime library. This means zero overhead for forward passes when gradients aren't needed, and optimal gradient computation when they are.
+The `gradient()` function is a compiler intrinsic. The compiler builds computation graphs during compilation, analyzes data dependencies, and generates optimized backward passes. This means:
+
+- **Zero overhead** for forward passes when gradients aren't needed
+- **Optimal gradient computation** — the compiler can fuse operations, eliminate redundant computations, and schedule gradient calculations across available hardware
+- **Compile-time verification** — shape mismatches in gradient computation are caught before runtime
 
 ### MLIR Compilation
 
@@ -56,9 +62,25 @@ Like Rust, Aurelia provides compile-time memory safety without a garbage collect
 - **Gradient buffer management** — automatic allocation and deallocation of gradient storage
 - **Zero-copy tensor views** — safe slicing and reshaping without data copies
 
+## Integration with the Deepcomet AI Stack
+
+Aurelia isn't designed in isolation — it's the language layer of a vertically integrated computing platform:
+
+- **Zenith Kernel** understands Aurelia's `@target` annotations and can transparently route workloads between NPUs and GPUs based on real-time load conditions
+- **SkyOS** native apps are written in Aurelia, sharing a unified type system and memory model with the operating system itself
+- **The Forge** migrates legacy C++, Java, and Python codebases to idiomatic Aurelia with automated test generation
+
+This vertical integration means optimizations compound across layers in ways that are impossible when each layer is developed independently.
+
 ## The Road Ahead
 
-Aurelia is in active development. We're building the compiler frontend, MLIR backend, and standard library in parallel. The language specification is evolving as we learn more about what AI developers actually need.
+Aurelia is in active development. We're building the compiler frontend, MLIR backend, and standard library in parallel. Key milestones include:
+
+- Complete MLIR backends for Qualcomm Hexagon and Apple Neural Engine
+- Package manager and build system (AureliaForge)
+- Standard library for networking, filesystem, and async I/O
+- Language server protocol (LSP) for full IDE support
+- Formal language specification and reference manual
 
 Follow the development on our [ecosystem page](/ecosystem/#aurelia) and [GitHub](https://github.com/deepcometai).
 

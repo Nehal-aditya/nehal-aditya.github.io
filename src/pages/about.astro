@@ -6,19 +6,23 @@ import Accordion from '../components/Accordion.astro';
 const faqItems = [
   {
     title: 'What is Deepcomet AI?',
-    content: 'Deepcomet AI is a visionary, friend-driven, ecosystem-oriented institution focused on vertical AI integration and futuristic computing. We are building a complete AI stack — from programming languages to operating systems — designed for a world where AI is not an afterthought but the core.',
+    content: 'Deepcomet AI is a visionary, friend-driven, ecosystem-oriented institution focused on vertical AI integration and futuristic computing. We are building a complete AI stack — from the Aurelia programming language to the SkyOS generative operating system — designed for a world where AI is not an afterthought but the foundation of every computing layer.',
   },
   {
     title: 'What technologies does Nehal-aditya work with?',
-    content: 'Our stack spans web development (React, Next.js, Nuxt.js, Astro), systems programming (Rust, C++, .NET), AI/ML research, and low-level OS development. We are especially focused on building <strong>Aurelia</strong>, an AI-native language, and <strong>SkyOS</strong>, a generative operating system.',
+    content: 'Our stack spans web development (React, Next.js, Nuxt.js, Astro), systems programming (Rust, C++, .NET), AI/ML research, and low-level OS development. We are especially focused on building <strong>Aurelia</strong>, an AI-native language with first-class tensor support, and <strong>SkyOS</strong>, a generative operating system powered by Large Action Models.',
   },
   {
     title: 'How can I contribute?',
-    content: 'Check out our <a href="https://github.com/Nehal-aditya">GitHub</a> for open-source projects. You can also join the community by emailing <strong>nehaladityaresearch@gmail.com</strong> or visiting the <a href="/community/">Community</a> page.',
+    content: 'Check out our <a href="https://github.com/Nehal-aditya">GitHub</a> for open-source projects. You can also join the community by emailing <strong>nehaladityaresearch@gmail.com</strong> or visiting the <a href="/community/">Community</a> page. We welcome contributions across all ecosystem projects.',
   },
   {
     title: 'What is the Deepcomet AI ecosystem?',
     content: 'The Deepcomet AI ecosystem is a vertically integrated AI stack comprising four core components: <strong>Aurelia</strong> (AI-native programming language with first-class tensors and MLIR compilation), <strong>Zenith Kernel</strong> (microkernel with probabilistic scheduling and AI-Watchdog security), <strong>SkyOS</strong> (generative OS powered by Large Action Models), and <strong>The Forge</strong> (automated legacy code migration tooling). Together they form a complete AI-first computing platform.',
+  },
+  {
+    title: 'What is the long-term vision?',
+    content: 'We envision a future where every layer of computing — from hardware interfaces to user experiences — is designed around AI. Not AI as an add-on, but AI as the fundamental architecture. Deepcomet AI is building the infrastructure for that future: languages that think in tensors, kernels that predict workloads, and operating systems that understand intent.',
   },
 ];
 ---
@@ -28,37 +32,93 @@ const faqItems = [
   <HeroSection
     subtitle="About"
     title={'Hi, I\'m <span class="glow-text">Nehal-aditya</span>'}
-    description="Passionate about web development, curious about science concepts, and always learning new things. Building the future with Deepcomet AI."
+    description="Builder, researcher, and architect of the Deepcomet AI ecosystem. Passionate about systems programming, AI-native computing, and building the future of human-computer interaction."
+    showParticles={true}
   />
 
   <section class="section">
     <div class="container">
       <div class="about-grid">
         <div class="about-main">
-          <h2>My Story</h2>
-          <p>I'm Nehal-aditya, and this is my personal space on the web. I'm passionate about web development and curious about science concepts, always learning new things.</p>
-          <p>As part of the <strong>Deepcomet AI</strong> ecosystem, I work at the intersection of AI research, systems programming, and futuristic computing. Our mission is to build a vertically integrated AI stack — from the Aurelia programming language to the SkyOS generative operating system — that redefines how humans interact with intelligent systems.</p>
-          <p>This site serves as the hub for our brands, software, projects, and updates. It reflects our commitment to pushing boundaries in technology and building tools that empower the next generation of developers and researchers.</p>
+          <div class="reveal">
+            <h2>My Story</h2>
+            <p>I'm Nehal-aditya — a developer, researcher, and systems thinker building at the intersection of artificial intelligence and fundamental computing infrastructure.</p>
+            <p>My journey started with web development — building applications with React, Next.js, and modern frameworks. But I kept asking deeper questions: Why do programming languages treat AI as an afterthought? Why do operating systems still schedule workloads the same way they did decades ago? Why isn't the entire computing stack designed for a world where AI is the primary workload?</p>
+            <p>Those questions led to <strong>Deepcomet AI</strong> — and the mission to build a vertically integrated AI computing platform from the ground up.</p>
+          </div>
 
           <div class="divider"></div>
 
-          <h2>Vision &amp; Mission</h2>
-          <p>Deepcomet AI is not just an organization — it is a <strong>friend-driven, ecosystem-oriented institution</strong> built on shared passion and collective ambition. Our vision encompasses:</p>
-          <ul>
-            <li><strong>Vertical AI Integration</strong> — Building every layer of the AI stack, from hardware interfaces to user-facing applications.</li>
-            <li><strong>Open Innovation</strong> — Sharing our research, tools, and knowledge with the global developer community.</li>
-            <li><strong>Accessible Technology</strong> — Making advanced computing concepts approachable and usable for everyone.</li>
-            <li><strong>Futuristic Computing</strong> — Pioneering new paradigms in operating systems, programming languages, and AI infrastructure.</li>
-          </ul>
+          <div class="reveal">
+            <h2>Role at Deepcomet AI</h2>
+            <p>As a core member of Deepcomet AI, I work across the entire ecosystem:</p>
+            <div class="role-cards stagger-children">
+              <div class="role-card">
+                <div class="role-icon icon-glow icon-glow-cyan"><span>A</span></div>
+                <div>
+                  <h4>Aurelia Language</h4>
+                  <p>Designing the type system, tensor primitives, and MLIR compilation pipeline for the AI-native systems language.</p>
+                </div>
+              </div>
+              <div class="role-card">
+                <div class="role-icon icon-glow icon-glow-purple"><span>Z</span></div>
+                <div>
+                  <h4>Zenith Kernel</h4>
+                  <p>Architecting the probabilistic scheduler and capability-based security model for the microkernel.</p>
+                </div>
+              </div>
+              <div class="role-card">
+                <div class="role-icon icon-glow icon-glow-green"><span>S</span></div>
+                <div>
+                  <h4>SkyOS</h4>
+                  <p>Building the generative desktop experience powered by Large Action Models and adaptive UI generation.</p>
+                </div>
+              </div>
+              <div class="role-card">
+                <div class="role-icon icon-glow icon-glow-pink"><span>F</span></div>
+                <div>
+                  <h4>The Forge</h4>
+                  <p>Developing the AI-powered transpilation engine for migrating legacy codebases to Aurelia.</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="divider"></div>
 
-          <h2>Frequently Asked Questions</h2>
-          <Accordion items={faqItems} />
+          <div class="reveal">
+            <h2>Vision &amp; Mission</h2>
+            <p>Deepcomet AI is not just an organization — it is a <strong>friend-driven, ecosystem-oriented institution</strong> built on shared passion and collective ambition. Our vision encompasses:</p>
+            <ul class="feature-list">
+              <li><strong>Vertical AI Integration</strong> — Building every layer of the AI stack, from hardware interfaces to user-facing applications. No dependency on third-party AI frameworks that don't understand our hardware, and no operating systems that don't understand our workloads.</li>
+              <li><strong>Open Innovation</strong> — Sharing our research, tools, and knowledge with the global developer community. The Aurelia language specification, Zenith kernel design documents, and SkyOS interaction models are all open.</li>
+              <li><strong>Accessible Technology</strong> — Making advanced computing concepts approachable. A researcher writing a neural network should write <code>x @ weights + bias</code>, not navigate five layers of library abstractions.</li>
+              <li><strong>Futuristic Computing</strong> — Pioneering new paradigms: generative operating systems that understand intent, kernels that predict workloads, and languages that compile directly to neural processing units.</li>
+            </ul>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="reveal">
+            <h2>Philosophy</h2>
+            <div class="philosophy-quote card card-glass">
+              <blockquote>
+                "The best tool is one that disappears. When you write in Aurelia, you shouldn't think about memory management or hardware targeting — you should think about the problem you're solving. The language, the kernel, the OS — they should all get out of your way."
+              </blockquote>
+            </div>
+            <p>This philosophy drives every design decision across the Deepcomet AI ecosystem. Complexity should live in the infrastructure, not in the developer's mental model. Our stack absorbs complexity so that builders can focus on creation.</p>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="reveal">
+            <h2>Frequently Asked Questions</h2>
+            <Accordion items={faqItems} />
+          </div>
         </div>
 
         <aside class="about-sidebar">
-          <div class="card sidebar-card">
+          <div class="card sidebar-card reveal">
             <h3>Quick Links</h3>
             <ul class="sidebar-links">
               <li><a href="/projects/">Projects</a></li>
@@ -69,27 +129,59 @@ const faqItems = [
             </ul>
           </div>
 
-          <div class="card sidebar-card">
+          <div class="card sidebar-card reveal">
             <h3>Organization</h3>
             <p><strong>Deepcomet AI</strong></p>
-            <p class="sidebar-desc">A visionary institution focused on vertical AI integration and futuristic computing.</p>
+            <p class="sidebar-desc">A visionary institution focused on vertical AI integration and futuristic computing. Building every layer of the AI stack — from language to OS.</p>
             <a href="https://deepcometai.github.io" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="margin-top: 0.75rem;">Visit Deepcomet AI &rarr;</a>
           </div>
 
-          <div class="card sidebar-card">
+          <div class="card sidebar-card reveal">
             <h3>Tech Stack</h3>
             <div class="tag-cloud">
+              <span class="tag">Aurelia</span>
+              <span class="tag">MLIR</span>
+              <span class="tag">Rust</span>
+              <span class="tag">C++</span>
+              <span class="tag">Python</span>
               <span class="tag">Astro</span>
               <span class="tag">React</span>
               <span class="tag">Next.js</span>
               <span class="tag">Nuxt.js</span>
-              <span class="tag">Rust</span>
-              <span class="tag">C++</span>
-              <span class="tag">Python</span>
               <span class="tag">.NET</span>
-              <span class="tag">MLIR</span>
-              <span class="tag">Aurelia</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">LLVM</span>
             </div>
+          </div>
+
+          <div class="card sidebar-card reveal">
+            <h3>Focus Areas</h3>
+            <ul class="focus-list">
+              <li>
+                <span class="focus-dot cyan"></span>
+                AI-Native Languages
+              </li>
+              <li>
+                <span class="focus-dot purple"></span>
+                Kernel Architecture
+              </li>
+              <li>
+                <span class="focus-dot green"></span>
+                Generative OS Design
+              </li>
+              <li>
+                <span class="focus-dot pink"></span>
+                Compiler Engineering
+              </li>
+              <li>
+                <span class="focus-dot cyan"></span>
+                Web Development
+              </li>
+              <li>
+                <span class="focus-dot purple"></span>
+                Systems Programming
+              </li>
+            </ul>
           </div>
         </aside>
       </div>
@@ -114,15 +206,61 @@ const faqItems = [
     line-height: 1.8;
   }
 
-  .about-main ul {
-    padding-left: 1.5rem;
-    margin: 1rem 0 1.5rem;
-    color: var(--text-secondary);
+  .role-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
   }
 
-  .about-main li {
-    margin-bottom: 0.75rem;
-    line-height: 1.7;
+  .role-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-smooth);
+  }
+
+  .role-card:hover {
+    border-color: var(--neon-cyan);
+    transform: translateX(4px);
+  }
+
+  .role-card h4 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+  }
+
+  .role-card p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .role-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+  }
+
+  .philosophy-quote {
+    padding: 2rem;
+    margin: 1.5rem 0;
+  }
+
+  .philosophy-quote blockquote {
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin: 0;
+    border-left: 3px solid var(--neon-cyan);
+    padding-left: 1.5rem;
   }
 
   .sidebar-card {
@@ -157,6 +295,7 @@ const faqItems = [
   .sidebar-desc {
     font-size: 0.85rem;
     color: var(--text-muted);
+    line-height: 1.6;
   }
 
   .tag-cloud {
@@ -180,6 +319,38 @@ const faqItems = [
     font-size: 0.85rem;
     display: inline-flex;
   }
+
+  .focus-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .focus-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .focus-list li:last-child {
+    border-bottom: none;
+  }
+
+  .focus-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .focus-dot.cyan { background: var(--neon-cyan); box-shadow: 0 0 6px var(--neon-cyan); }
+  .focus-dot.purple { background: var(--neon-purple); box-shadow: 0 0 6px var(--neon-purple); }
+  .focus-dot.green { background: var(--neon-green); box-shadow: 0 0 6px var(--neon-green); }
+  .focus-dot.pink { background: var(--neon-pink); box-shadow: 0 0 6px var(--neon-pink); }
 
   @media (max-width: 900px) {
     .about-grid {
