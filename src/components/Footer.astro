@@ -1,0 +1,162 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="brand-link">
+          <span class="brand-icon">&#9670;</span>
+          <span>Nehal<span class="glow-text">-aditya</span></span>
+        </a>
+        <p>Building futuristic software at the intersection of AI, systems programming, and next-generation computing. Part of the Deepcomet AI ecosystem.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/projects/">Projects</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/docs/">Documentation</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Ecosystem</h4>
+        <ul>
+          <li><a href="/ecosystem/">Overview</a></li>
+          <li><a href="/ecosystem/#aurelia">Aurelia Language</a></li>
+          <li><a href="/ecosystem/#zenith">Zenith Kernel</a></li>
+          <li><a href="/ecosystem/#skyos">SkyOS</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="https://github.com/Nehal-aditya" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.youtube.com/@Bright-Hypothesis" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://github.com/deepcometai" target="_blank" rel="noopener">Deepcomet AI</a></li>
+          <li><a href="/community/">Community</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {year} Nehal-aditya &middot; <a href="https://deepcometai.github.io" target="_blank" rel="noopener">Deepcomet AI</a></p>
+      <p class="footer-powered">Built with <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> &middot; Dark & Futuristic</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border-color);
+    padding: 4rem 0 2rem;
+    background: linear-gradient(180deg, transparent, rgba(0, 240, 255, 0.02));
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-brand .brand-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    margin-bottom: 1rem;
+  }
+
+  .footer-brand .brand-icon {
+    color: var(--neon-cyan);
+    font-size: 1.3rem;
+  }
+
+  .footer-brand p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    max-width: 300px;
+    line-height: 1.6;
+  }
+
+  .footer-col h4 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-col li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-col a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    transition: color var(--transition-fast);
+  }
+
+  .footer-col a:hover {
+    color: var(--neon-cyan);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .footer-powered a {
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

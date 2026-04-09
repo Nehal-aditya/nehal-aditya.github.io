@@ -1,0 +1,73 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+---
+
+<DocLayout title="Architecture" description="Understand the design principles behind the Deepcomet AI ecosystem.">
+
+  <h1>Architecture</h1>
+  <p>The Deepcomet AI ecosystem is built on a layered architecture where each component is designed to work seamlessly with the others while remaining independently useful.</p>
+
+  <h2>Stack Overview</h2>
+  <p>The complete AI-native computing stack consists of four primary layers:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Layer</th>
+        <th>Component</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Language</strong></td>
+        <td>Aurelia</td>
+        <td>AI-native systems programming with first-class tensors</td>
+      </tr>
+      <tr>
+        <td><strong>Kernel</strong></td>
+        <td>Zenith</td>
+        <td>Microkernel with probabilistic scheduling</td>
+      </tr>
+      <tr>
+        <td><strong>OS</strong></td>
+        <td>SkyOS</td>
+        <td>Generative operating system with Large Action Models</td>
+      </tr>
+      <tr>
+        <td><strong>Tooling</strong></td>
+        <td>The Forge</td>
+        <td>Automated codebase migration to Aurelia</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Design Principles</h2>
+  <ol>
+    <li><strong>AI-First</strong> — AI is not an add-on; it's the core design principle at every layer.</li>
+    <li><strong>Vertical Integration</strong> — Each layer is aware of and optimized for the layers above and below it.</li>
+    <li><strong>Memory Safety</strong> — Compile-time guarantees without runtime overhead across the entire stack.</li>
+    <li><strong>Hardware Awareness</strong> — Direct targeting of specialized hardware (NPUs, TPUs) without abstraction penalties.</li>
+    <li><strong>Zero-Overhead Abstractions</strong> — High-level constructs that compile to optimal machine code.</li>
+  </ol>
+
+  <h2>MLIR Pipeline</h2>
+  <p>Aurelia's compilation pipeline leverages MLIR (Multi-Level Intermediate Representation) to target multiple hardware backends:</p>
+  <ol>
+    <li><strong>Frontend</strong> — Aurelia source code is parsed into an AST</li>
+    <li><strong>High-Level IR</strong> — Tensor operations are represented in Aurelia-specific MLIR dialects</li>
+    <li><strong>Optimization</strong> — Standard and custom optimization passes are applied</li>
+    <li><strong>Lowering</strong> — High-level operations are lowered to hardware-specific representations</li>
+    <li><strong>Code Generation</strong> — Final machine code is emitted for the target (CPU, GPU, or NPU)</li>
+  </ol>
+
+  <h2>Security Model</h2>
+  <p>Security in the Deepcomet AI ecosystem is intrinsic, not bolted on:</p>
+  <ul>
+    <li><strong>Compile-time safety</strong> — Memory safety, type safety, and tensor shape validation at compile time</li>
+    <li><strong>Kernel-level protection</strong> — Zenith's microkernel architecture isolates subsystems</li>
+    <li><strong>AI-Watchdog</strong> — Real-time behavioral monitoring for anomaly detection</li>
+    <li><strong>Mathematical proofs</strong> — Core kernel components are formally verified</li>
+  </ul>
+
+</DocLayout>

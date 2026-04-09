@@ -1,0 +1,106 @@
+---
+interface Tab {
+  id: string;
+  label: string;
+  content: string;
+}
+
+interface Props {
+  tabs: Tab[];
+}
+
+const { tabs } = Astro.props;
+---
+
+<div class="tabs-container" data-tabs>
+  <div class="tabs-nav" role="tablist">
+    {tabs.map((tab, i) => (
+      <button
+        role="tab"
+        class:list={['tab-btn', { active: i === 0 }]}
+        data-tab-id={tab.id}
+        aria-selected={i === 0 ? 'true' : 'false'}
+      >
+        {tab.label}
+      </button>
+    ))}
+  </div>
+  <div class="tabs-content">
+    {tabs.map((tab, i) => (
+      <div
+        role="tabpanel"
+        class:list={['tab-panel', { active: i === 0 }]}
+        data-tab-panel={tab.id}
+      >
+        <p set:html={tab.content} />
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .tabs-container {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-card);
+  }
+
+  .tabs-nav {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all var(--transition-fast);
+  }
+
+  .tab-btn:hover {
+    color: var(--text-secondary);
+    background: rgba(0, 240, 255, 0.04);
+  }
+
+  .tab-btn.active {
+    color: var(--neon-cyan);
+    border-bottom-color: var(--neon-cyan);
+  }
+
+  .tab-panel {
+    display: none;
+    padding: 1.5rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-tabs]').forEach(container => {
+    const buttons = container.querySelectorAll('[role="tab"]');
+    const panels = container.querySelectorAll('[role="tabpanel"]');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabId = (btn as HTMLElement).dataset.tabId;
+        buttons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+        panels.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        container.querySelector(`[data-tab-panel="${tabId}"]`)?.classList.add('active');
+      });
+    });
+  });
+</script>

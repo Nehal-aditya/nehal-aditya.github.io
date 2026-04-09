@@ -1,0 +1,584 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import StatsGrid from '../components/StatsGrid.astro';
+import EcosystemCard from '../components/EcosystemCard.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+
+const stats = [
+  { value: '10x', label: 'Faster Compilation' },
+  { value: '0ms', label: 'Scheduling Latency' },
+  { value: '100%', label: 'Memory Safe' },
+  { value: 'Native', label: 'NPU Integration' },
+];
+---
+
+<BaseLayout title="Home" description="Nehal-aditya — Building futuristic software at the intersection of AI, systems programming, and next-generation computing. Part of the Deepcomet AI ecosystem.">
+
+  <HeroSection
+    subtitle="Deepcomet AI Ecosystem"
+    title='The <span class="glow-text-animated">Speed of Light</span> AI Stack'
+    description="Deepcomet AI is redefining neural computation from the ground up. From the Aurelia systems programming language to the Zenith Kernel and SkyOS — we are building an entire computing stack where AI is not bolted on, but woven into every layer."
+    primaryLink="/ecosystem/"
+    primaryText="Explore Ecosystem"
+    secondaryLink="/projects/"
+    secondaryText="View Projects"
+    showParticles={true}
+  />
+
+  <!-- Stats Section -->
+  <section class="section">
+    <div class="container">
+      <div class="reveal">
+        <StatsGrid stats={stats} />
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-purple">Welcome</span>
+        <h2>The Hub for <span class="glow-text">Deepcomet AI</span></h2>
+        <p>This is the central portal for Nehal-aditya and the Deepcomet AI organization — a friend-driven, ecosystem-oriented institution building the next generation of intelligent computing. Explore our projects, research, documentation, and community.</p>
+      </div>
+
+      <div class="grid-3 stagger-children">
+        <a href="/about/" class="card explore-card">
+          <div class="icon-glow icon-glow-purple">
+            <span>&#9733;</span>
+          </div>
+          <h3>About Us</h3>
+          <p>Learn about Nehal-aditya, our mission within Deepcomet AI, and the vision driving vertical AI integration across every layer of the computing stack.</p>
+        </a>
+        <a href="/ecosystem/" class="card explore-card">
+          <div class="icon-glow icon-glow-cyan">
+            <span>&#9830;</span>
+          </div>
+          <h3>Ecosystem</h3>
+          <p>Dive deep into Aurelia, Zenith Kernel, SkyOS, and The Forge — the four pillars of a complete AI-native computing platform.</p>
+        </a>
+        <a href="/docs/" class="card explore-card">
+          <div class="icon-glow icon-glow-green">
+            <span>&#9776;</span>
+          </div>
+          <h3>Documentation</h3>
+          <p>Comprehensive technical guides, architecture docs, API references, and getting-started tutorials for our ecosystem technologies.</p>
+        </a>
+      </div>
+
+      <div class="grid-3 stagger-children" style="margin-top: 2rem;">
+        <a href="/projects/" class="card explore-card">
+          <div class="icon-glow icon-glow-pink">
+            <span>&#9881;</span>
+          </div>
+          <h3>Projects</h3>
+          <p>Explore our portfolio of projects including GeminiChat, this website, and our core ecosystem technologies under active development.</p>
+        </a>
+        <a href="/blog/" class="card explore-card">
+          <div class="icon-glow icon-glow-cyan">
+            <span>&#9998;</span>
+          </div>
+          <h3>Blog</h3>
+          <p>Read about our latest research, technical deep-dives into AI-native computing, language design decisions, and project updates.</p>
+        </a>
+        <a href="/community/" class="card explore-card">
+          <div class="icon-glow icon-glow-purple">
+            <span>&#9829;</span>
+          </div>
+          <h3>Community</h3>
+          <p>Connect with us on GitHub, YouTube, and beyond. Join the Deepcomet AI community and contribute to open-source projects.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Deepcomet AI -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-cyan">The Problem</span>
+        <h2>Why <span class="glow-text">Deepcomet AI</span> Exists</h2>
+        <p>Today's AI infrastructure is a patchwork of incompatible layers. Python scripts glued to C++ kernels, running on operating systems designed in the 1970s. Every layer introduces friction, latency, and security vulnerabilities.</p>
+      </div>
+
+      <div class="problem-grid reveal">
+        <div class="problem-card card-glass">
+          <div class="problem-number">01</div>
+          <h3>The Language Gap</h3>
+          <p>Python is slow. C++ is unsafe. Rust has no first-class tensor support. Every existing language forces AI developers to choose between performance and productivity. Researchers spend more time fighting tooling than innovating.</p>
+          <div class="problem-solution">
+            <strong>Our Answer:</strong> Aurelia — an AI-native systems language with first-class tensors, automatic differentiation, memory safety without a garbage collector, and direct MLIR compilation to NPUs.
+          </div>
+        </div>
+        <div class="problem-card card-glass">
+          <div class="problem-number">02</div>
+          <h3>The Kernel Bottleneck</h3>
+          <p>General-purpose kernels treat AI workloads the same as a text editor. They cannot predict resource needs, cannot prioritize neural computation, and their security models are fundamentally reactive rather than proactive.</p>
+          <div class="problem-solution">
+            <strong>Our Answer:</strong> Zenith Kernel — a microkernel with probabilistic scheduling that anticipates resource needs 10ms before they arise, plus an immune-system-inspired AI-Watchdog for intrinsic security.
+          </div>
+        </div>
+        <div class="problem-card card-glass">
+          <div class="problem-number">03</div>
+          <h3>The OS Ceiling</h3>
+          <p>Modern operating systems are glorified file managers. They cannot reason about user intent, generate interfaces on demand, or execute complex multi-step workflows autonomously. The desktop paradigm is a 40-year-old relic.</p>
+          <div class="problem-solution">
+            <strong>Our Answer:</strong> SkyOS — a generative operating system powered by Large Action Models that understands context, generates adaptive UIs, and executes tasks with human-like reasoning.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code Showcase -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-cyan">Built for the AI Era</span>
+        <h2>First-Class <span class="glow-text">Neural Computation</span></h2>
+        <p>Aurelia treats neural networks as first-class citizens. Tensors are a primitive type, not a library import. Automatic differentiation is built into the compiler, not a runtime framework. Code compiles directly to MLIR and then to NPU instructions — no Python interpreter, no CUDA driver, no overhead.</p>
+      </div>
+
+      <div class="code-showcase reveal-scale">
+        <CodeBlock filename="neural_layer.aul">
+          <pre><code>{`fn forward_pass(x: Tensor<f32, 2>) -> Tensor<f32, 2> {
+  // Native tensor operations — no library imports needed
+  let weights = Tensor::random([256, 512]);
+  let biases = Tensor::zeros([512]);
+
+  // Automatic differentiation is a compiler feature
+  let output = (x @ weights) + biases;
+  return output.relu();
+}
+
+// Target-specific compilation via MLIR
+// Compiles directly to NPU machine code
+@target(npu="qualcomm-hexagon")
+fn main() {
+  let input = Tensor::ones([128, 256]);
+  let result = forward_pass(input);
+  
+  // Gradient computation is automatic
+  let grad = gradient(forward_pass, input);
+  println!("Output shape: {}", result.shape());
+}`}</code></pre>
+        </CodeBlock>
+      </div>
+
+      <div class="code-features grid-3 stagger-children">
+        <div class="card">
+          <div class="icon-glow icon-glow-cyan">
+            <span>T</span>
+          </div>
+          <h3>First-class Tensors</h3>
+          <p>Tensor is a primitive type in Aurelia, just like <code>i32</code> or <code>f64</code>. Matrix multiplication uses the <code>@</code> operator. Broadcasting, reshaping, and slicing are language-level operations with compile-time shape checking.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-green">
+            <span>&#9632;</span>
+          </div>
+          <h3>Memory Safety</h3>
+          <p>Aurelia uses an ownership-and-borrowing model inspired by Rust, providing compile-time memory safety without a garbage collector. Zero-cost abstractions ensure that safety never compromises performance.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-purple">
+            <span>&#9660;</span>
+          </div>
+          <h3>Direct NPU Targeting</h3>
+          <p>The <code>@target</code> attribute compiles functions directly to NPU instruction sets via MLIR. Supports Qualcomm Hexagon, Apple Neural Engine, Google TPU, and custom accelerators — no CUDA dependency.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vertical Integration -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-green">Vertical AI Integration</span>
+        <h2>AI is the <span class="glow-text">Core</span>, Not an Add-on</h2>
+        <p>Most companies bolt AI onto existing infrastructure. Deepcomet AI is building every layer from scratch — language, kernel, and OS — so that AI workloads run on a stack that was designed for them from day one. This is vertical integration for the neural age.</p>
+      </div>
+
+      <div class="integration-stack reveal">
+        <div class="stack-layer">
+          <div class="stack-label">Application Layer</div>
+          <div class="stack-bar stack-skyos">
+            <span>SkyOS</span>
+            <small>Generative OS with Large Action Models</small>
+          </div>
+        </div>
+        <div class="stack-connector"></div>
+        <div class="stack-layer">
+          <div class="stack-label">Kernel Layer</div>
+          <div class="stack-bar stack-zenith">
+            <span>Zenith Kernel</span>
+            <small>Probabilistic scheduling + AI-Watchdog security</small>
+          </div>
+        </div>
+        <div class="stack-connector"></div>
+        <div class="stack-layer">
+          <div class="stack-label">Language Layer</div>
+          <div class="stack-bar stack-aurelia">
+            <span>Aurelia</span>
+            <small>AI-native systems language with MLIR compilation</small>
+          </div>
+        </div>
+        <div class="stack-connector"></div>
+        <div class="stack-layer">
+          <div class="stack-label">Hardware Layer</div>
+          <div class="stack-bar stack-hardware">
+            <span>NPU / GPU / CPU</span>
+            <small>Direct hardware targeting via MLIR backend</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-3 stagger-children" style="margin-top: 4rem;">
+        <div class="card">
+          <h3>Zero-Latency Scheduling</h3>
+          <p>Traditional kernels react to resource requests after they happen. Zenith uses probabilistic models trained on workload patterns to predict and pre-allocate resources 10ms before they are needed. For neural inference pipelines, this eliminates scheduling latency entirely.</p>
+        </div>
+        <div class="card">
+          <h3>Hardware-Software Synthesis</h3>
+          <p>Aurelia code passes through MLIR optimization pipelines tuned for each target architecture. The compiler understands NPU memory hierarchies, execution unit layouts, and data flow patterns — producing code that fully utilizes the hardware, not just runs on it.</p>
+        </div>
+        <div class="card">
+          <h3>Intrinsic Security</h3>
+          <p>Zenith's AI-Watchdog continuously monitors system behavior using anomaly detection models. It can identify and terminate zero-day exploits in real-time, without signature databases. The kernel itself is formally verified for memory safety and privilege isolation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ecosystem Overview -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-pink">Ecosystem</span>
+        <h2>Explore the <span class="glow-text">Ecosystem</span></h2>
+        <p>Four interconnected technologies forming a complete, vertically integrated AI computing platform. Each component is designed to work seamlessly with the others, creating a system greater than the sum of its parts.</p>
+      </div>
+
+      <div class="grid-2 stagger-children">
+        <EcosystemCard
+          title="Aurelia Language"
+          badge="Core Tech"
+          badgeColor="cyan"
+          description="An AI-native systems programming language with first-class tensor primitives, automatic differentiation built into the compiler, ownership-based memory safety, and direct MLIR compilation to NPUs, GPUs, and custom accelerators."
+          href="/ecosystem/#aurelia"
+        />
+        <EcosystemCard
+          title="Zenith Kernel"
+          badge="OS Layer"
+          badgeColor="purple"
+          description="A capability-based microkernel featuring probabilistic workload scheduling, AI-Watchdog intrusion detection, formal verification of core components, and native support for heterogeneous computing across CPUs, GPUs, and NPUs."
+          href="/ecosystem/#zenith"
+        />
+        <EcosystemCard
+          title="SkyOS"
+          badge="Platform"
+          badgeColor="green"
+          description="A generative operating system powered by Large Action Models. SkyOS understands user intent through natural language, generates adaptive interfaces on demand, and executes complex multi-step workflows autonomously."
+          href="/ecosystem/#skyos"
+        />
+        <EcosystemCard
+          title="The Forge"
+          badge="Tooling"
+          badgeColor="pink"
+          description="Automated migration tooling that transpiles legacy C++ and Java codebases to idiomatic Aurelia using AI-powered code analysis. Preserves semantics, applies Aurelia idioms, and generates comprehensive test suites."
+          href="/ecosystem/#forge"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-purple">Philosophy</span>
+        <h2>Built by <span class="glow-text">Friends</span>, for the Future</h2>
+      </div>
+
+      <div class="philosophy-grid reveal">
+        <div class="philosophy-text">
+          <p>Deepcomet AI is not a corporation — it is a <strong>friend-driven, ecosystem-oriented institution</strong>. We believe the best technology emerges from genuine collaboration between people who share a vision, not from competitive hierarchies.</p>
+          <p>Our approach is radical: build <em>everything</em>. Instead of contributing incremental improvements to existing systems, we are constructing a complete computing stack from the programming language up. This is not because existing tools are bad — it is because the AI era demands fundamentally new abstractions.</p>
+          <p>Every component in our ecosystem — Aurelia, Zenith, SkyOS, The Forge — is designed with a single principle: <strong>AI should not be a feature bolted onto a system; it should be the foundation the system is built upon.</strong></p>
+          <ul class="feature-list">
+            <li>Open-source by default — all core technologies are publicly available</li>
+            <li>Research-driven development — every decision backed by rigorous analysis</li>
+            <li>Community-first governance — contributors shape the roadmap</li>
+            <li>Vertical integration — owning every layer eliminates friction</li>
+          </ul>
+        </div>
+        <div class="philosophy-visual">
+          <div class="card card-glass pulse-glow">
+            <div class="visual-quote">
+              <span class="quote-mark">"</span>
+              <p>The best way to predict the future is to build the entire stack.</p>
+              <span class="quote-attr">— Deepcomet AI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-content reveal-scale">
+        <h2>Ready to build the <span class="glow-text">future</span>?</h2>
+        <p>Join the Deepcomet AI ecosystem. Explore our open-source projects, read the documentation, contribute to the codebase, or just follow along as we build the next generation of intelligent computing.</p>
+        <div class="hero-actions">
+          <a href="/ecosystem/" class="btn btn-primary">Explore the Ecosystem</a>
+          <a href="https://github.com/Nehal-aditya" target="_blank" rel="noopener" class="btn btn-outline">View on GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .explore-card {
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .explore-card:hover {
+    color: inherit;
+  }
+
+  .code-showcase {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .code-features {
+    margin-top: 2.5rem;
+  }
+
+  /* Problem grid */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .problem-card {
+    padding: 2.5rem;
+  }
+
+  .problem-number {
+    font-size: 3rem;
+    font-weight: 800;
+    background: var(--gradient-neon);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .problem-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .problem-solution {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .problem-solution strong {
+    color: var(--neon-cyan);
+  }
+
+  /* Integration stack */
+  .integration-stack {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .stack-layer {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .stack-label {
+    width: 140px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .stack-bar {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid;
+    backdrop-filter: blur(10px);
+    transition: all var(--transition-smooth);
+  }
+
+  .stack-bar:hover {
+    transform: translateX(8px);
+  }
+
+  .stack-bar span {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .stack-bar small {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .stack-skyos {
+    background: rgba(34, 211, 238, 0.06);
+    border-color: rgba(34, 211, 238, 0.2);
+    color: var(--neon-green);
+  }
+
+  .stack-zenith {
+    background: rgba(168, 85, 247, 0.06);
+    border-color: rgba(168, 85, 247, 0.2);
+    color: var(--neon-purple);
+  }
+
+  .stack-aurelia {
+    background: rgba(0, 240, 255, 0.06);
+    border-color: rgba(0, 240, 255, 0.2);
+    color: var(--neon-cyan);
+  }
+
+  .stack-hardware {
+    background: rgba(236, 72, 153, 0.06);
+    border-color: rgba(236, 72, 153, 0.2);
+    color: var(--neon-pink);
+  }
+
+  .stack-connector {
+    width: 2px;
+    height: 24px;
+    background: linear-gradient(180deg, rgba(0, 240, 255, 0.3), rgba(168, 85, 247, 0.3));
+    margin-left: calc(140px + 1.5rem + 1.5rem);
+  }
+
+  /* Philosophy */
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .philosophy-text p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+
+  .philosophy-text strong {
+    color: var(--text-primary);
+  }
+
+  .philosophy-text em {
+    color: var(--neon-cyan);
+    font-style: italic;
+  }
+
+  .visual-quote {
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .quote-mark {
+    font-size: 4rem;
+    line-height: 1;
+    background: var(--gradient-neon);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.5;
+  }
+
+  .visual-quote p {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin: 0.5rem 0 1rem;
+  }
+
+  .quote-attr {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+  }
+
+  .cta-content {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .cta-content h2 {
+    margin-bottom: 1rem;
+  }
+
+  .cta-content p {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 768px) {
+    .problem-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .philosophy-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stack-label {
+      width: 90px;
+      font-size: 0.65rem;
+    }
+
+    .stack-bar small {
+      display: none;
+    }
+
+    .stack-connector {
+      margin-left: calc(90px + 1.5rem + 1.5rem);
+    }
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  stats: Stat[];
+}
+
+const { stats } = Astro.props;
+---
+
+<div class="stats-grid">
+  {stats.map(stat => (
+    <div class="stat-card card">
+      <div class="stat-value">{stat.value}</div>
+      <div class="stat-label">{stat.label}</div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin: 3rem 0;
+  }
+</style>

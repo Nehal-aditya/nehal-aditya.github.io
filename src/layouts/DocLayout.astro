@@ -1,0 +1,130 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+
+const docLinks = [
+  { href: '/docs/', label: 'Overview' },
+  { href: '/docs/getting-started/', label: 'Getting Started' },
+  { href: '/docs/architecture/', label: 'Architecture' },
+  { href: '/docs/api-reference/', label: 'API Reference' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="doc-layout">
+    <aside class="doc-sidebar">
+      <nav class="doc-nav">
+        <h4>Documentation</h4>
+        <ul>
+          {docLinks.map(link => (
+            <li>
+              <a
+                href={link.href}
+                class:list={['doc-link', { active: currentPath === link.href }]}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+    <article class="doc-content prose">
+      <slot />
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .doc-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 7rem 1.5rem 4rem;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  .doc-sidebar {
+    position: sticky;
+    top: 80px;
+    height: fit-content;
+  }
+
+  .doc-nav h4 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+  }
+
+  .doc-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .doc-link {
+    display: block;
+    padding: 0.6rem 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border-left: 2px solid transparent;
+    transition: all var(--transition-fast);
+  }
+
+  .doc-link:hover {
+    color: var(--neon-cyan);
+    background: rgba(0, 240, 255, 0.04);
+  }
+
+  .doc-link.active {
+    color: var(--neon-cyan);
+    background: rgba(0, 240, 255, 0.08);
+    border-left-color: var(--neon-cyan);
+  }
+
+  @media (max-width: 900px) {
+    .doc-layout {
+      grid-template-columns: 1fr;
+      padding-top: 5rem;
+    }
+
+    .doc-sidebar {
+      position: static;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .doc-nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .doc-link {
+      border-left: none;
+      border-bottom: 2px solid transparent;
+    }
+
+    .doc-link.active {
+      border-left-color: transparent;
+      border-bottom-color: var(--neon-cyan);
+    }
+  }
+</style>

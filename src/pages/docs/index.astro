@@ -1,0 +1,45 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+---
+
+<DocLayout title="Documentation" description="Documentation for Nehal-aditya's projects and the Deepcomet AI ecosystem.">
+
+  <h1>Documentation</h1>
+  <p>Welcome to the documentation hub. Here you'll find guides, references, and tutorials for our projects and the Deepcomet AI ecosystem.</p>
+
+  <h2>Hello, World!</h2>
+  <p>A quick example to get started:</p>
+
+  <CodeBlock filename="main.go">
+    <pre><code>{`package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+}`}</code></pre>
+  </CodeBlock>
+
+  <h2>Quick Start</h2>
+  <p>Choose a section to get started:</p>
+  <ul>
+    <li><a href="/docs/getting-started/">Getting Started</a> — Set up your development environment and build your first project.</li>
+    <li><a href="/docs/architecture/">Architecture</a> — Understand the design principles behind the Deepcomet AI ecosystem.</li>
+    <li><a href="/docs/api-reference/">API Reference</a> — Detailed API documentation for all components.</li>
+  </ul>
+
+  <h2>Project Documentation</h2>
+  <p>Each project has its own detailed documentation:</p>
+  <ul>
+    <li><strong>The Forge</strong> — <a href="/ecosystem/#forge">AI-powered code migration tooling</a></li>
+    <li><strong>GeminiChat</strong> — <a href="/projects/geminichat/">Cross-platform chatbot application</a></li>
+    <li><strong>Aurelia</strong> — <a href="/ecosystem/#aurelia">AI-native systems programming language</a></li>
+    <li><strong>Zenith Kernel</strong> — <a href="/ecosystem/#zenith">Microkernel with probabilistic scheduling</a></li>
+    <li><strong>SkyOS</strong> — <a href="/ecosystem/#skyos">Generative operating system</a></li>
+  </ul>
+
+  <h2>Pages can be organized into folders</h2>
+  <p>Documentation is structured hierarchically. Use the sidebar to navigate between sections, or follow the links within each page to explore related topics.</p>
+
+</DocLayout>

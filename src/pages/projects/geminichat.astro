@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Tabs from '../../components/Tabs.astro';
+
+const versionTabs = [
+  {
+    id: 'nuxt',
+    label: 'Nuxt + Tauri',
+    content: `<strong>Frontend:</strong> Nuxt.js<br/>
+<strong>Desktop shell:</strong> Tauri (Rust + Node)<br/><br/>
+<strong>Highlights:</strong><br/>
+• Web-first architecture with rapid prototyping<br/>
+• Lightweight binaries thanks to Tauri's Rust core<br/>
+• Flexible styling and hot-reload from the Nuxt ecosystem<br/><br/>
+Best suited for developers who want web-centric workflows and rapid iteration.<br/><br/>
+<a href="https://github.com/Nehal-aditya/gemini-chat" target="_blank" rel="noopener">View Repository &rarr;</a>`,
+  },
+  {
+    id: 'dotnet',
+    label: '.NET + Avalonia',
+    content: `<strong>Frontend/UI:</strong> Avalonia UI<br/>
+<strong>Core:</strong> .NET C#<br/><br/>
+<strong>Highlights:</strong><br/>
+• Native cross-platform desktop experience with strongly typed workflows<br/>
+• Optimized for ARM64 hardware and bandwidth-constrained environments<br/>
+• Reproducible packaging pipelines with MSI/EXE installers<br/><br/>
+Ideal for those who prefer native desktop performance, reproducible builds, and strong typing.<br/><br/>
+<a href="https://github.com/Nehal-aditya/geminichat-net" target="_blank" rel="noopener">View Repository &rarr;</a>`,
+  },
+];
+---
+
+<BaseLayout title="GeminiChat" description="GeminiChat — a cross-platform chatbot application powered by Google's Gemini API.">
+
+  <section class="page-hero">
+    <div class="container">
+      <a href="/projects/" class="back-link">&larr; Back to Projects</a>
+      <span class="badge badge-purple">Project</span>
+      <h1>Gemini<span class="glow-text">Chat</span></h1>
+      <p class="hero-desc">A cross-platform chatbot application powered by Google's Gemini API, developed in two parallel implementations.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="prose">
+        <h2>Overview</h2>
+        <p>GeminiChat is a cross-platform chatbot application powered by Google's Gemini API. It is being developed in <strong>two parallel implementations</strong>, each exploring different strengths in architecture and workflow.</p>
+
+        <h2>Implementations</h2>
+        <Tabs tabs={versionTabs} />
+
+        <h2>Why Two Versions?</h2>
+        <div class="comparison-grid">
+          <div class="card">
+            <h3>Nuxt + Tauri</h3>
+            <p>Best suited for developers who want web-centric workflows and rapid iteration. Leverages the rich Nuxt.js ecosystem with Tauri's lightweight Rust-powered desktop shell.</p>
+          </div>
+          <div class="card">
+            <h3>.NET + Avalonia</h3>
+            <p>Ideal for those who prefer native desktop performance, reproducible builds, and strong typing. Optimized for ARM64 and constrained environments.</p>
+          </div>
+        </div>
+
+        <p>Both versions evolve in parallel, offering different perspectives on building accessible, efficient chatbot applications.</p>
+
+        <h2>Downloads</h2>
+        <ul>
+          <li><strong>Windows builds</strong> are available now</li>
+          <li><strong>macOS and Linux precompiled binaries</strong> are coming soon</li>
+        </ul>
+
+        <h2>Getting Started</h2>
+        <p>Clone either repository and follow the setup instructions in the README:</p>
+        <ul>
+          <li><a href="https://github.com/Nehal-aditya/gemini-chat" target="_blank" rel="noopener">Nuxt + Tauri version</a></li>
+          <li><a href="https://github.com/Nehal-aditya/geminichat-net" target="_blank" rel="noopener">.NET + Avalonia version</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 8rem 0 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    transition: color var(--transition-fast);
+  }
+
+  .back-link:hover {
+    color: var(--neon-cyan);
+  }
+
+  .page-hero h1 {
+    margin: 1rem 0;
+  }
+
+  .hero-desc {
+    max-width: 600px;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+  }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .comparison-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

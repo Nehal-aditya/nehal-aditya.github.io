@@ -1,0 +1,510 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/HeroSection.astro';
+import StatsGrid from '../../components/StatsGrid.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import Accordion from '../../components/Accordion.astro';
+
+const stats = [
+  { value: '10x', label: 'Faster Compilation' },
+  { value: '0ms', label: 'Scheduling Latency' },
+  { value: '100%', label: 'Memory Safe' },
+  { value: 'Native', label: 'NPU Integration' },
+];
+
+const aureliaFaq = [
+  {
+    title: 'What makes Aurelia different from Rust or C++?',
+    content: 'Aurelia treats neural networks as first-class language constructs. Unlike Rust or C++, where ML is bolted on via libraries, Aurelia has native tensor types, built-in automatic differentiation, and compiles directly to MLIR for NPU targeting. The @target attribute allows function-level hardware targeting.',
+  },
+  {
+    title: 'How does MLIR compilation work?',
+    content: 'Aurelia\'s compiler frontend generates MLIR dialects. These are lowered through optimization passes targeting CPUs, GPUs, and NPUs like Qualcomm Hexagon, Apple Neural Engine, and Google TPU. The compiler understands memory hierarchies and execution unit layouts of each target.',
+  },
+  {
+    title: 'Is Aurelia memory-safe?',
+    content: 'Yes. Aurelia provides compile-time memory safety without a garbage collector, using an ownership-and-borrowing model extended with AI-specific patterns — tensor lifetime tracking, automatic gradient buffer management, and zero-copy tensor slicing.',
+  },
+  {
+    title: 'What is the relationship between Aurelia and SkyOS?',
+    content: 'Aurelia is the primary systems language for SkyOS. Kernel modules, device drivers, and system services are written in Aurelia. The entire stack shares a unified type system, memory model, and compilation pipeline.',
+  },
+];
+
+const zenithFaq = [
+  {
+    title: 'What is probabilistic scheduling?',
+    content: 'Zenith uses probabilistic models trained on workload patterns to predict resource needs 10ms in advance. When a neural inference pipeline needs GPU memory, Zenith has already allocated and warmed the pages — eliminating latency spikes entirely.',
+  },
+  {
+    title: 'How does the AI-Watchdog work?',
+    content: 'The AI-Watchdog is a formally verified security subsystem in an isolated protection domain. It monitors system calls and memory access patterns using anomaly detection. It detects zero-day exploits by identifying behavioral deviations, and can instantly terminate and roll back malicious processes.',
+  },
+  {
+    title: 'How does Zenith handle heterogeneous computing?',
+    content: 'Zenith treats CPUs, GPUs, and NPUs as first-class compute resources with a unified scheduling model. Aurelia\'s @target annotations are resolved at the kernel level, enabling transparent hardware migration when load conditions change.',
+  },
+];
+
+const skyosFaq = [
+  {
+    title: 'What are Large Action Models (LAMs)?',
+    content: 'LAMs are trained on user interaction sequences — clicks, commands, file operations. They understand intent at a semantic level and generate actions, not text. In SkyOS, the LAM is the core interaction layer replacing traditional GUI event loops.',
+  },
+  {
+    title: 'How does generative UI work?',
+    content: 'SkyOS generates interface elements on-demand based on task context. The UI is a continuous function of user intent, not a static layout. Every interaction reshapes the workspace dynamically.',
+  },
+  {
+    title: 'What happens to traditional applications?',
+    content: 'SkyOS runs traditional applications in sandboxed compatibility layers. Native Aurelia apps fully leverage the generative UI system, LAM integration, and Zenith\'s probabilistic scheduling.',
+  },
+];
+
+const forgeFaq = [
+  {
+    title: 'How accurate is The Forge\'s transpilation?',
+    content: 'The Forge uses multi-pass AI analysis to understand code semantics, not just syntax. Current benchmarks show 94% semantic equivalence on C++ and 97% on Java, with automated test generation to verify correctness.',
+  },
+  {
+    title: 'What languages does The Forge support?',
+    content: 'Currently C++ (including C++17/20), Java (including generics and virtual threads), and Python (including NumPy/PyTorch). Support for Rust, Go, and Swift is on the roadmap.',
+  },
+];
+---
+
+<BaseLayout title="Ecosystem" description="Explore the Deepcomet AI ecosystem — Aurelia Language, Zenith Kernel, SkyOS, and The Forge. A vertically integrated AI computing platform.">
+
+  <HeroSection
+    subtitle="Deepcomet AI"
+    title='The <span class="glow-text">Ecosystem</span>'
+    description="Four interconnected technologies forming a complete AI-native computing platform. From the Aurelia systems language to SkyOS — every layer is designed for a world where AI is not an afterthought, but the foundation."
+    primaryLink="#aurelia"
+    primaryText="Explore Aurelia"
+    secondaryLink="https://deepcometai.github.io"
+    secondaryText="Visit Deepcomet AI"
+    showParticles={true}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="reveal">
+        <StatsGrid stats={stats} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Overview -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-purple">Architecture</span>
+        <h2>The <span class="glow-text">Full Stack</span></h2>
+        <p>Unlike companies that optimize one layer, Deepcomet AI owns every layer of the computing stack. This vertical integration eliminates the friction, latency, and security gaps that arise when AI is bolted onto systems never designed for it.</p>
+      </div>
+
+      <div class="arch-overview reveal">
+        <div class="arch-layer arch-skyos">
+          <div class="arch-badge">User Layer</div>
+          <h3>SkyOS</h3>
+          <p>Generative OS with Large Action Models, adaptive UI generation, autonomous task execution</p>
+        </div>
+        <div class="arch-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
+        <div class="arch-layer arch-zenith-layer">
+          <div class="arch-badge">Kernel Layer</div>
+          <h3>Zenith Kernel</h3>
+          <p>Probabilistic scheduling, AI-Watchdog security, capability-based isolation, heterogeneous compute</p>
+        </div>
+        <div class="arch-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
+        <div class="arch-layer arch-aurelia-layer">
+          <div class="arch-badge">Language Layer</div>
+          <h3>Aurelia</h3>
+          <p>AI-native systems language, first-class tensors, auto-diff, MLIR compilation, memory safety</p>
+        </div>
+        <div class="arch-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
+        <div class="arch-layer arch-hw">
+          <div class="arch-badge">Hardware Layer</div>
+          <h3>NPU / GPU / CPU</h3>
+          <p>Direct hardware targeting via MLIR backends — Qualcomm Hexagon, Apple ANE, Google TPU</p>
+        </div>
+      </div>
+
+      <div class="arch-sidebar reveal" style="margin-top: 2rem;">
+        <div class="card card-glass">
+          <div class="icon-glow icon-glow-pink" style="margin: 0 auto 1rem;">
+            <span>&#9881;</span>
+          </div>
+          <h3 style="text-align: center;">The Forge</h3>
+          <p style="text-align: center; font-size: 0.9rem;">AI-powered migration tooling that transpiles legacy C++, Java, and Python codebases to idiomatic Aurelia.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Aurelia Section -->
+  <section class="section" id="aurelia">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-cyan">Core Tech</span>
+        <h2>Aurelia <span class="glow-text">Language</span></h2>
+        <p>An AI-native systems programming language designed from scratch for neural computation. Tensors are primitive types, automatic differentiation is a compiler feature, and NPU targeting is a first-class compilation target.</p>
+      </div>
+
+      <div class="feature-split reveal">
+        <div class="feature-content">
+          <h3>Why Aurelia?</h3>
+          <p>The AI revolution is built on foundations never designed for it. Python is interpreted and slow. C++ is fast but unsafe. Rust is safe but has no native tensor support. Every existing language forces painful tradeoffs.</p>
+          <p>Aurelia eliminates these tradeoffs:</p>
+          <ul class="feature-list">
+            <li><strong>First-class Tensors</strong> — <code>Tensor&lt;f32, 2&gt;</code> is a primitive type. Matrix multiplication uses the <code>@</code> operator. Compile-time shape checking catches dimension mismatches before runtime.</li>
+            <li><strong>Automatic Differentiation</strong> — The <code>gradient()</code> function is a compiler intrinsic. The compiler builds computation graphs and generates optimized backward passes automatically.</li>
+            <li><strong>Memory Safety</strong> — Ownership-and-borrowing model with extensions for tensor memory patterns. Zero-copy slicing, automatic gradient buffer management, compile-time verification.</li>
+            <li><strong>MLIR Compilation</strong> — Backend generates MLIR dialects lowered through hardware-specific optimization passes for CPUs, GPUs, and NPUs.</li>
+            <li><strong>NPU Targeting</strong> — The <code>@target</code> attribute enables function-level hardware targeting. Compile directly to Qualcomm Hexagon, Apple ANE, or Google TPU.</li>
+          </ul>
+        </div>
+        <div class="feature-code">
+          <CodeBlock filename="neural_network.aul">
+            <pre><code>{`// Define a neural network layer
+struct LinearLayer {
+  weights: Tensor<f32, 2>,
+  bias: Tensor<f32, 1>,
+}
+
+impl LinearLayer {
+  fn new(in_dim: usize, out_dim: usize)
+      -> Self {
+    Self {
+      weights: Tensor::kaiming([in_dim, out_dim]),
+      bias: Tensor::zeros([out_dim]),
+    }
+  }
+
+  fn forward(&self, x: Tensor<f32, 2>)
+      -> Tensor<f32, 2> {
+    (x @ self.weights) + self.bias
+  }
+}
+
+// Training with auto-diff
+@target(npu="qualcomm-hexagon")
+fn train(model: &mut LinearLayer,
+         data: Tensor<f32, 2>,
+         labels: Tensor<f32, 2>) {
+  let output = model.forward(data);
+  let loss = mse_loss(output, labels);
+  let grads = gradient(loss, model);
+  model.update(grads, lr=0.001);
+}`}</code></pre>
+          </CodeBlock>
+        </div>
+      </div>
+
+      <div class="grid-3 stagger-children" style="margin-top: 3rem;">
+        <div class="card">
+          <div class="icon-glow icon-glow-cyan"><span>T</span></div>
+          <h3>Type System</h3>
+          <p>Tensor dimensions tracked at compile time. Shape mismatches caught during compilation. <code>Tensor&lt;f32, 2&gt;</code> encodes element type and rank with optional dimension tracking for fully static shape verification.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-purple"><span>&#9733;</span></div>
+          <h3>Compilation Pipeline</h3>
+          <p>Source passes through a custom frontend generating MLIR dialects. Optimization passes — tensor fusion, memory planning, kernel scheduling — lower to hardware-specific code via LLVM or custom NPU backends.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-green"><span>&#9830;</span></div>
+          <h3>Interoperability</h3>
+          <p>Zero-cost FFI with C and C++. Existing CUDA kernels callable without overhead. The Forge migrates entire codebases to Aurelia, preserving semantics while gaining safety guarantees.</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="reveal">
+        <h3 style="margin-bottom: 1.5rem;">Frequently Asked Questions</h3>
+        <Accordion items={aureliaFaq} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Zenith Kernel Section -->
+  <section class="section" id="zenith">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-purple">OS Layer</span>
+        <h2>Zenith <span class="glow-text">Kernel</span></h2>
+        <p>A capability-based microkernel with probabilistic workload scheduling, AI-Watchdog intrusion detection, and native support for heterogeneous computing. Zenith is the foundation that makes SkyOS possible.</p>
+      </div>
+
+      <div class="grid-2 stagger-children">
+        <div class="card">
+          <div class="icon-glow icon-glow-purple"><span>&#9201;</span></div>
+          <h3>Probabilistic Scheduling</h3>
+          <p>Traditional kernels allocate resources reactively. Zenith uses ML models trained on workload patterns to predict resource needs 10ms before they arise.</p>
+          <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">For neural inference, GPU memory is pre-allocated before the request arrives. For real-time apps, CPU cores are pre-reserved before deadline-critical tasks. Zero-latency scheduling for AI workloads.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-cyan"><span>&#9632;</span></div>
+          <h3>AI-Watchdog Security</h3>
+          <p>A formally verified security subsystem in an isolated protection domain. Monitors all system calls and memory access patterns using anomaly detection — not signature matching.</p>
+          <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">Detects zero-day exploits by identifying behavioral deviations from baselines. Can terminate, isolate, and roll back malicious processes in microseconds.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-green"><span>&#9670;</span></div>
+          <h3>Capability-Based Isolation</h3>
+          <p>Every process operates within a capability space — unforgeable tokens defining exactly what resources it can access. No ambient privileges, no root user, no SUID bits.</p>
+          <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">A compromised browser cannot access the filesystem because it does not hold capability tokens for file operations. Entire categories of privilege escalation attacks are eliminated.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-pink"><span>&#9881;</span></div>
+          <h3>Heterogeneous Compute</h3>
+          <p>CPUs, GPUs, and NPUs are first-class compute resources with a unified scheduling model. The kernel maintains a real-time capability map and routes workloads transparently.</p>
+          <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">Aurelia's <code>@target</code> annotations resolve at the kernel level. A function targeting a busy NPU can be rerouted to an available GPU with equivalent capabilities.</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="reveal">
+        <h3 style="margin-bottom: 1.5rem;">Frequently Asked Questions</h3>
+        <Accordion items={zenithFaq} />
+      </div>
+    </div>
+  </section>
+
+  <!-- SkyOS Section -->
+  <section class="section" id="skyos">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-green">Platform</span>
+        <h2>Sky<span class="glow-text">OS</span></h2>
+        <p>A generative operating system powered by Large Action Models. SkyOS replaces the traditional desktop with an intent-driven computing experience — the OS understands what you want and generates the tools to do it in real time.</p>
+      </div>
+
+      <div class="skyos-features reveal">
+        <div class="skyos-main card card-glass">
+          <h3>The Generative Desktop</h3>
+          <p>Imagine an OS with no app icons, no start menu, no fixed windows. You describe your intent — "analyze sales data and create a presentation" — and SkyOS generates the entire workflow: data loading, analysis tools, visualization components, and slide layout. All assembled in real-time from composable AI-generated UI primitives.</p>
+          <p>SkyOS's Large Action Model understands task semantics. It knows "analyze sales data" requires a data source, processing pipeline, and visualization layer. It generates each component, wires them together, and presents a coherent workspace — in seconds.</p>
+        </div>
+      </div>
+
+      <div class="grid-2 stagger-children" style="margin-top: 2rem;">
+        <div class="card">
+          <div class="icon-glow icon-glow-green"><span>&#9733;</span></div>
+          <h3>Large Action Models</h3>
+          <p>LAMs are trained on billions of interaction sequences. They understand intent semantically. Unlike chatbots that generate text, LAMs generate actions: opening files, running computations, creating visualizations.</p>
+          <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">The LAM is not a separate app — it is the core interaction layer of the OS, replacing GUI event loops with intent-driven computation.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-cyan"><span>&#9998;</span></div>
+          <h3>Adaptive UI Generation</h3>
+          <p>Interface elements generated on-demand based on task context. Writing code and need to debug? A debugger panel materializes. Browsing research? A note-taking interface appears alongside.</p>
+          <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">The UI is a continuous function of intent and task state — not a static layout. Every interaction reshapes the workspace.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-purple"><span>&#9830;</span></div>
+          <h3>Autonomous Workflows</h3>
+          <p>Describe a goal — "set up a dev environment for the Aurelia compiler" — and SkyOS handles everything: cloning repos, installing dependencies, configuring tools, running tests.</p>
+          <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">Each step is visible and interruptible. The LAM explains what it is doing and why. Intervene at any point to redirect.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-pink"><span>&#9632;</span></div>
+          <h3>Aurelia Integration</h3>
+          <p>Native SkyOS apps are written in Aurelia. The entire stack shares a unified type system, memory model, and compilation pipeline. No language boundaries, no serialization overhead.</p>
+          <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">Legacy apps run through a compatibility layer. Native Aurelia apps unlock the full power of generative UI and LAM integration.</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="reveal">
+        <h3 style="margin-bottom: 1.5rem;">Frequently Asked Questions</h3>
+        <Accordion items={skyosFaq} />
+      </div>
+    </div>
+  </section>
+
+  <!-- The Forge Section -->
+  <section class="section" id="forge">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-pink">Tooling</span>
+        <h2>The <span class="glow-text">Forge</span></h2>
+        <p>Building a new language is half the challenge — migrating existing codebases is the other half. The Forge is an AI-powered transpilation engine converting legacy C++, Java, and Python to idiomatic Aurelia.</p>
+      </div>
+
+      <div class="grid-2 stagger-children">
+        <div class="card">
+          <div class="icon-glow icon-glow-pink"><span>&#9881;</span></div>
+          <h3>Semantic Analysis</h3>
+          <p>The Forge builds an abstract semantic model of the entire codebase — data flow, control flow, type relationships, concurrency patterns. It generates Aurelia code that is correct and idiomatic.</p>
+          <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">C++ templates become Aurelia generics. Java streams become iterators. NumPy operations become native tensor expressions.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-cyan"><span>&#9733;</span></div>
+          <h3>AI Pattern Recognition</h3>
+          <p>Trained AI models recognize design patterns, architectural patterns, and anti-patterns in legacy code. They rewrite using Aurelia best practices — often producing safer and faster code than the original.</p>
+          <p style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted);">C++ memory pools become arena allocators with compile-time safety. Java synchronized blocks become ownership-based concurrency primitives.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-green"><span>&#9670;</span></div>
+          <h3>Automated Test Generation</h3>
+          <p>Every transpiled module comes with a generated test suite verifying behavioral equivalence. Property-based tests, edge case tests, and integration tests ensure the migration preserves exact semantics.</p>
+        </div>
+        <div class="card">
+          <div class="icon-glow icon-glow-purple"><span>&#9998;</span></div>
+          <h3>Incremental Migration</h3>
+          <p>Transpile one module at a time. Aurelia's zero-cost C/C++ FFI means transpiled and original code coexist without performance penalties during migration.</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="reveal">
+        <h3 style="margin-bottom: 1.5rem;">Frequently Asked Questions</h3>
+        <Accordion items={forgeFaq} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-cyan">Roadmap</span>
+        <h2>What's <span class="glow-text">Next</span></h2>
+        <p>The Deepcomet AI ecosystem is actively under development. Here is a high-level roadmap across all four pillars.</p>
+      </div>
+
+      <div class="grid-2 stagger-children">
+        <div class="card">
+          <h3>Aurelia</h3>
+          <ul class="feature-list">
+            <li>Complete MLIR backend for Qualcomm Hexagon and Apple ANE</li>
+            <li>Package manager and build system (AureliaForge)</li>
+            <li>Standard library for networking, filesystem, and async I/O</li>
+            <li>Language server protocol (LSP) for IDE support</li>
+            <li>Formal specification and reference manual</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Zenith Kernel</h3>
+          <ul class="feature-list">
+            <li>Formal verification of core scheduling invariants</li>
+            <li>NPU driver framework with hot-pluggable accelerators</li>
+            <li>Networked capability delegation for distributed computing</li>
+            <li>Real-time scheduling for safety-critical workloads</li>
+            <li>POSIX compatibility layer for legacy support</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>SkyOS</h3>
+          <ul class="feature-list">
+            <li>LAM training on expanded interaction datasets</li>
+            <li>Plugin architecture for third-party UI generators</li>
+            <li>Privacy-preserving on-device LAM inference</li>
+            <li>Multi-user collaboration via shared workspaces</li>
+            <li>Developer SDK for native SkyOS applications</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>The Forge</h3>
+          <ul class="feature-list">
+            <li>Rust and Go transpilation support</li>
+            <li>Large-scale enterprise migration orchestration</li>
+            <li>IDE plugin for interactive migration assistance</li>
+            <li>Migration impact analysis and risk assessment</li>
+            <li>Continuous migration mode for evolving codebases</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-content reveal-scale">
+        <h2>Ready to explore the <span class="glow-text">ecosystem</span>?</h2>
+        <p>Visit Deepcomet AI for source code, documentation, and the latest updates on Aurelia, Zenith, SkyOS, and The Forge.</p>
+        <div class="hero-actions">
+          <a href="https://deepcometai.github.io" target="_blank" rel="noopener" class="btn btn-primary">Visit Deepcomet AI</a>
+          <a href="https://github.com/deepcometai" target="_blank" rel="noopener" class="btn btn-outline">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .arch-overview {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .arch-layer {
+    width: 100%;
+    padding: 1.5rem 2rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid;
+    backdrop-filter: blur(10px);
+    transition: all var(--transition-smooth);
+  }
+
+  .arch-layer:hover { transform: scale(1.02); }
+
+  .arch-badge {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .arch-layer h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+  .arch-layer p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; }
+
+  .arch-skyos { background: rgba(34, 211, 238, 0.06); border-color: rgba(34, 211, 238, 0.2); }
+  .arch-skyos h3 { color: var(--neon-green); }
+  .arch-zenith-layer { background: rgba(168, 85, 247, 0.06); border-color: rgba(168, 85, 247, 0.2); }
+  .arch-zenith-layer h3 { color: var(--neon-purple); }
+  .arch-aurelia-layer { background: rgba(0, 240, 255, 0.06); border-color: rgba(0, 240, 255, 0.2); }
+  .arch-aurelia-layer h3 { color: var(--neon-cyan); }
+  .arch-hw { background: rgba(236, 72, 153, 0.06); border-color: rgba(236, 72, 153, 0.2); }
+  .arch-hw h3 { color: var(--neon-pink); }
+
+  .arch-arrow { color: var(--text-muted); padding: 0.25rem 0; opacity: 0.5; }
+
+  .feature-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .feature-content h3 { margin-bottom: 1rem; }
+  .feature-content p { line-height: 1.8; margin-bottom: 1rem; }
+
+  .skyos-main { padding: 2.5rem; }
+  .skyos-main h3 { font-size: 1.4rem; margin-bottom: 1rem; color: var(--neon-green); }
+  .skyos-main p { line-height: 1.8; margin-bottom: 1rem; }
+
+  .cta-section { text-align: center; }
+  .cta-content { max-width: 600px; margin: 0 auto; }
+  .cta-content h2 { margin-bottom: 1rem; }
+  .cta-content p { margin-bottom: 2rem; font-size: 1.1rem; }
+
+  @media (max-width: 900px) {
+    .feature-split { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    .arch-layer { padding: 1rem 1.25rem; }
+  }
+</style>
