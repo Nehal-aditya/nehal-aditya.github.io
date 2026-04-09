@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/HeroSection.astro';
+
+const posts = [
+  {
+    slug: 'first-post',
+    title: 'My First Blog Post',
+    date: '2025-08-31',
+    author: 'Nehal-aditya',
+    excerpt: 'Welcome to my blog! This is my very first post where I share my thoughts on technology, science, and the journey of building software.',
+  },
+  {
+    slug: 'deepcomet-vision',
+    title: 'The Deepcomet AI Vision: Redefining Computing',
+    date: '2026-01-15',
+    author: 'Nehal-aditya',
+    excerpt: 'An in-depth look at Deepcomet AI\'s mission to build a vertically integrated AI stack — from Aurelia to SkyOS — and why it matters for the future of computing.',
+  },
+  {
+    slug: 'aurelia-intro',
+    title: 'Introducing Aurelia: An AI-Native Language',
+    date: '2026-03-01',
+    author: 'Nehal-aditya',
+    excerpt: 'Why we\'re building Aurelia, a systems programming language with first-class tensor primitives and direct NPU compilation via MLIR.',
+  },
+];
+---
+
+<BaseLayout title="Blog" description="Blog posts about science, technology, AI, and the Deepcomet AI ecosystem.">
+
+  <HeroSection
+    subtitle="Blog"
+    title='Latest <span class="glow-text">Posts</span>'
+    description="Welcome to our blog. Here we post about science, technology, AI research, and the Deepcomet AI ecosystem."
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="blog-grid">
+        {posts.map(post => (
+          <a href={`/blog/${post.slug}/`} class="blog-card card">
+            <div class="blog-card-meta">
+              <time>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</time>
+              <span class="dot">·</span>
+              <span>{post.author}</span>
+            </div>
+            <h3>{post.title}</h3>
+            <p>{post.excerpt}</p>
+            <span class="read-more">Read more &rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2rem;
+  }
+
+  .blog-card {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-card:hover {
+    color: inherit;
+  }
+
+  .blog-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .dot {
+    color: var(--text-muted);
+  }
+
+  .blog-card h3 {
+    margin-bottom: 0.75rem;
+    transition: color var(--transition-fast);
+  }
+
+  .blog-card:hover h3 {
+    color: var(--neon-cyan);
+  }
+
+  .blog-card p {
+    flex: 1;
+  }
+
+  .read-more {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--neon-cyan);
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

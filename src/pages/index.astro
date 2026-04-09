@@ -1,0 +1,236 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import StatsGrid from '../components/StatsGrid.astro';
+import EcosystemCard from '../components/EcosystemCard.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+
+const stats = [
+  { value: '10x', label: 'Faster Compilation' },
+  { value: '0ms', label: 'Scheduling Latency' },
+  { value: '100%', label: 'Memory Safe' },
+  { value: 'Native', label: 'NPU Integration' },
+];
+---
+
+<BaseLayout title="Home" description="Nehal-aditya — Building futuristic software at the intersection of AI, systems programming, and next-generation computing. Part of the Deepcomet AI ecosystem.">
+
+  <HeroSection
+    subtitle="Deepcomet AI Ecosystem"
+    title='The <span class="glow-text">Speed of Light</span> AI Stack'
+    description="Redefining neural computation — from the Aurelia systems programming language to the Zenith Kernel and SkyOS. Building the future of vertical AI integration."
+    primaryLink="/ecosystem/"
+    primaryText="Explore Ecosystem"
+    secondaryLink="/projects/"
+    secondaryText="View Projects"
+  />
+
+  <!-- Stats Section -->
+  <section class="section">
+    <div class="container">
+      <StatsGrid stats={stats} />
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-purple">About This Site</span>
+        <h2>Welcome to <span class="glow-text">Nehal-aditya</span></h2>
+        <p>This is our main hub for brands, software, projects, news, and updates. Explore our ecosystem of futuristic technologies and creative projects.</p>
+      </div>
+
+      <div class="grid-3">
+        <a href="/docs/" class="card explore-card">
+          <div class="explore-icon">&#128214;</div>
+          <h3>Documentation</h3>
+          <p>Comprehensive guides for our projects and ecosystem technologies.</p>
+        </a>
+        <a href="/about/" class="card explore-card">
+          <div class="explore-icon">&#128100;</div>
+          <h3>About</h3>
+          <p>Learn about Nehal-aditya and the Deepcomet AI vision.</p>
+        </a>
+        <a href="/community/" class="card explore-card">
+          <div class="explore-icon">&#128101;</div>
+          <h3>Community</h3>
+          <p>Join our community on GitHub, YouTube, and beyond.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code Showcase -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-cyan">Built for the AI Era</span>
+        <h2>First-Class <span class="glow-text">Neural Computation</span></h2>
+        <p>Aurelia treats neural networks as first-class citizens with native tensor primitives, automatic differentiation, and direct MLIR compilation.</p>
+      </div>
+
+      <div class="code-showcase">
+        <CodeBlock filename="neural_layer.aul">
+          <pre><code>{`fn forward_pass(x: Tensor<f32, 2>) -> Tensor<f32, 2> {
+  // Native tensor operations
+  let weights = Tensor::random([256, 512]);
+  let biases = Tensor::zeros([512]);
+
+  // Automatic differentiation built-in
+  let output = (x @ weights) + biases;
+  return output.relu();
+}
+
+// Compiles directly to MLIR -> NPU
+@target(npu="qualcomm-hexagon")
+fn main() {
+  let input = Tensor::ones([128, 256]);
+  let result = forward_pass(input);
+}`}</code></pre>
+        </CodeBlock>
+
+        <div class="code-features grid-3">
+          <div class="card">
+            <h3>First-class Tensors</h3>
+            <p>No more clunky library wrappers. Tensor operations are native language primitives.</p>
+          </div>
+          <div class="card">
+            <h3>Memory Safety</h3>
+            <p>Compile-time guarantees without a garbage collector. Zero-cost abstractions.</p>
+          </div>
+          <div class="card">
+            <h3>Direct NPU Targeting</h3>
+            <p>Bypass CPU bottlenecks entirely. Compile directly to neural processing units.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vertical Integration -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-green">Vertical AI Integration</span>
+        <h2>AI is the <span class="glow-text">Core</span>, Not an Add-on</h2>
+        <p>Unlike competitors who run AI workloads on top of general-purpose operating systems, Deepcomet AI is building a system where AI is the core.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>Zero-Latency Scheduling</h3>
+          <p>Probabilistic models in the Zenith Kernel anticipate resource needs 10ms before they are required, eliminating latency for high-priority tasks.</p>
+        </div>
+        <div class="card">
+          <h3>Hardware-Software Synthesis</h3>
+          <p>Aurelia code is compiled directly for the memory and execution characteristics of the NPU via MLIR, maximizing hardware utilization.</p>
+        </div>
+        <div class="card">
+          <h3>Intrinsic Security</h3>
+          <p>A kernel mathematically proven safe, with an AI-Watchdog monitoring for anomalous behavior to instantly kill zero-day exploits.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ecosystem Overview -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-pink">Ecosystem</span>
+        <h2>Explore the <span class="glow-text">Ecosystem</span></h2>
+        <p>Discover the components powering the next generation of computing.</p>
+      </div>
+
+      <div class="grid-2">
+        <EcosystemCard
+          title="Aurelia Language"
+          badge="Core Tech"
+          badgeColor="cyan"
+          description="First-class tensor primitives and native automatic differentiation. An AI-native systems programming language compiled via MLIR."
+          href="/ecosystem/#aurelia"
+        />
+        <EcosystemCard
+          title="Zenith Kernel"
+          badge="OS Layer"
+          badgeColor="purple"
+          description="Microkernel with probabilistic scheduling and an immune-system-inspired security model."
+          href="/ecosystem/#zenith"
+        />
+        <EcosystemCard
+          title="SkyOS"
+          badge="Platform"
+          badgeColor="green"
+          description="Generative Operating System powered by Large Action Models. The future of human-computer interaction."
+          href="/ecosystem/#skyos"
+        />
+        <EcosystemCard
+          title="The Forge"
+          badge="Tooling"
+          badgeColor="pink"
+          description="Automated migration of legacy C++ and Java codebases to Aurelia with AI-powered transpilation."
+          href="/ecosystem/#forge"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to build the <span class="glow-text">future</span>?</h2>
+        <p>Join the Deepcomet AI ecosystem and start building next-generation applications with Aurelia and SkyOS today.</p>
+        <div class="hero-actions">
+          <a href="/ecosystem/" class="btn btn-primary">Get Started</a>
+          <a href="https://github.com/Nehal-aditya" target="_blank" rel="noopener" class="btn btn-outline">View on GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .explore-card {
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .explore-card:hover {
+    color: inherit;
+  }
+
+  .explore-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .code-showcase {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .code-features {
+    margin-top: 2rem;
+  }
+
+  .cta-section {
+    text-align: center;
+  }
+
+  .cta-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta-content h2 {
+    margin-bottom: 1rem;
+  }
+
+  .cta-content p {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+  }
+</style>

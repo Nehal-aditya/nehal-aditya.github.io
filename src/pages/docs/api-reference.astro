@@ -1,0 +1,72 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+---
+
+<DocLayout title="API Reference" description="API reference documentation for Deepcomet AI ecosystem components.">
+
+  <h1>API Reference</h1>
+  <p>Comprehensive API documentation for the Deepcomet AI ecosystem components.</p>
+
+  <h2>Aurelia Standard Library</h2>
+  <p>The Aurelia standard library provides core types and functions for AI-native computation.</p>
+
+  <h3>Tensor Module</h3>
+  <p>Core tensor operations for neural computation:</p>
+
+  <CodeBlock filename="tensor_api.aul">
+    <pre><code>{`// Create tensors
+Tensor::zeros(shape: [usize]) -> Tensor<T, N>
+Tensor::ones(shape: [usize]) -> Tensor<T, N>
+Tensor::random(shape: [usize]) -> Tensor<T, N>
+
+// Operations
+tensor.relu() -> Tensor<T, N>
+tensor.sigmoid() -> Tensor<T, N>
+tensor.softmax(dim: usize) -> Tensor<T, N>
+tensor.reshape(shape: [usize]) -> Tensor<T, M>
+
+// Matrix operations
+tensor @ tensor -> Tensor<T, N>  // matmul
+tensor + tensor -> Tensor<T, N>  // element-wise add
+tensor * tensor -> Tensor<T, N>  // element-wise mul`}</code></pre>
+  </CodeBlock>
+
+  <h3>Target Attributes</h3>
+  <p>Functions can be annotated with target attributes for hardware-specific compilation:</p>
+
+  <CodeBlock filename="targets.aul">
+    <pre><code>{`@target(cpu="x86-avx512")
+fn cpu_compute() { ... }
+
+@target(gpu="cuda")
+fn gpu_compute() { ... }
+
+@target(npu="qualcomm-hexagon")
+fn npu_compute() { ... }`}</code></pre>
+  </CodeBlock>
+
+  <h2>Zenith Kernel API</h2>
+  <p>System-level APIs for interacting with the Zenith Kernel:</p>
+
+  <h3>Scheduling</h3>
+  <ul>
+    <li><code>zen::schedule::priority(task, level)</code> — Set task scheduling priority</li>
+    <li><code>zen::schedule::predict(task)</code> — Query predicted resource needs</li>
+    <li><code>zen::schedule::affinity(task, core_set)</code> — Set CPU/NPU affinity</li>
+  </ul>
+
+  <h3>Security</h3>
+  <ul>
+    <li><code>zen::watchdog::register(handler)</code> — Register anomaly detection handler</li>
+    <li><code>zen::watchdog::status()</code> — Query current system security status</li>
+  </ul>
+
+  <h2>Further Reading</h2>
+  <ul>
+    <li><a href="/ecosystem/#aurelia">Aurelia Language Overview</a></li>
+    <li><a href="/ecosystem/#zenith">Zenith Kernel Overview</a></li>
+    <li><a href="/docs/architecture/">Architecture Guide</a></li>
+  </ul>
+
+</DocLayout>

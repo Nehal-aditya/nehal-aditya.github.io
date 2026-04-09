@@ -1,0 +1,260 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/HeroSection.astro';
+import StatsGrid from '../../components/StatsGrid.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import Accordion from '../../components/Accordion.astro';
+
+const stats = [
+  { value: '10x', label: 'Faster Compilation' },
+  { value: '0ms', label: 'Scheduling Latency' },
+  { value: '100%', label: 'Memory Safe' },
+  { value: 'Native', label: 'NPU Integration' },
+];
+
+const aureliaFaq = [
+  {
+    title: 'What makes Aurelia different from Rust or C++?',
+    content: 'Aurelia treats neural networks as first-class language constructs. Unlike Rust or C++, where ML is bolted on via libraries, Aurelia has native tensor types, built-in automatic differentiation, and compiles directly to MLIR for NPU targeting. It combines memory safety with zero-overhead AI primitives.',
+  },
+  {
+    title: 'How does MLIR compilation work?',
+    content: 'Aurelia\'s compiler frontend generates MLIR (Multi-Level Intermediate Representation) dialects. These are then lowered through optimization passes that target specific hardware — CPUs, GPUs, and crucially NPUs like Qualcomm Hexagon. This means your tensor code runs on the most efficient available hardware automatically.',
+  },
+  {
+    title: 'Is Aurelia memory-safe?',
+    content: 'Yes. Aurelia provides compile-time memory safety guarantees without a garbage collector, similar to Rust\'s ownership model but extended with AI-specific memory patterns like tensor lifetime tracking and automatic gradient buffer management.',
+  },
+];
+
+const zenithFaq = [
+  {
+    title: 'What is probabilistic scheduling?',
+    content: 'Instead of reacting to resource requests after they happen, the Zenith Kernel uses probabilistic models to predict resource needs 10ms in advance. This eliminates latency spikes and ensures smooth performance for AI workloads, real-time applications, and system-critical tasks.',
+  },
+  {
+    title: 'How does the AI-Watchdog work?',
+    content: 'The Zenith Kernel includes an intrinsic security layer — a mathematically proven safe kernel with an AI-Watchdog that monitors system behavior in real-time. It detects anomalous patterns and can instantly terminate zero-day exploits before they cause damage, providing immune-system-like protection.',
+  },
+];
+---
+
+<BaseLayout title="Ecosystem" description="Explore the Deepcomet AI ecosystem — Aurelia Language, Zenith Kernel, SkyOS, and The Forge.">
+
+  <HeroSection
+    subtitle="Deepcomet AI"
+    title='The <span class="glow-text">Ecosystem</span>'
+    description="Discover the components powering the next generation of computing. From AI-native programming languages to generative operating systems."
+    primaryLink="#aurelia"
+    primaryText="Explore Aurelia"
+    secondaryLink="https://deepcometai.github.io"
+    secondaryText="Visit Deepcomet AI"
+  />
+
+  <section class="section">
+    <div class="container">
+      <StatsGrid stats={stats} />
+    </div>
+  </section>
+
+  <!-- Aurelia Section -->
+  <section class="section" id="aurelia">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-cyan">Core Tech</span>
+        <h2>Aurelia <span class="glow-text">Language</span></h2>
+        <p>An AI-native systems programming language. First-class tensor primitives, native automatic differentiation, and direct MLIR compilation.</p>
+      </div>
+
+      <div class="feature-split">
+        <div class="feature-content">
+          <h3>Built for Neural Computation</h3>
+          <p>Aurelia isn't just another language — it treats neural networks as first-class citizens. Write less code and get more performance with native tensor operations compiled directly to hardware.</p>
+          <ul>
+            <li><strong>First-class Tensors</strong> — No more clunky library wrappers. Tensor operations are native language primitives.</li>
+            <li><strong>Memory Safety</strong> — Compile-time guarantees without a garbage collector. Zero-cost abstractions for AI workloads.</li>
+            <li><strong>Direct NPU Targeting</strong> — Bypass CPU bottlenecks entirely. Compile directly to neural processing units via MLIR.</li>
+            <li><strong>Automatic Differentiation</strong> — Built into the language, not bolted on. Gradients are computed automatically during compilation.</li>
+          </ul>
+        </div>
+        <div class="feature-code">
+          <CodeBlock filename="neural_layer.aul">
+            <pre><code>{`fn forward_pass(x: Tensor<f32, 2>)
+    -> Tensor<f32, 2> {
+  let weights = Tensor::random([256, 512]);
+  let biases = Tensor::zeros([512]);
+
+  // Automatic differentiation
+  let output = (x @ weights) + biases;
+  return output.relu();
+}
+
+@target(npu="qualcomm-hexagon")
+fn main() {
+  let input = Tensor::ones([128, 256]);
+  let result = forward_pass(input);
+}`}</code></pre>
+          </CodeBlock>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <Accordion items={aureliaFaq} />
+    </div>
+  </section>
+
+  <!-- Zenith Kernel Section -->
+  <section class="section" id="zenith">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-purple">OS Layer</span>
+        <h2>Zenith <span class="glow-text">Kernel</span></h2>
+        <p>A microkernel with probabilistic scheduling and an immune-system-inspired security model.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>Probabilistic Scheduling</h3>
+          <p>AI models predict resource needs 10ms before they are required, eliminating latency spikes and ensuring smooth performance for high-priority tasks.</p>
+        </div>
+        <div class="card">
+          <h3>Intrinsic Security</h3>
+          <p>Mathematically proven safe kernel with an AI-Watchdog that monitors for anomalous behavior and instantly neutralizes zero-day exploits.</p>
+        </div>
+        <div class="card">
+          <h3>Microkernel Architecture</h3>
+          <p>Minimal trusted computing base with isolated subsystems. Each component runs in its own protection domain for maximum reliability.</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <Accordion items={zenithFaq} />
+    </div>
+  </section>
+
+  <!-- SkyOS Section -->
+  <section class="section" id="skyos">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-green">Platform</span>
+        <h2>Sky<span class="glow-text">OS</span></h2>
+        <p>A generative operating system powered by Large Action Models. The future of human-computer interaction.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Large Action Models</h3>
+          <p>SkyOS is powered by Large Action Models (LAMs) that understand user intent and can autonomously execute complex multi-step workflows. Instead of clicking through menus, you describe what you want and SkyOS makes it happen.</p>
+        </div>
+        <div class="card">
+          <h3>Generative Interface</h3>
+          <p>The operating system generates its own interface in real-time based on context and user needs. No fixed app grid — SkyOS creates the optimal experience for every task dynamically.</p>
+        </div>
+        <div class="card">
+          <h3>AI-Native Design</h3>
+          <p>Built from the ground up with AI at the core, not retrofitted. Every system service, from file management to networking, is AI-aware and optimized for intelligent workloads.</p>
+        </div>
+        <div class="card">
+          <h3>Aurelia Integration</h3>
+          <p>Native support for Aurelia applications means AI workloads run at maximum efficiency. SkyOS and Aurelia together form the complete AI-native computing stack.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Forge Section -->
+  <section class="section" id="forge">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-pink">Tooling</span>
+        <h2>The <span class="glow-text">Forge</span></h2>
+        <p>Automated migration of legacy C++ and Java codebases to Aurelia with AI-powered transpilation.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>AI-Powered Transpilation</h3>
+          <p>The Forge uses advanced AI models to understand the semantics of legacy code and transpile it to idiomatic Aurelia. Not just syntax conversion — it understands patterns and rewrites them for optimal Aurelia performance.</p>
+        </div>
+        <div class="card">
+          <h3>Supported Languages</h3>
+          <p>Currently supports C++ and Java codebases with plans to expand to Python, Rust, and Go. The Forge handles complex patterns like templates, generics, and multi-threaded code.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to explore the <span class="glow-text">ecosystem</span>?</h2>
+        <p>Visit Deepcomet AI for the latest on Aurelia, Zenith Kernel, SkyOS, and The Forge.</p>
+        <div class="hero-actions">
+          <a href="https://deepcometai.github.io" target="_blank" rel="noopener" class="btn btn-primary">Visit Deepcomet AI</a>
+          <a href="https://github.com/deepcometai" target="_blank" rel="noopener" class="btn btn-outline">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .feature-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .feature-content h3 {
+    margin-bottom: 1rem;
+  }
+
+  .feature-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+
+  .feature-content li {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  .feature-content li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: var(--neon-cyan);
+    font-family: var(--font-mono);
+    font-weight: bold;
+  }
+
+  .cta-section {
+    text-align: center;
+  }
+
+  .cta-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta-content h2 {
+    margin-bottom: 1rem;
+  }
+
+  .cta-content p {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 900px) {
+    .feature-split {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

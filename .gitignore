@@ -1,7 +1,21 @@
-# Hugo output
-public/
-resources/
-.hugo_build.lock
+# build output
+dist/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS
+.DS_Store
 
 # Editor
 .vscode/

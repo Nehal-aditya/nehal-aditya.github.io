@@ -1,0 +1,51 @@
+---
+import DocLayout from '../../layouts/DocLayout.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+---
+
+<DocLayout title="Getting Started" description="Set up your development environment and start building with the Deepcomet AI ecosystem.">
+
+  <h1>Getting Started</h1>
+  <p>This guide will walk you through setting up your development environment and building your first project with the Deepcomet AI ecosystem tools.</p>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li><strong>Node.js</strong> (v18 or later) — For web-based projects</li>
+    <li><strong>Git</strong> — Version control</li>
+    <li><strong>Go</strong> (optional) — For Hugo-based legacy projects</li>
+    <li>A modern code editor (VS Code recommended)</li>
+  </ul>
+
+  <h2>Clone a Project</h2>
+  <p>Start by cloning one of our repositories:</p>
+
+  <CodeBlock filename="terminal">
+    <pre><code>{`# Clone the GeminiChat (Nuxt + Tauri version)
+git clone https://github.com/Nehal-aditya/gemini-chat.git
+cd gemini-chat
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev`}</code></pre>
+  </CodeBlock>
+
+  <h2>Project Structure</h2>
+  <p>Our projects follow consistent patterns:</p>
+  <ul>
+    <li><code>src/</code> — Source code</li>
+    <li><code>public/</code> — Static assets</li>
+    <li><code>docs/</code> — Project documentation</li>
+    <li><code>tests/</code> — Test suites</li>
+  </ul>
+
+  <h2>Next Steps</h2>
+  <p>Once your environment is set up:</p>
+  <ol>
+    <li>Explore the <a href="/docs/architecture/">Architecture</a> guide to understand design principles</li>
+    <li>Check the <a href="/docs/api-reference/">API Reference</a> for detailed documentation</li>
+    <li>Join the <a href="/community/">Community</a> to connect with other developers</li>
+  </ol>
+
+</DocLayout>

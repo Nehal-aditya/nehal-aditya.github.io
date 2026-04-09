@@ -1,0 +1,56 @@
+---
+interface Props {
+  title: string;
+  badge: string;
+  badgeColor?: string;
+  description: string;
+  href?: string;
+}
+
+const { title, badge, badgeColor = 'cyan', description, href } = Astro.props;
+---
+
+<div class="ecosystem-card card">
+  <div class="eco-header">
+    <span class={`badge badge-${badgeColor}`}>{badge}</span>
+    <h3>{title}</h3>
+  </div>
+  <p>{description}</p>
+  {href && (
+    <a href={href} class="eco-link">
+      Learn more <span class="arrow">&rarr;</span>
+    </a>
+  )}
+</div>
+
+<style>
+  .ecosystem-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eco-header {
+    margin-bottom: 1rem;
+  }
+
+  .eco-header h3 {
+    margin-top: 0.75rem;
+  }
+
+  .eco-link {
+    margin-top: auto;
+    padding-top: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--neon-cyan);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: gap var(--transition-fast);
+  }
+
+  .eco-link:hover {
+    gap: 0.75rem;
+    color: var(--neon-cyan);
+  }
+</style>

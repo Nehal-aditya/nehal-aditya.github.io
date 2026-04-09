@@ -1,0 +1,134 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroSection from '../../components/HeroSection.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+---
+
+<BaseLayout title="Projects" description="Explore Nehal-aditya's projects — from the Deepcomet AI ecosystem to cross-platform AI chatbots and futuristic computing.">
+
+  <HeroSection
+    subtitle="Our Work"
+    title='Our <span class="glow-text">Projects</span>'
+    description="A collection of visionary projects spanning AI-native computing, cross-platform applications, and the Deepcomet AI ecosystem. Building the future of intelligent software."
+  />
+
+  <!-- Deepcomet AI Ecosystem Projects -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-cyan">Deepcomet AI Ecosystem</span>
+        <h2>Core <span class="glow-text">Ecosystem</span> Projects</h2>
+        <p>The foundational technologies powering the next generation of AI-native computing.</p>
+      </div>
+
+      <div class="grid-2">
+        <ProjectCard
+          title="Aurelia Language"
+          description="An AI-native systems programming language with first-class tensor primitives, automatic differentiation, and direct MLIR compilation targeting NPUs. The core of the Deepcomet AI stack."
+          tags={['Systems Programming', 'MLIR', 'AI/ML', 'Compiler Design', 'NPU']}
+          href="/ecosystem/#aurelia"
+        />
+
+        <ProjectCard
+          title="Zenith Kernel"
+          description="A microkernel with probabilistic scheduling that predicts resource needs 10ms in advance and an AI-Watchdog immune system for intrinsic zero-day exploit protection."
+          tags={['Microkernel', 'Probabilistic Scheduling', 'Security', 'AI-Watchdog']}
+          href="/ecosystem/#zenith"
+        />
+
+        <ProjectCard
+          title="SkyOS"
+          description="A generative operating system powered by Large Action Models. Instead of static interfaces, SkyOS generates the optimal experience for every task in real-time."
+          tags={['Operating Systems', 'Large Action Models', 'Generative UI', 'AI-Native']}
+          href="/ecosystem/#skyos"
+        />
+
+        <ProjectCard
+          title="The Forge"
+          description="AI-powered automated migration tooling that transpiles legacy C++ and Java codebases to idiomatic Aurelia. Not just syntax conversion — semantic understanding and optimization."
+          tags={['Transpilation', 'AI Migration', 'C++', 'Java', 'Aurelia']}
+          href="/ecosystem/#forge"
+        />
+      </div>
+    </div>
+  </section>
+
+  <div class="container"><div class="divider"></div></div>
+
+  <!-- Application Projects -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-purple">Applications</span>
+        <h2>Application <span class="glow-text">Projects</span></h2>
+        <p>Cross-platform applications and tools built with modern technology stacks.</p>
+      </div>
+
+      <div class="grid-2">
+        <ProjectCard
+          title="GeminiChat"
+          description="A cross-platform chatbot application powered by Google's Gemini API. Being developed in two parallel implementations — Nuxt+Tauri and .NET+Avalonia — exploring different strengths in architecture."
+          tags={['Nuxt.js', 'Tauri', 'Rust', '.NET', 'Avalonia', 'Gemini API']}
+          href="/projects/geminichat/"
+        />
+
+        <ProjectCard
+          title="This Website"
+          description="The site you're viewing now — built with Astro SSG, MDX support, and a dark futuristic UI with neon accents. Islands architecture for minimal JavaScript with interactive components."
+          tags={['Astro', 'MDX', 'SSG', 'Dark UI', 'GitHub Pages']}
+          repo="https://github.com/Nehal-aditya/nehal-aditya.github.io"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Deepcomet AI Vision Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="badge badge-green">Vision</span>
+        <h2>The Deepcomet AI <span class="glow-text">Approach</span></h2>
+        <p>Why vertical integration matters for the future of AI computing.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card vision-card">
+          <div class="vision-number">01</div>
+          <h3>Language Layer</h3>
+          <p>Aurelia provides the foundational programming model with AI-native primitives. Tensors, automatic differentiation, and NPU targeting are language features, not library add-ons.</p>
+        </div>
+        <div class="card vision-card">
+          <div class="vision-number">02</div>
+          <h3>Kernel Layer</h3>
+          <p>Zenith understands AI workloads at the scheduling level. Probabilistic models predict resource needs before they arise, eliminating latency that plagues general-purpose kernels.</p>
+        </div>
+        <div class="card vision-card">
+          <div class="vision-number">03</div>
+          <h3>OS Layer</h3>
+          <p>SkyOS uses Large Action Models to generate interfaces and execute complex workflows autonomously. The operating system itself becomes an intelligent agent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .vision-card {
+    position: relative;
+    padding-top: 3rem;
+  }
+
+  .vision-number {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    background: var(--gradient-neon);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.3;
+  }
+</style>
