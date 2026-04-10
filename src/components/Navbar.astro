@@ -286,4 +286,11 @@ const navLinks = [
       toggle?.focus();
     }
   });
+
+  // Clean up menu state if window is resized past mobile breakpoint
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900 && links?.classList.contains('open')) {
+      closeMenu();
+    }
+  });
 </script>
