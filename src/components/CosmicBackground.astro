@@ -490,7 +490,7 @@
     return nodes;
   }
 
-  function updateNeuralNetwork(nodes: NeuralNode[], time: number, mouseX: number, mouseY: number, mouseActive: boolean) {
+  function updateNeuralNetwork(nodes: NeuralNode[], time: number, mouseX: number, mouseY: number, mouseActive: boolean, dt: number) {
     const hoverRadius = 200;
 
     for (const node of nodes) {
@@ -505,8 +505,8 @@
         }
       }
 
-      node.activation = lerp(node.activation, node.targetActivation, 0.04);
-      node.targetActivation = lerp(node.targetActivation, 0.1 + Math.random() * 0.15, 0.005);
+      node.activation = lerp(node.activation, node.targetActivation, 0.04 * dt);
+      node.targetActivation = lerp(node.targetActivation, 0.1 + Math.random() * 0.15, 0.005 * dt);
     }
   }
 
@@ -648,13 +648,13 @@
     return streams;
   }
 
-  function renderDataStreams(ctx: CanvasRenderingContext2D, streams: DataStream[], h: number, _time: number) {
+  function renderDataStreams(ctx: CanvasRenderingContext2D, streams: DataStream[], h: number, dt: number) {
     ctx.font = '11px "JetBrains Mono", "Fira Code", monospace';
     ctx.textAlign = 'center';
 
     for (const stream of streams) {
       for (const ch of stream.chars) {
-        ch.y += stream.speed;
+        ch.y += stream.speed * dt;
         if (ch.y > h + 20) {
           ch.y = -20;
           ch.char = DATA_CHARS[Math.floor(Math.random() * DATA_CHARS.length)];
@@ -741,10 +741,10 @@
     return eqs;
   }
 
-  function renderEquations(ctx: CanvasRenderingContext2D, equations: FloatingEquation[], w: number, h: number, time: number) {
+  function renderEquations(ctx: CanvasRenderingContext2D, equations: FloatingEquation[], w: number, h: number, time: number, dt: number) {
     for (const eq of equations) {
-      eq.y -= eq.speed * 0.3;
-      eq.x += Math.sin(eq.driftPhase + time * 0.0003) * 0.2;
+      eq.y -= eq.speed * 0.3 * dt;
+      eq.x += Math.sin(eq.driftPhase + time * 0.0003) * 0.2 * dt;
       if (eq.y < -30) {
         eq.y = h + 30;
         eq.x = Math.random() * w;
@@ -913,12 +913,12 @@
       }
     }
 
-    function updateDataPulses() {
+    function updateDataPulses(dt: number) {
       for (let i = dataPulses.length - 1; i >= 0; i--) {
         const pulse = dataPulses[i];
-        pulse.progress += pulse.speed;
+        pulse.progress += pulse.speed * dt;
         if (pulse.progress >= 1) {
-          pulse.life -= 0.05;
+          pulse.life -= 0.05 * dt;
           if (pulse.life <= 0) {
             dataPulses.splice(i, 1);
           }
@@ -929,11 +929,11 @@
       }
     }
 
-    function updateRipples() {
+    function updateRipples(dt: number) {
       for (let i = activationRipples.length - 1; i >= 0; i--) {
         const r = activationRipples[i];
-        r.radius += 1.5;
-        r.opacity -= 0.008;
+        r.radius += 1.5 * dt;
+        r.opacity -= 0.008 * dt;
         if (r.opacity <= 0 || r.radius > r.maxRadius) {
           activationRipples.splice(i, 1);
         }
@@ -954,6 +954,7 @@
       }
       lastFrameTime = timestamp - (elapsed % frameInterval);
       time = timestamp;
+      const dt = Math.min(elapsed / 16.67, 3);
 
       ctx!.clearRect(0, 0, W, H);
 
@@ -970,7 +971,7 @@
       renderOrbitalRings(ctx!, orbitalRings, time);
 
       // Layer 5: Neural network (centerpiece)
-      updateNeuralNetwork(neuralNodes, time, mouseX, mouseY, mouseActive);
+      updateNeuralNetwork(neuralNodes, time, mouseX, mouseY, mouseActive, dt);
 
       if (profile.enableDataPulses && time - lastPulseSpawn > pulseSpawnInterval) {
         spawnDataPulse();
@@ -983,12 +984,12 @@
         lastAutoActivation = time;
       }
 
-      updateDataPulses();
-      updateRipples();
+      updateDataPulses(dt);
+      updateRipples(dt);
       renderNeuralNetwork(ctx!, neuralNodes, dataPulses, activationRipples, time, profile.enableBloom);
 
       // Layer 6: Data streams
-      renderDataStreams(ctx!, dataStreams, H, time);
+      renderDataStreams(ctx!, dataStreams, H, dt);
 
       // Layer 7: Waveform
       if (profile.enableWaveform) {
@@ -997,7 +998,7 @@
 
       // Layer 8: Equations
       if (profile.enableEquations) {
-        renderEquations(ctx!, equations, W, H, time);
+        renderEquations(ctx!, equations, W, H, time, dt);
       }
 
       // Layer 9: DNA Helix
@@ -1047,7 +1048,14 @@
     }
 
     function onVisibilityChange() {
-      isVisible = !document.hidden;
+      if (document.hidden) {
+        cancelAnimationFrame(animFrameId);
+        isVisible = false;
+      } else {
+        isVisible = true;
+        lastFrameTime = performance.now();
+        animFrameId = requestAnimationFrame(render);
+      }
     }
 
     // ─── Setup ───────────────────────────────────────────────────────
