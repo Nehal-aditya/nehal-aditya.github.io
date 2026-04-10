@@ -1,0 +1,805 @@
+---
+/**
+ * CosmicBackground.astro
+ * 
+ * A living scientific canvas — a fusion of AI, space, and computation.
+ * Implements: Particle Field, Orbital Mechanics, Neural Overlay, and Interactive Behaviors.
+ * 
+ * Performance: Canvas2D with GPU-accelerated transforms, device capability detection,
+ * graceful degradation for low-power/mobile devices.
+ */
+---
+
+<canvas id="cosmic-bg" class="cosmic-background" aria-hidden="true"></canvas>
+
+<style>
+  .cosmic-background {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+</style>
+
+<script>
+  // ─── Device Capability Detection ───────────────────────────────────────
+  interface DeviceProfile {
+    tier: 'high' | 'mid' | 'low';
+    particleCount: number;
+    orbitalNodes: number;
+    neuralNodes: number;
+    enableBloom: boolean;
+    enableCometStreaks: boolean;
+    enableParallax: boolean;
+    connectionDistance: number;
+    targetFPS: number;
+  }
+
+  function detectDeviceCapability(): DeviceProfile {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+    const cores = navigator.hardwareConcurrency || 2;
+    const memory = (navigator as unknown as { deviceMemory?: number }).deviceMemory || 4;
+    const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const width = window.innerWidth;
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (isReducedMotion) {
+      return {
+        tier: 'low', particleCount: 0, orbitalNodes: 0, neuralNodes: 0,
+        enableBloom: false, enableCometStreaks: false, enableParallax: false,
+        connectionDistance: 0, targetFPS: 30
+      };
+    }
+
+    // High tier: desktop with good GPU
+    if (!isMobile && cores >= 4 && memory >= 4 && gl && width >= 1024) {
+      return {
+        tier: 'high', particleCount: 600, orbitalNodes: 5, neuralNodes: 40,
+        enableBloom: true, enableCometStreaks: true, enableParallax: true,
+        connectionDistance: 150, targetFPS: 60
+      };
+    }
+
+    // Mid tier: tablets, lower-end desktops, ARM64 laptops
+    if (cores >= 2 && width >= 768) {
+      return {
+        tier: 'mid', particleCount: 350, orbitalNodes: 3, neuralNodes: 24,
+        enableBloom: false, enableCometStreaks: true, enableParallax: true,
+        connectionDistance: 120, targetFPS: 60
+      };
+    }
+
+    // Low tier: mobile, very low-end devices
+    return {
+      tier: 'low', particleCount: 150, orbitalNodes: 2, neuralNodes: 12,
+      enableBloom: false, enableCometStreaks: false, enableParallax: false,
+      connectionDistance: 80, targetFPS: 30
+    };
+  }
+
+  // ─── Color Palette ─────────────────────────────────────────────────────
+  const COLORS = {
+    cometBlue:    { r: 0,   g: 180, b: 255 },
+    electricViolet:{ r: 168, g: 85,  b: 247 },
+    cyan:         { r: 0,   g: 240, b: 255 },
+    magenta:      { r: 236, g: 72,  b: 153 },
+    deepBlue:     { r: 59,  g: 130, b: 246 },
+  };
+
+  const COLOR_ARRAY = [COLORS.cometBlue, COLORS.electricViolet, COLORS.cyan, COLORS.magenta, COLORS.deepBlue];
+
+  function rgba(c: {r:number; g:number; b:number}, a: number): string {
+    return `rgba(${c.r},${c.g},${c.b},${a})`;
+  }
+
+  // ─── Math Utilities ────────────────────────────────────────────────────
+  function lerp(a: number, b: number, t: number): number { return a + (b - a) * t; }
+  function dist(x1: number, y1: number, x2: number, y2: number): number {
+    const dx = x1 - x2, dy = y1 - y2;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+  function clamp(v: number, min: number, max: number): number { return Math.max(min, Math.min(max, v)); }
+
+  // ─── Particle Field Layer ─────────────────────────────────────────────
+  interface Particle {
+    x: number; y: number;
+    vx: number; vy: number;
+    baseVx: number; baseVy: number;
+    size: number;
+    opacity: number;
+    color: {r: number; g: number; b: number};
+    trail: {x: number; y: number}[];
+    trailLength: number;
+    pulsePhase: number;
+    pulseSpeed: number;
+  }
+
+  function createParticle(w: number, h: number): Particle {
+    const speed = 0.15 + Math.random() * 0.35;
+    const angle = Math.random() * Math.PI * 2;
+    const vx = Math.cos(angle) * speed;
+    const vy = Math.sin(angle) * speed;
+    return {
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx, vy,
+      baseVx: vx, baseVy: vy,
+      size: 0.5 + Math.random() * 2,
+      opacity: 0.1 + Math.random() * 0.5,
+      color: COLOR_ARRAY[Math.floor(Math.random() * COLOR_ARRAY.length)],
+      trail: [],
+      trailLength: 3 + Math.floor(Math.random() * 5),
+      pulsePhase: Math.random() * Math.PI * 2,
+      pulseSpeed: 0.01 + Math.random() * 0.02,
+    };
+  }
+
+  // ─── Orbital Mechanics Layer ──────────────────────────────────────────
+  interface OrbitalPath {
+    cx: number; cy: number;
+    a: number; b: number; // semi-major/minor axes
+    freqX: number; freqY: number; // Lissajous frequencies
+    phaseOffset: number;
+    rotation: number; // tilt
+    rotationSpeed: number;
+    color: {r: number; g: number; b: number};
+    opacity: number;
+    nodes: OrbitalNode[];
+  }
+
+  interface OrbitalNode {
+    phase: number;
+    speed: number;
+    size: number;
+    glowSize: number;
+    color: {r: number; g: number; b: number};
+  }
+
+  function createOrbitalPaths(w: number, h: number, nodeCount: number): OrbitalPath[] {
+    const paths: OrbitalPath[] = [];
+    const configs = [
+      { freqX: 3, freqY: 2, a: 0.3, b: 0.2, color: COLORS.cometBlue },
+      { freqX: 2, freqY: 3, a: 0.25, b: 0.35, color: COLORS.electricViolet },
+      { freqX: 5, freqY: 4, a: 0.2, b: 0.15, color: COLORS.cyan },
+      { freqX: 1, freqY: 2, a: 0.35, b: 0.25, color: COLORS.magenta },
+    ];
+
+    for (let i = 0; i < configs.length; i++) {
+      const cfg = configs[i];
+      const nodesPerPath = Math.max(1, Math.floor(nodeCount / configs.length));
+      const nodes: OrbitalNode[] = [];
+      for (let n = 0; n < nodesPerPath; n++) {
+        nodes.push({
+          phase: (n / nodesPerPath) * Math.PI * 2,
+          speed: 0.002 + Math.random() * 0.004,
+          size: 2 + Math.random() * 3,
+          glowSize: 8 + Math.random() * 12,
+          color: cfg.color,
+        });
+      }
+
+      paths.push({
+        cx: w * (0.3 + Math.random() * 0.4),
+        cy: h * (0.3 + Math.random() * 0.4),
+        a: Math.min(w, h) * cfg.a,
+        b: Math.min(w, h) * cfg.b,
+        freqX: cfg.freqX,
+        freqY: cfg.freqY,
+        phaseOffset: Math.random() * Math.PI * 2,
+        rotation: Math.random() * Math.PI,
+        rotationSpeed: 0.0002 + Math.random() * 0.0005,
+        color: cfg.color,
+        opacity: 0.08 + Math.random() * 0.06,
+        nodes,
+      });
+    }
+    return paths;
+  }
+
+  function getLissajousPoint(path: OrbitalPath, t: number): {x: number; y: number} {
+    const lx = path.a * Math.sin(path.freqX * t + path.phaseOffset);
+    const ly = path.b * Math.sin(path.freqY * t);
+    // Apply rotation
+    const cos = Math.cos(path.rotation);
+    const sin = Math.sin(path.rotation);
+    return {
+      x: path.cx + lx * cos - ly * sin,
+      y: path.cy + lx * sin + ly * cos,
+    };
+  }
+
+  // ─── Neural/Scientific Overlay ────────────────────────────────────────
+  interface NeuralNode {
+    x: number; y: number;
+    baseX: number; baseY: number;
+    size: number;
+    pulsePhase: number;
+    pulseSpeed: number;
+    color: {r: number; g: number; b: number};
+    connections: number[]; // indices of connected nodes
+    activated: boolean;
+    activationDecay: number;
+    drift: { dx: number; dy: number; speed: number; phase: number };
+  }
+
+  function createNeuralNetwork(w: number, h: number, count: number): NeuralNode[] {
+    const nodes: NeuralNode[] = [];
+    for (let i = 0; i < count; i++) {
+      const x = Math.random() * w;
+      const y = Math.random() * h;
+      nodes.push({
+        x, y,
+        baseX: x, baseY: y,
+        size: 1.5 + Math.random() * 2.5,
+        pulsePhase: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.008 + Math.random() * 0.015,
+        color: COLOR_ARRAY[Math.floor(Math.random() * COLOR_ARRAY.length)],
+        connections: [],
+        activated: false,
+        activationDecay: 0,
+        drift: {
+          dx: (Math.random() - 0.5) * 30,
+          dy: (Math.random() - 0.5) * 30,
+          speed: 0.0005 + Math.random() * 0.001,
+          phase: Math.random() * Math.PI * 2,
+        },
+      });
+    }
+
+    // Create connections (nearest neighbors)
+    const maxDist = Math.min(w, h) * 0.2;
+    for (let i = 0; i < nodes.length; i++) {
+      const distances: {idx: number; d: number}[] = [];
+      for (let j = 0; j < nodes.length; j++) {
+        if (i === j) continue;
+        const d = dist(nodes[i].baseX, nodes[i].baseY, nodes[j].baseX, nodes[j].baseY);
+        if (d < maxDist) distances.push({idx: j, d});
+      }
+      distances.sort((a, b) => a.d - b.d);
+      nodes[i].connections = distances.slice(0, 3).map(d => d.idx);
+    }
+
+    return nodes;
+  }
+
+  // ─── Comet Streak System ──────────────────────────────────────────────
+  interface CometStreak {
+    x: number; y: number;
+    vx: number; vy: number;
+    life: number;
+    maxLife: number;
+    size: number;
+    color: {r: number; g: number; b: number};
+    trail: {x: number; y: number; opacity: number}[];
+  }
+
+  function spawnComet(w: number, h: number): CometStreak {
+    const side = Math.floor(Math.random() * 4);
+    let x: number, y: number, vx: number, vy: number;
+    const speed = 3 + Math.random() * 5;
+    
+    switch (side) {
+      case 0: // top
+        x = Math.random() * w; y = -20;
+        vx = (Math.random() - 0.5) * speed; vy = speed;
+        break;
+      case 1: // right
+        x = w + 20; y = Math.random() * h;
+        vx = -speed; vy = (Math.random() - 0.5) * speed;
+        break;
+      case 2: // bottom
+        x = Math.random() * w; y = h + 20;
+        vx = (Math.random() - 0.5) * speed; vy = -speed;
+        break;
+      default: // left
+        x = -20; y = Math.random() * h;
+        vx = speed; vy = (Math.random() - 0.5) * speed;
+        break;
+    }
+
+    return {
+      x, y, vx, vy,
+      life: 1,
+      maxLife: 60 + Math.random() * 60,
+      size: 1.5 + Math.random() * 2,
+      color: COLOR_ARRAY[Math.floor(Math.random() * COLOR_ARRAY.length)],
+      trail: [],
+    };
+  }
+
+  // ─── Main Engine ──────────────────────────────────────────────────────
+  function initCosmicBackground() {
+    const canvas = document.getElementById('cosmic-bg') as HTMLCanvasElement | null;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d', { alpha: true });
+    if (!ctx) return;
+
+    const profile = detectDeviceCapability();
+    if (profile.particleCount === 0) {
+      // Reduced motion: don't render anything
+      canvas.style.display = 'none';
+      return;
+    }
+
+    let W = 0, H = 0;
+    let particles: Particle[] = [];
+    let orbitalPaths: OrbitalPath[] = [];
+    let neuralNodes: NeuralNode[] = [];
+    let comets: CometStreak[] = [];
+
+    // Interaction state
+    let mouseX = -1000, mouseY = -1000;
+    let mouseActive = false;
+    let prevMouseX = -1000, prevMouseY = -1000;
+    let mouseSpeed = 0;
+    let scrollY = 0;
+    let lastCometSpawn = 0;
+    let time = 0;
+
+    // FPS management
+    let lastFrameTime = 0;
+    const frameInterval = 1000 / profile.targetFPS;
+    let fpsDropCount = 0;
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function initLayers() {
+      particles = [];
+      for (let i = 0; i < profile.particleCount; i++) {
+        particles.push(createParticle(W, H));
+      }
+      orbitalPaths = createOrbitalPaths(W, H, profile.orbitalNodes);
+      neuralNodes = createNeuralNetwork(W, H, profile.neuralNodes);
+      comets = [];
+    }
+
+    // ─── Render: Particle Field ─────────────────────────────────────
+    function renderParticles(dt: number) {
+      const gravityRadius = 200;
+      const gravityStrength = 0.08;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Cursor gravity well
+        if (mouseActive) {
+          const dx = mouseX - p.x;
+          const dy = mouseY - p.y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < gravityRadius && d > 1) {
+            const force = gravityStrength * (1 - d / gravityRadius);
+            p.vx += (dx / d) * force;
+            p.vy += (dy / d) * force;
+          }
+        }
+
+        // Dampen back to base velocity
+        p.vx = lerp(p.vx, p.baseVx, 0.02);
+        p.vy = lerp(p.vy, p.baseVy, 0.02);
+
+        // Scroll-driven parallax
+        if (profile.enableParallax) {
+          const parallaxFactor = (p.size / 2.5) * 0.05;
+          p.y -= scrollY * parallaxFactor * 0.1;
+        }
+
+        // Update position
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+
+        // Wrap around edges
+        if (p.x < -10) p.x = W + 10;
+        if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10;
+        if (p.y > H + 10) p.y = -10;
+
+        // Update trail
+        p.trail.push({x: p.x, y: p.y});
+        if (p.trail.length > p.trailLength) p.trail.shift();
+
+        // Pulse
+        p.pulsePhase += p.pulseSpeed * dt;
+        const pulse = 0.6 + 0.4 * Math.sin(p.pulsePhase);
+
+        // Draw trail (comet-tail effect)
+        if (p.trail.length > 1) {
+          for (let t = 0; t < p.trail.length - 1; t++) {
+            const trailOpacity = (t / p.trail.length) * p.opacity * pulse * 0.3;
+            ctx!.beginPath();
+            ctx!.moveTo(p.trail[t].x, p.trail[t].y);
+            ctx!.lineTo(p.trail[t + 1].x, p.trail[t + 1].y);
+            ctx!.strokeStyle = rgba(p.color, trailOpacity);
+            ctx!.lineWidth = p.size * 0.5;
+            ctx!.stroke();
+          }
+        }
+
+        // Draw particle with glow
+        const currentOpacity = p.opacity * pulse;
+        if (profile.enableBloom) {
+          ctx!.beginPath();
+          ctx!.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2);
+          ctx!.fillStyle = rgba(p.color, currentOpacity * 0.08);
+          ctx!.fill();
+        }
+
+        ctx!.beginPath();
+        ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx!.fillStyle = rgba(p.color, currentOpacity);
+        ctx!.fill();
+
+        // Draw connections between nearby particles (limit to avoid O(n^2) on large sets)
+        if (i < 200) {
+          const limit = Math.min(particles.length, 200);
+          for (let j = i + 1; j < limit; j++) {
+            const p2 = particles[j];
+            const d = dist(p.x, p.y, p2.x, p2.y);
+            if (d < profile.connectionDistance) {
+              const lineOpacity = 0.04 * (1 - d / profile.connectionDistance) * pulse;
+              ctx!.beginPath();
+              ctx!.moveTo(p.x, p.y);
+              ctx!.lineTo(p2.x, p2.y);
+              ctx!.strokeStyle = rgba(p.color, lineOpacity);
+              ctx!.lineWidth = 0.5;
+              ctx!.stroke();
+            }
+          }
+        }
+      }
+    }
+
+    // ─── Render: Orbital Mechanics ──────────────────────────────────
+    function renderOrbits(dt: number) {
+      for (const path of orbitalPaths) {
+        // Slow rotation
+        path.rotation += path.rotationSpeed * dt;
+
+        // Draw orbital arc (Lissajous curve)
+        ctx!.beginPath();
+        const steps = 200;
+        for (let i = 0; i <= steps; i++) {
+          const t = (i / steps) * Math.PI * 2;
+          const pt = getLissajousPoint(path, t);
+          if (i === 0) ctx!.moveTo(pt.x, pt.y);
+          else ctx!.lineTo(pt.x, pt.y);
+        }
+        ctx!.closePath();
+        ctx!.strokeStyle = rgba(path.color, path.opacity);
+        ctx!.lineWidth = 0.8;
+        ctx!.stroke();
+
+        // Draw nodes moving along orbits
+        for (const node of path.nodes) {
+          node.phase += node.speed * dt;
+          const pt = getLissajousPoint(path, node.phase);
+
+          // Node glow
+          if (profile.enableBloom) {
+            const gradient = ctx!.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, node.glowSize);
+            gradient.addColorStop(0, rgba(node.color, 0.2));
+            gradient.addColorStop(1, rgba(node.color, 0));
+            ctx!.beginPath();
+            ctx!.arc(pt.x, pt.y, node.glowSize, 0, Math.PI * 2);
+            ctx!.fillStyle = gradient;
+            ctx!.fill();
+          }
+
+          // Node core
+          ctx!.beginPath();
+          ctx!.arc(pt.x, pt.y, node.size, 0, Math.PI * 2);
+          ctx!.fillStyle = rgba(node.color, 0.6);
+          ctx!.fill();
+
+          // Bright center
+          ctx!.beginPath();
+          ctx!.arc(pt.x, pt.y, node.size * 0.4, 0, Math.PI * 2);
+          ctx!.fillStyle = rgba(node.color, 0.9);
+          ctx!.fill();
+        }
+      }
+    }
+
+    // ─── Render: Neural Overlay ─────────────────────────────────────
+    function renderNeural(dt: number) {
+      // Update node positions (gentle drift)
+      for (const node of neuralNodes) {
+        node.drift.phase += node.drift.speed * dt;
+        node.x = node.baseX + Math.sin(node.drift.phase) * node.drift.dx;
+        node.y = node.baseY + Math.cos(node.drift.phase * 0.7) * node.drift.dy;
+
+        // Pulse phase
+        node.pulsePhase += node.pulseSpeed * dt;
+
+        // Activation detection (near cursor)
+        if (mouseActive) {
+          const d = dist(mouseX, mouseY, node.x, node.y);
+          if (d < 180) {
+            node.activated = true;
+            node.activationDecay = 1.0;
+          }
+        }
+
+        // Decay activation
+        if (node.activationDecay > 0) {
+          node.activationDecay -= 0.008 * dt;
+          if (node.activationDecay <= 0) {
+            node.activated = false;
+            node.activationDecay = 0;
+          }
+        }
+      }
+
+      // Draw connections
+      for (const node of neuralNodes) {
+        for (const connIdx of node.connections) {
+          const other = neuralNodes[connIdx];
+          if (!other) continue;
+
+          const baseOpacity = 0.03;
+          const activatedBoost = (node.activated || other.activated)
+            ? Math.max(node.activationDecay, other.activationDecay) * 0.12
+            : 0;
+          const lineOpacity = baseOpacity + activatedBoost;
+
+          ctx!.beginPath();
+          ctx!.moveTo(node.x, node.y);
+          ctx!.lineTo(other.x, other.y);
+          ctx!.strokeStyle = rgba(node.color, lineOpacity);
+          ctx!.lineWidth = 0.4 + activatedBoost * 2;
+          ctx!.stroke();
+
+          // Energy pulse along connection when activated
+          if (node.activated && activatedBoost > 0.05) {
+            const pulseT = (Math.sin(node.pulsePhase * 3) + 1) / 2;
+            const px = lerp(node.x, other.x, pulseT);
+            const py = lerp(node.y, other.y, pulseT);
+            ctx!.beginPath();
+            ctx!.arc(px, py, 1.5, 0, Math.PI * 2);
+            ctx!.fillStyle = rgba(node.color, activatedBoost * 0.6);
+            ctx!.fill();
+          }
+        }
+      }
+
+      // Draw nodes
+      for (const node of neuralNodes) {
+        const pulse = 0.5 + 0.5 * Math.sin(node.pulsePhase);
+        const sizeMultiplier = node.activated ? 1 + node.activationDecay * 0.5 : 1;
+        const opacityMultiplier = node.activated ? 0.3 + node.activationDecay * 0.5 : 0.15 + pulse * 0.1;
+
+        // Glow ring on activation
+        if (node.activated && node.activationDecay > 0.3 && profile.enableBloom) {
+          ctx!.beginPath();
+          ctx!.arc(node.x, node.y, node.size * 6 * sizeMultiplier, 0, Math.PI * 2);
+          ctx!.fillStyle = rgba(node.color, node.activationDecay * 0.06);
+          ctx!.fill();
+        }
+
+        // Node
+        ctx!.beginPath();
+        ctx!.arc(node.x, node.y, node.size * sizeMultiplier, 0, Math.PI * 2);
+        ctx!.fillStyle = rgba(node.color, opacityMultiplier);
+        ctx!.fill();
+      }
+    }
+
+    // ─── Render: Comet Streaks ──────────────────────────────────────
+    function renderComets(dt: number) {
+      if (!profile.enableCometStreaks) return;
+
+      // Spawn comets based on mouse movement or periodically
+      const now = time;
+      const spawnInterval = mouseSpeed > 5 ? 30 : 300;
+      if (now - lastCometSpawn > spawnInterval && comets.length < 5) {
+        comets.push(spawnComet(W, H));
+        lastCometSpawn = now;
+      }
+
+      for (let i = comets.length - 1; i >= 0; i--) {
+        const c = comets[i];
+        c.trail.push({x: c.x, y: c.y, opacity: c.life});
+        if (c.trail.length > 30) c.trail.shift();
+
+        c.x += c.vx * dt;
+        c.y += c.vy * dt;
+        c.life -= (1 / c.maxLife) * dt;
+
+        if (c.life <= 0 || c.x < -100 || c.x > W + 100 || c.y < -100 || c.y > H + 100) {
+          comets.splice(i, 1);
+          continue;
+        }
+
+        // Draw trail
+        for (let t = 0; t < c.trail.length - 1; t++) {
+          const segOpacity = (t / c.trail.length) * c.trail[t].opacity * 0.4;
+          ctx!.beginPath();
+          ctx!.moveTo(c.trail[t].x, c.trail[t].y);
+          ctx!.lineTo(c.trail[t + 1].x, c.trail[t + 1].y);
+          ctx!.strokeStyle = rgba(c.color, segOpacity);
+          ctx!.lineWidth = c.size * (t / c.trail.length);
+          ctx!.stroke();
+        }
+
+        // Draw head
+        if (profile.enableBloom) {
+          const gradient = ctx!.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.size * 6);
+          gradient.addColorStop(0, rgba(c.color, c.life * 0.3));
+          gradient.addColorStop(1, rgba(c.color, 0));
+          ctx!.beginPath();
+          ctx!.arc(c.x, c.y, c.size * 6, 0, Math.PI * 2);
+          ctx!.fillStyle = gradient;
+          ctx!.fill();
+        }
+
+        ctx!.beginPath();
+        ctx!.arc(c.x, c.y, c.size, 0, Math.PI * 2);
+        ctx!.fillStyle = rgba(c.color, c.life * 0.8);
+        ctx!.fill();
+      }
+    }
+
+    // ─── Render: Subtle Energy Waves ────────────────────────────────
+    function renderEnergyWaves() {
+      if (!profile.enableBloom) return;
+
+      // Gradient-driven energy waves emanating from center
+      const waveCount = 2;
+      for (let i = 0; i < waveCount; i++) {
+        const phase = time * 0.0008 + (i * Math.PI);
+        const radius = (Math.sin(phase) + 1) * 0.5 * Math.max(W, H) * 0.4 + 100;
+        const opacity = 0.012 * (1 - (radius / (Math.max(W, H) * 0.5)));
+        if (opacity <= 0) continue;
+
+        const cx = W * 0.5;
+        const cy = H * 0.5;
+        const gradient = ctx!.createRadialGradient(cx, cy, radius * 0.8, cx, cy, radius);
+        gradient.addColorStop(0, rgba(COLORS.cyan, 0));
+        gradient.addColorStop(0.5, rgba(COLORS.electricViolet, Math.max(0, opacity)));
+        gradient.addColorStop(1, rgba(COLORS.cyan, 0));
+
+        ctx!.beginPath();
+        ctx!.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx!.fillStyle = gradient;
+        ctx!.fill();
+      }
+    }
+
+    // ─── Animation Loop ─────────────────────────────────────────────
+    let animId = 0;
+    let prevScrollY = 0;
+
+    function animate(timestamp: number) {
+      animId = requestAnimationFrame(animate);
+
+      // FPS throttling
+      const elapsed = timestamp - lastFrameTime;
+      if (elapsed < frameInterval) return;
+
+      // Adaptive quality: if we're consistently dropping frames, reduce particle count
+      if (elapsed > frameInterval * 2.5) {
+        fpsDropCount++;
+        if (fpsDropCount > 30 && particles.length > 100) {
+          // Shed 10% of particles
+          particles.splice(0, Math.floor(particles.length * 0.1));
+          fpsDropCount = 0;
+        }
+      } else {
+        fpsDropCount = Math.max(0, fpsDropCount - 1);
+      }
+
+      lastFrameTime = timestamp - (elapsed % frameInterval);
+      const dt = Math.min(elapsed / 16.67, 3); // Normalize to ~60fps, cap at 3x
+
+      time += elapsed;
+
+      // Scroll delta
+      const currentScrollY = window.scrollY;
+      scrollY = currentScrollY - prevScrollY;
+      prevScrollY = currentScrollY;
+
+      // Mouse speed
+      if (mouseActive) {
+        mouseSpeed = dist(mouseX, mouseY, prevMouseX, prevMouseY);
+        prevMouseX = mouseX;
+        prevMouseY = mouseY;
+      }
+
+      // Clear
+      ctx!.clearRect(0, 0, W, H);
+
+      // Render layers (back to front)
+      renderEnergyWaves();
+      renderOrbits(dt);
+      renderNeural(dt);
+      renderParticles(dt);
+      renderComets(dt);
+    }
+
+    // ─── Event Listeners ────────────────────────────────────────────
+    function onMouseMove(e: MouseEvent) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      mouseActive = true;
+    }
+
+    function onMouseLeave() {
+      mouseActive = false;
+      mouseX = -1000;
+      mouseY = -1000;
+    }
+
+    function onTouchMove(e: TouchEvent) {
+      if (e.touches.length > 0) {
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+        mouseActive = true;
+      }
+    }
+
+    function onTouchEnd() {
+      mouseActive = false;
+      mouseX = -1000;
+      mouseY = -1000;
+    }
+
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    function onResize() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        resize();
+        initLayers();
+      }, 200);
+    }
+
+    // ─── Visibility API: pause when tab is hidden ───────────────────
+    function onVisibilityChange() {
+      if (document.hidden) {
+        cancelAnimationFrame(animId);
+      } else {
+        lastFrameTime = performance.now();
+        animId = requestAnimationFrame(animate);
+      }
+    }
+
+    // ─── Initialize ─────────────────────────────────────────────────
+    resize();
+    initLayers();
+    lastFrameTime = performance.now();
+    animId = requestAnimationFrame(animate);
+
+    document.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('touchmove', onTouchMove, { passive: true });
+    document.addEventListener('touchend', onTouchEnd);
+    window.addEventListener('resize', onResize);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    // Cleanup on page navigation (Astro view transitions)
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animId);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('touchmove', onTouchMove);
+      document.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    });
+  }
+
+  // Run on initial load and on Astro page transitions
+  initCosmicBackground();
+  document.addEventListener('astro:after-swap', initCosmicBackground);
+</script>
