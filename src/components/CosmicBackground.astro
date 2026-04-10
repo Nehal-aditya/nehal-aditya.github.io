@@ -399,11 +399,15 @@
         p.x += p.vx * dt;
         p.y += p.vy * dt;
 
-        // Wrap around edges
+        // Wrap around edges (clear trail on wrap to avoid full-screen streak)
+        const prevX = p.x, prevY = p.y;
         if (p.x < -10) p.x = W + 10;
         if (p.x > W + 10) p.x = -10;
         if (p.y < -10) p.y = H + 10;
         if (p.y > H + 10) p.y = -10;
+        if (Math.abs(p.x - prevX) > 20 || Math.abs(p.y - prevY) > 20) {
+          p.trail = [];
+        }
 
         // Update trail
         p.trail.push({x: p.x, y: p.y});
