@@ -551,7 +551,7 @@
       if (pulse.life <= 0) continue;
       const from = nodes[pulse.fromNode];
       const to = nodes[pulse.toNode];
-      const t = pulse.progress;
+      const t = Math.min(pulse.progress, 1);
       const midX = (from.x + to.x) / 2 + (from.y - to.y) * 0.05;
       const midY = (from.y + to.y) / 2 + (to.x - from.x) * 0.05;
       const u = 1 - t;
