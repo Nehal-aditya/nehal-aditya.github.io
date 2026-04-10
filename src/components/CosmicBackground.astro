@@ -751,6 +751,7 @@
 
     function onTouchEnd() {
       mouseActive = false;
+      mouseSpeed = 0;
       mouseX = -1000;
       mouseY = -1000;
     }
@@ -796,7 +797,7 @@
       document.removeEventListener('touchend', onTouchEnd);
       window.removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', onVisibilityChange);
-    });
+    }, { once: true });
   }
 
   // Run on initial load and on Astro page transitions
