@@ -19,10 +19,10 @@ const navLinks = [
       <span class="brand-text">Nehal<span class="glow-text">-aditya</span></span>
     </a>
 
-    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
     </button>
 
     <ul class="navbar-links" id="navbar-links">
@@ -127,20 +127,55 @@ const navLinks = [
   .mobile-toggle {
     display: none;
     flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 240, 255, 0.06);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 8px;
     cursor: pointer;
-    padding: 4px;
+    padding: 10px;
+    width: 44px;
+    height: 44px;
+    transition: all var(--transition-fast);
+    position: relative;
+    z-index: 1001;
   }
 
-  .mobile-toggle span {
+  .mobile-toggle:hover,
+  .mobile-toggle:focus-visible {
+    background: rgba(0, 240, 255, 0.12);
+    border-color: rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.15);
+  }
+
+  .mobile-toggle:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 2px;
+  }
+
+  .hamburger-line {
     display: block;
     width: 22px;
-    height: 2px;
-    background: var(--text-secondary);
+    height: 2.5px;
+    background: var(--neon-cyan);
     border-radius: 2px;
-    transition: all var(--transition-fast);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+  }
+
+  /* Animate to X when open */
+  .mobile-toggle.open .hamburger-line:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+  }
+
+  .mobile-toggle.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .mobile-toggle.open .hamburger-line:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
   }
 
   @media (max-width: 900px) {
@@ -161,6 +196,7 @@ const navLinks = [
       gap: 0.5rem;
       transform: translateX(100%);
       transition: transform var(--transition-normal);
+      overflow-y: auto;
     }
 
     .navbar-links.open {
@@ -171,6 +207,16 @@ const navLinks = [
       font-size: 1.1rem;
       padding: 0.75rem 1rem;
       width: 100%;
+      border-radius: 8px;
+    }
+
+    .nav-link:hover {
+      background: rgba(0, 240, 255, 0.08);
+    }
+
+    .nav-link.active {
+      background: rgba(0, 240, 255, 0.12);
+      border-left: 3px solid var(--neon-cyan);
     }
   }
 </style>
@@ -190,13 +236,27 @@ const navLinks = [
   const toggle = document.getElementById('mobile-toggle');
   const links = document.getElementById('navbar-links');
   toggle?.addEventListener('click', () => {
-    links?.classList.toggle('open');
+    const isOpen = links?.classList.toggle('open');
+    toggle.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
 
   // Close mobile menu on link click
   links?.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       links?.classList.remove('open');
+      toggle?.classList.remove('open');
+      toggle?.setAttribute('aria-expanded', 'false');
     });
+  });
+
+  // Close menu on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && links?.classList.contains('open')) {
+      links.classList.remove('open');
+      toggle?.classList.remove('open');
+      toggle?.setAttribute('aria-expanded', 'false');
+      toggle?.focus();
+    }
   });
 </script>
