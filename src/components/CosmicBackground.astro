@@ -101,7 +101,6 @@
     const dx = x1 - x2, dy = y1 - y2;
     return Math.sqrt(dx * dx + dy * dy);
   }
-  function clamp(v: number, min: number, max: number): number { return Math.max(min, Math.min(max, v)); }
 
   // ─── Particle Field Layer ─────────────────────────────────────────────
   interface Particle {
@@ -737,6 +736,7 @@
 
     function onMouseLeave() {
       mouseActive = false;
+      mouseSpeed = 0;
       mouseX = -1000;
       mouseY = -1000;
     }
