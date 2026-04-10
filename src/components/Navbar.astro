@@ -179,6 +179,13 @@ const navLinks = [
   }
 
   @media (max-width: 900px) {
+    /* Remove backdrop-filter when menu is open so position:fixed
+       on .navbar-links references the viewport, not the navbar.
+       backdrop-filter creates a containing block for fixed children. */
+    .navbar.menu-open {
+      backdrop-filter: none;
+    }
+
     .mobile-toggle {
       display: flex;
     }
@@ -251,6 +258,7 @@ const navLinks = [
   const links = document.getElementById('navbar-links');
 
   function openMenu() {
+    navbar?.classList.add('menu-open');
     links?.classList.add('open');
     toggle?.classList.add('open');
     toggle?.setAttribute('aria-expanded', 'true');
@@ -258,6 +266,7 @@ const navLinks = [
   }
 
   function closeMenu() {
+    navbar?.classList.remove('menu-open');
     links?.classList.remove('open');
     toggle?.classList.remove('open');
     toggle?.setAttribute('aria-expanded', 'false');
