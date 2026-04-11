@@ -1,12 +1,21 @@
 ---
 /**
- * CosmicBackground.astro
+ * CosmicBackground v2 — Next-Gen Neural & Celestial Canvas
  * 
- * A living scientific canvas — a fusion of AI, space, and computation.
- * Implements: Particle Field, Orbital Mechanics, Neural Overlay, and Interactive Behaviors.
+ * A structured, modern, interactive scientific background.
+ * Primary focus: Neural network visualization, celestial objects, AI data flows.
+ * No messy scattered particles — clean, purposeful, intelligent design.
  * 
- * Performance: Canvas2D with GPU-accelerated transforms, device capability detection,
- * graceful degradation for low-power/mobile devices.
+ * Layers (back to front):
+ *   1. Deep space nebula clouds (radial gradient blobs)
+ *   2. Star field (static pinpoints with twinkle)
+ *   3. Holographic scanning grid
+ *   4. Orbital rings (planetary ring systems)
+ *   5. Neural network graph (centerpiece — nodes, edges, data pulses)
+ *   6. Data stream columns (vertical flowing data)
+ *   7. Waveform oscilloscope
+ *   8. Floating equation overlay
+ *   9. DNA helix structure
  */
 ---
 
@@ -24,292 +33,777 @@
 </style>
 
 <script>
-  // ─── Device Capability Detection ───────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DEVICE CAPABILITY DETECTION
+  // ═══════════════════════════════════════════════════════════════════════════
   interface DeviceProfile {
     tier: 'high' | 'mid' | 'low';
-    particleCount: number;
-    orbitalNodes: number;
-    neuralNodes: number;
+    neuralNodeCount: number;
+    neuralLayerCount: number;
+    maxConnections: number;
+    starCount: number;
+    nebulaCount: number;
+    orbitalRingCount: number;
+    dataStreamCount: number;
     enableBloom: boolean;
-    enableCometStreaks: boolean;
+    enableDataPulses: boolean;
+    enableWaveform: boolean;
+    enableEquations: boolean;
     enableParallax: boolean;
-    connectionDistance: number;
     targetFPS: number;
   }
 
-  function detectDeviceCapability(): DeviceProfile {
+  function detectDevice(): DeviceProfile {
     const canvas = document.createElement('canvas');
     const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
     const cores = navigator.hardwareConcurrency || 2;
     const memory = (navigator as unknown as { deviceMemory?: number }).deviceMemory || 4;
     const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const width = window.innerWidth;
-    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (isReducedMotion) {
+    if (reducedMotion) {
       return {
-        tier: 'low', particleCount: 0, orbitalNodes: 0, neuralNodes: 0,
-        enableBloom: false, enableCometStreaks: false, enableParallax: false,
-        connectionDistance: 0, targetFPS: 30
+        tier: 'low', neuralNodeCount: 0, neuralLayerCount: 0, maxConnections: 0,
+        starCount: 0, nebulaCount: 0, orbitalRingCount: 0, dataStreamCount: 0,
+        enableBloom: false, enableDataPulses: false, enableWaveform: false,
+        enableEquations: false, enableParallax: false, targetFPS: 30
       };
     }
 
-    // High tier: desktop with good GPU
     if (!isMobile && cores >= 4 && memory >= 4 && gl && width >= 1024) {
       return {
-        tier: 'high', particleCount: 600, orbitalNodes: 5, neuralNodes: 40,
-        enableBloom: true, enableCometStreaks: true, enableParallax: true,
-        connectionDistance: 150, targetFPS: 60
+        tier: 'high', neuralNodeCount: 80, neuralLayerCount: 5, maxConnections: 6,
+        starCount: 200, nebulaCount: 5, orbitalRingCount: 4, dataStreamCount: 6,
+        enableBloom: true, enableDataPulses: true, enableWaveform: true,
+        enableEquations: true, enableParallax: true, targetFPS: 60
       };
     }
 
-    // Mid tier: tablets, lower-end desktops, ARM64 laptops
     if (cores >= 2 && width >= 768) {
       return {
-        tier: 'mid', particleCount: 350, orbitalNodes: 3, neuralNodes: 24,
-        enableBloom: false, enableCometStreaks: true, enableParallax: true,
-        connectionDistance: 120, targetFPS: 60
+        tier: 'mid', neuralNodeCount: 50, neuralLayerCount: 4, maxConnections: 4,
+        starCount: 120, nebulaCount: 3, orbitalRingCount: 3, dataStreamCount: 4,
+        enableBloom: false, enableDataPulses: true, enableWaveform: true,
+        enableEquations: false, enableParallax: true, targetFPS: 60
       };
     }
 
-    // Low tier: mobile, very low-end devices
     return {
-      tier: 'low', particleCount: 150, orbitalNodes: 2, neuralNodes: 12,
-      enableBloom: false, enableCometStreaks: false, enableParallax: false,
-      connectionDistance: 80, targetFPS: 30
+      tier: 'low', neuralNodeCount: 25, neuralLayerCount: 3, maxConnections: 3,
+      starCount: 60, nebulaCount: 2, orbitalRingCount: 2, dataStreamCount: 2,
+      enableBloom: false, enableDataPulses: false, enableWaveform: false,
+      enableEquations: false, enableParallax: false, targetFPS: 30
     };
   }
 
-  // ─── Color Palette ─────────────────────────────────────────────────────
-  const COLORS = {
-    cometBlue:    { r: 0,   g: 180, b: 255 },
-    electricViolet:{ r: 168, g: 85,  b: 247 },
-    cyan:         { r: 0,   g: 240, b: 255 },
-    magenta:      { r: 236, g: 72,  b: 153 },
-    deepBlue:     { r: 59,  g: 130, b: 246 },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COLOR SYSTEM
+  // ═══════════════════════════════════════════════════════════════════════════
+  interface RGB { r: number; g: number; b: number; }
+
+  const PALETTE = {
+    cometBlue:      { r: 0,   g: 180, b: 255 },
+    electricViolet: { r: 138, g: 85,  b: 247 },
+    cyan:           { r: 0,   g: 240, b: 255 },
+    magenta:        { r: 200, g: 72,  b: 180 },
+    deepBlue:       { r: 59,  g: 130, b: 246 },
+    white:          { r: 220, g: 230, b: 255 },
+    warmWhite:      { r: 255, g: 240, b: 220 },
+    nebulaPurple:   { r: 80,  g: 40,  b: 160 },
+    nebulaCyan:     { r: 0,   g: 100, b: 160 },
+    nebulaDeep:     { r: 20,  g: 10,  b: 60  },
   };
 
-  const COLOR_ARRAY = [COLORS.cometBlue, COLORS.electricViolet, COLORS.cyan, COLORS.magenta, COLORS.deepBlue];
+  const NODE_COLORS: RGB[] = [PALETTE.cometBlue, PALETTE.electricViolet, PALETTE.cyan, PALETTE.deepBlue];
 
-  function rgba(c: {r:number; g:number; b:number}, a: number): string {
+  function rgba(c: RGB, a: number): string {
     return `rgba(${c.r},${c.g},${c.b},${a})`;
   }
 
-  // ─── Math Utilities ────────────────────────────────────────────────────
+  function lerpColor(a: RGB, b: RGB, t: number): RGB {
+    return {
+      r: a.r + (b.r - a.r) * t,
+      g: a.g + (b.g - a.g) * t,
+      b: a.b + (b.b - a.b) * t,
+    };
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MATH UTILITIES
+  // ═══════════════════════════════════════════════════════════════════════════
   function lerp(a: number, b: number, t: number): number { return a + (b - a) * t; }
   function dist(x1: number, y1: number, x2: number, y2: number): number {
     const dx = x1 - x2, dy = y1 - y2;
     return Math.sqrt(dx * dx + dy * dy);
   }
+  function clamp(v: number, min: number, max: number): number {
+    return v < min ? min : v > max ? max : v;
+  }
+  function smoothstep(edge0: number, edge1: number, x: number): number {
+    const t = clamp((x - edge0) / (edge1 - edge0), 0, 1);
+    return t * t * (3 - 2 * t);
+  }
 
-  // ─── Particle Field Layer ─────────────────────────────────────────────
-  interface Particle {
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAYER 1: NEBULA CLOUDS
+  // ═══════════════════════════════════════════════════════════════════════════
+  interface Nebula {
     x: number; y: number;
-    vx: number; vy: number;
-    baseVx: number; baseVy: number;
-    size: number;
+    radiusX: number; radiusY: number;
+    color: RGB;
     opacity: number;
-    color: {r: number; g: number; b: number};
-    trail: {x: number; y: number}[];
-    trailLength: number;
-    pulsePhase: number;
-    pulseSpeed: number;
-  }
-
-  function createParticle(w: number, h: number): Particle {
-    const speed = 0.15 + Math.random() * 0.35;
-    const angle = Math.random() * Math.PI * 2;
-    const vx = Math.cos(angle) * speed;
-    const vy = Math.sin(angle) * speed;
-    return {
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx, vy,
-      baseVx: vx, baseVy: vy,
-      size: 0.5 + Math.random() * 2,
-      opacity: 0.1 + Math.random() * 0.5,
-      color: COLOR_ARRAY[Math.floor(Math.random() * COLOR_ARRAY.length)],
-      trail: [],
-      trailLength: 3 + Math.floor(Math.random() * 5),
-      pulsePhase: Math.random() * Math.PI * 2,
-      pulseSpeed: 0.01 + Math.random() * 0.02,
-    };
-  }
-
-  // ─── Orbital Mechanics Layer ──────────────────────────────────────────
-  interface OrbitalPath {
-    cx: number; cy: number;
-    a: number; b: number; // semi-major/minor axes
-    freqX: number; freqY: number; // Lissajous frequencies
-    phaseOffset: number;
-    rotation: number; // tilt
-    rotationSpeed: number;
-    color: {r: number; g: number; b: number};
-    opacity: number;
-    nodes: OrbitalNode[];
-  }
-
-  interface OrbitalNode {
     phase: number;
-    speed: number;
-    size: number;
-    glowSize: number;
-    color: {r: number; g: number; b: number};
+    phaseSpeed: number;
+    driftX: number; driftY: number;
   }
 
-  function createOrbitalPaths(w: number, h: number, nodeCount: number): OrbitalPath[] {
-    const paths: OrbitalPath[] = [];
-    const configs = [
-      { freqX: 3, freqY: 2, a: 0.3, b: 0.2, color: COLORS.cometBlue },
-      { freqX: 2, freqY: 3, a: 0.25, b: 0.35, color: COLORS.electricViolet },
-      { freqX: 5, freqY: 4, a: 0.2, b: 0.15, color: COLORS.cyan },
-      { freqX: 1, freqY: 2, a: 0.35, b: 0.25, color: COLORS.magenta },
-    ];
-
-    for (let i = 0; i < configs.length; i++) {
-      const cfg = configs[i];
-      const nodesPerPath = Math.max(1, Math.floor(nodeCount / configs.length));
-      const nodes: OrbitalNode[] = [];
-      for (let n = 0; n < nodesPerPath; n++) {
-        nodes.push({
-          phase: (n / nodesPerPath) * Math.PI * 2,
-          speed: 0.002 + Math.random() * 0.004,
-          size: 2 + Math.random() * 3,
-          glowSize: 8 + Math.random() * 12,
-          color: cfg.color,
-        });
-      }
-
-      paths.push({
-        cx: w * (0.3 + Math.random() * 0.4),
-        cy: h * (0.3 + Math.random() * 0.4),
-        a: Math.min(w, h) * cfg.a,
-        b: Math.min(w, h) * cfg.b,
-        freqX: cfg.freqX,
-        freqY: cfg.freqY,
-        phaseOffset: Math.random() * Math.PI * 2,
-        rotation: Math.random() * Math.PI,
-        rotationSpeed: 0.0002 + Math.random() * 0.0005,
-        color: cfg.color,
-        opacity: 0.08 + Math.random() * 0.06,
-        nodes,
+  function createNebulae(w: number, h: number, count: number): Nebula[] {
+    const nebulae: Nebula[] = [];
+    const colors = [PALETTE.nebulaPurple, PALETTE.nebulaCyan, PALETTE.nebulaDeep, PALETTE.electricViolet, PALETTE.deepBlue];
+    for (let i = 0; i < count; i++) {
+      nebulae.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        radiusX: w * (0.15 + Math.random() * 0.25),
+        radiusY: h * (0.15 + Math.random() * 0.25),
+        color: colors[i % colors.length],
+        opacity: 0.04 + Math.random() * 0.06,
+        phase: Math.random() * Math.PI * 2,
+        phaseSpeed: 0.0003 + Math.random() * 0.0005,
+        driftX: (Math.random() - 0.5) * 0.1,
+        driftY: (Math.random() - 0.5) * 0.05,
       });
     }
-    return paths;
+    return nebulae;
   }
 
-  function getLissajousPoint(path: OrbitalPath, t: number): {x: number; y: number} {
-    const lx = path.a * Math.sin(path.freqX * t + path.phaseOffset);
-    const ly = path.b * Math.sin(path.freqY * t);
-    // Apply rotation
-    const cos = Math.cos(path.rotation);
-    const sin = Math.sin(path.rotation);
-    return {
-      x: path.cx + lx * cos - ly * sin,
-      y: path.cy + lx * sin + ly * cos,
-    };
+  function renderNebulae(ctx: CanvasRenderingContext2D, nebulae: Nebula[], time: number) {
+    for (const n of nebulae) {
+      const pulse = 1 + 0.15 * Math.sin(n.phase + time * n.phaseSpeed);
+      const x = n.x + Math.sin(time * 0.0002 + n.phase) * 20 * n.driftX;
+      const y = n.y + Math.cos(time * 0.0001 + n.phase) * 15 * n.driftY;
+      const rx = n.radiusX * pulse;
+      const ry = n.radiusY * pulse;
+      const maxR = Math.max(rx, ry);
+
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, maxR);
+      grad.addColorStop(0, rgba(n.color, n.opacity * 1.5));
+      grad.addColorStop(0.4, rgba(n.color, n.opacity * 0.8));
+      grad.addColorStop(1, rgba(n.color, 0));
+
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(rx / maxR, ry / maxR);
+      ctx.translate(-x, -y);
+      ctx.fillStyle = grad;
+      ctx.fillRect(x - maxR, y - maxR, maxR * 2, maxR * 2);
+      ctx.restore();
+    }
   }
 
-  // ─── Neural/Scientific Overlay ────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAYER 2: STAR FIELD
+  // ═══════════════════════════════════════════════════════════════════════════
+  interface Star {
+    x: number; y: number;
+    size: number;
+    baseOpacity: number;
+    twinklePhase: number;
+    twinkleSpeed: number;
+    color: RGB;
+  }
+
+  function createStars(w: number, h: number, count: number): Star[] {
+    const stars: Star[] = [];
+    for (let i = 0; i < count; i++) {
+      const isBright = Math.random() < 0.15;
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        size: isBright ? 1.2 + Math.random() * 1.5 : 0.4 + Math.random() * 0.8,
+        baseOpacity: isBright ? 0.6 + Math.random() * 0.4 : 0.2 + Math.random() * 0.3,
+        twinklePhase: Math.random() * Math.PI * 2,
+        twinkleSpeed: 0.001 + Math.random() * 0.003,
+        color: Math.random() < 0.3 ? PALETTE.warmWhite : PALETTE.white,
+      });
+    }
+    return stars;
+  }
+
+  function renderStars(ctx: CanvasRenderingContext2D, stars: Star[], time: number) {
+    for (const s of stars) {
+      const twinkle = 0.5 + 0.5 * Math.sin(s.twinklePhase + time * s.twinkleSpeed);
+      const opacity = s.baseOpacity * twinkle;
+      ctx.fillStyle = rgba(s.color, opacity);
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (s.size > 1.5 && twinkle > 0.7) {
+        ctx.strokeStyle = rgba(s.color, opacity * 0.3);
+        ctx.lineWidth = 0.5;
+        const len = s.size * 3;
+        ctx.beginPath();
+        ctx.moveTo(s.x - len, s.y);
+        ctx.lineTo(s.x + len, s.y);
+        ctx.moveTo(s.x, s.y - len);
+        ctx.lineTo(s.x, s.y + len);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAYER 3: HOLOGRAPHIC SCANNING GRID
+  // ═══════════════════════════════════════════════════════════════════════════
+  function renderScanGrid(ctx: CanvasRenderingContext2D, w: number, h: number, time: number, scrollOffset: number) {
+    const gridSize = 80;
+    const scanLineY = (time * 0.03 + scrollOffset * 0.5) % (h + 200) - 100;
+    const scanWidth = 300;
+
+    ctx.save();
+    ctx.strokeStyle = rgba(PALETTE.cometBlue, 0.03);
+    ctx.lineWidth = 0.5;
+    for (let x = 0; x < w; x += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+    for (let y = 0; y < h; y += gridSize) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    const grad = ctx.createLinearGradient(0, scanLineY - scanWidth / 2, 0, scanLineY + scanWidth / 2);
+    grad.addColorStop(0, rgba(PALETTE.cyan, 0));
+    grad.addColorStop(0.3, rgba(PALETTE.cyan, 0.04));
+    grad.addColorStop(0.5, rgba(PALETTE.cyan, 0.08));
+    grad.addColorStop(0.7, rgba(PALETTE.cyan, 0.04));
+    grad.addColorStop(1, rgba(PALETTE.cyan, 0));
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, scanLineY - scanWidth / 2, w, scanWidth);
+
+    for (let gx = 0; gx < w; gx += gridSize) {
+      for (let gy = 0; gy < h; gy += gridSize) {
+        const dy = Math.abs(gy - scanLineY);
+        if (dy < scanWidth * 0.6) {
+          const intensity = 1 - dy / (scanWidth * 0.6);
+          ctx.fillStyle = rgba(PALETTE.cyan, intensity * 0.3);
+          ctx.beginPath();
+          ctx.arc(gx, gy, 1.5 + intensity * 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    ctx.restore();
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAYER 4: ORBITAL RINGS
+  // ═══════════════════════════════════════════════════════════════════════════
+  interface OrbitalRing {
+    cx: number; cy: number;
+    radiusX: number; radiusY: number;
+    rotation: number;
+    rotationSpeed: number;
+    color: RGB;
+    dashPattern: number[];
+    lineWidth: number;
+    opacity: number;
+    nodePhase: number;
+    nodeSpeed: number;
+    nodeSize: number;
+  }
+
+  function createOrbitalRings(w: number, h: number, count: number): OrbitalRing[] {
+    const rings: OrbitalRing[] = [];
+    const colors = [PALETTE.cometBlue, PALETTE.electricViolet, PALETTE.cyan, PALETTE.deepBlue];
+    for (let i = 0; i < count; i++) {
+      const baseRadius = Math.min(w, h) * (0.12 + i * 0.08 + Math.random() * 0.06);
+      rings.push({
+        cx: w * (0.3 + Math.random() * 0.4),
+        cy: h * (0.25 + Math.random() * 0.5),
+        radiusX: baseRadius * (0.8 + Math.random() * 0.6),
+        radiusY: baseRadius * (0.3 + Math.random() * 0.3),
+        rotation: (Math.PI / 6) * i + Math.random() * 0.5,
+        rotationSpeed: (0.0001 + Math.random() * 0.0003) * (i % 2 === 0 ? 1 : -1),
+        color: colors[i % colors.length],
+        dashPattern: [8 + Math.random() * 20, 4 + Math.random() * 12],
+        lineWidth: 0.8 + Math.random() * 0.8,
+        opacity: 0.12 + Math.random() * 0.1,
+        nodePhase: Math.random() * Math.PI * 2,
+        nodeSpeed: 0.0004 + Math.random() * 0.0008,
+        nodeSize: 2.5 + Math.random() * 2,
+      });
+    }
+    return rings;
+  }
+
+  function renderOrbitalRings(ctx: CanvasRenderingContext2D, rings: OrbitalRing[], time: number) {
+    for (const ring of rings) {
+      ctx.save();
+      ctx.translate(ring.cx, ring.cy);
+      ctx.rotate(ring.rotation + time * ring.rotationSpeed);
+
+      ctx.setLineDash(ring.dashPattern);
+      ctx.strokeStyle = rgba(ring.color, ring.opacity);
+      ctx.lineWidth = ring.lineWidth;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, ring.radiusX, ring.radiusY, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      const nodeAngle = ring.nodePhase + time * ring.nodeSpeed;
+      const nx = Math.cos(nodeAngle) * ring.radiusX;
+      const ny = Math.sin(nodeAngle) * ring.radiusY;
+
+      const glowGrad = ctx.createRadialGradient(nx, ny, 0, nx, ny, ring.nodeSize * 5);
+      glowGrad.addColorStop(0, rgba(ring.color, 0.4));
+      glowGrad.addColorStop(0.5, rgba(ring.color, 0.1));
+      glowGrad.addColorStop(1, rgba(ring.color, 0));
+      ctx.fillStyle = glowGrad;
+      ctx.fillRect(nx - ring.nodeSize * 5, ny - ring.nodeSize * 5, ring.nodeSize * 10, ring.nodeSize * 10);
+
+      ctx.fillStyle = rgba(ring.color, 0.9);
+      ctx.beginPath();
+      ctx.arc(nx, ny, ring.nodeSize, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAYER 5: NEURAL NETWORK — THE CENTERPIECE
+  // ═══════════════════════════════════════════════════════════════════════════
   interface NeuralNode {
     x: number; y: number;
     baseX: number; baseY: number;
+    layer: number;
     size: number;
+    color: RGB;
     pulsePhase: number;
     pulseSpeed: number;
-    color: {r: number; g: number; b: number};
-    connections: number[]; // indices of connected nodes
-    activated: boolean;
-    activationDecay: number;
-    drift: { dx: number; dy: number; speed: number; phase: number };
+    activation: number;
+    targetActivation: number;
+    connections: number[];
+    drift: { amplitude: number; phaseX: number; phaseY: number; speedX: number; speedY: number };
   }
 
-  function createNeuralNetwork(w: number, h: number, count: number): NeuralNode[] {
+  interface DataPulse {
+    fromNode: number;
+    toNode: number;
+    progress: number;
+    speed: number;
+    color: RGB;
+    size: number;
+    life: number;
+  }
+
+  interface ActivationRipple {
+    x: number; y: number;
+    radius: number;
+    maxRadius: number;
+    color: RGB;
+    opacity: number;
+  }
+
+  function createNeuralNetwork(w: number, h: number, nodeCount: number, layerCount: number, maxConn: number): NeuralNode[] {
     const nodes: NeuralNode[] = [];
-    for (let i = 0; i < count; i++) {
-      const x = Math.random() * w;
-      const y = Math.random() * h;
-      nodes.push({
-        x, y,
-        baseX: x, baseY: y,
-        size: 1.5 + Math.random() * 2.5,
-        pulsePhase: Math.random() * Math.PI * 2,
-        pulseSpeed: 0.008 + Math.random() * 0.015,
-        color: COLOR_ARRAY[Math.floor(Math.random() * COLOR_ARRAY.length)],
-        connections: [],
-        activated: false,
-        activationDecay: 0,
-        drift: {
-          dx: (Math.random() - 0.5) * 30,
-          dy: (Math.random() - 0.5) * 30,
-          speed: 0.0005 + Math.random() * 0.001,
-          phase: Math.random() * Math.PI * 2,
-        },
-      });
+    const nodesPerLayer = Math.ceil(nodeCount / layerCount);
+    const layerSpacing = w / (layerCount + 1);
+
+    for (let layer = 0; layer < layerCount; layer++) {
+      const layerX = layerSpacing * (layer + 1);
+      const nodesThisLayer = layer === 0 || layer === layerCount - 1
+        ? Math.ceil(nodesPerLayer * 0.6)
+        : nodesPerLayer;
+
+      for (let n = 0; n < nodesThisLayer; n++) {
+        const spacing = h / (nodesThisLayer + 1);
+        const baseY = spacing * (n + 1);
+        const jitterX = (Math.random() - 0.5) * layerSpacing * 0.3;
+        const jitterY = (Math.random() - 0.5) * spacing * 0.3;
+        const x = layerX + jitterX;
+        const y = baseY + jitterY;
+
+        nodes.push({
+          x, y,
+          baseX: x, baseY: y,
+          layer,
+          size: layer === 0 || layer === layerCount - 1 ? 3 + Math.random() * 2 : 2.5 + Math.random() * 3,
+          color: NODE_COLORS[layer % NODE_COLORS.length],
+          pulsePhase: Math.random() * Math.PI * 2,
+          pulseSpeed: 0.002 + Math.random() * 0.004,
+          activation: 0.1 + Math.random() * 0.2,
+          targetActivation: 0.1 + Math.random() * 0.2,
+          connections: [],
+          drift: {
+            amplitude: 3 + Math.random() * 8,
+            phaseX: Math.random() * Math.PI * 2,
+            phaseY: Math.random() * Math.PI * 2,
+            speedX: 0.0003 + Math.random() * 0.0006,
+            speedY: 0.0004 + Math.random() * 0.0005,
+          },
+        });
+      }
     }
 
-    // Create connections (nearest neighbors)
-    const maxDist = Math.min(w, h) * 0.2;
+    // Feed-forward connections with skip connections
     for (let i = 0; i < nodes.length; i++) {
-      const distances: {idx: number; d: number}[] = [];
+      const node = nodes[i];
+      if (node.layer >= layerCount - 1) continue;
+
+      const nextLayerNodes: { idx: number; d: number }[] = [];
       for (let j = 0; j < nodes.length; j++) {
-        if (i === j) continue;
-        const d = dist(nodes[i].baseX, nodes[i].baseY, nodes[j].baseX, nodes[j].baseY);
-        if (d < maxDist) distances.push({idx: j, d});
+        if (nodes[j].layer === node.layer + 1) {
+          const d = dist(node.baseX, node.baseY, nodes[j].baseX, nodes[j].baseY);
+          nextLayerNodes.push({ idx: j, d });
+        }
       }
-      distances.sort((a, b) => a.d - b.d);
-      nodes[i].connections = distances.slice(0, 3).map(d => d.idx);
+
+      nextLayerNodes.sort((a, b) => a.d - b.d);
+      const connCount = Math.min(maxConn, nextLayerNodes.length);
+      for (let c = 0; c < connCount; c++) {
+        node.connections.push(nextLayerNodes[c].idx);
+      }
+
+      // Skip connections for depth
+      if (node.layer < layerCount - 2 && Math.random() < 0.15) {
+        const skipNodes: { idx: number; d: number }[] = [];
+        for (let j = 0; j < nodes.length; j++) {
+          if (nodes[j].layer === node.layer + 2) {
+            skipNodes.push({ idx: j, d: dist(node.baseX, node.baseY, nodes[j].baseX, nodes[j].baseY) });
+          }
+        }
+        skipNodes.sort((a, b) => a.d - b.d);
+        if (skipNodes.length > 0) {
+          node.connections.push(skipNodes[0].idx);
+        }
+      }
     }
 
     return nodes;
   }
 
-  // ─── Comet Streak System ──────────────────────────────────────────────
-  interface CometStreak {
-    x: number; y: number;
-    vx: number; vy: number;
-    life: number;
-    maxLife: number;
-    size: number;
-    color: {r: number; g: number; b: number};
-    trail: {x: number; y: number; opacity: number}[];
+  function updateNeuralNetwork(nodes: NeuralNode[], time: number, mouseX: number, mouseY: number, mouseActive: boolean, dt: number) {
+    const hoverRadius = 200;
+
+    for (const node of nodes) {
+      node.x = node.baseX + Math.sin(node.drift.phaseX + time * node.drift.speedX) * node.drift.amplitude;
+      node.y = node.baseY + Math.cos(node.drift.phaseY + time * node.drift.speedY) * node.drift.amplitude;
+
+      if (mouseActive) {
+        const d = dist(mouseX, mouseY, node.x, node.y);
+        if (d < hoverRadius) {
+          const intensity = 1 - d / hoverRadius;
+          node.targetActivation = Math.max(node.targetActivation, 0.5 + intensity * 0.5);
+        }
+      }
+
+      node.activation = lerp(node.activation, node.targetActivation, 0.04 * dt);
+      node.targetActivation = lerp(node.targetActivation, 0.1 + Math.random() * 0.15, 0.005 * dt);
+    }
   }
 
-  function spawnComet(w: number, h: number): CometStreak {
-    const side = Math.floor(Math.random() * 4);
-    let x: number, y: number, vx: number, vy: number;
-    const speed = 3 + Math.random() * 5;
-    
-    switch (side) {
-      case 0: // top
-        x = Math.random() * w; y = -20;
-        vx = (Math.random() - 0.5) * speed; vy = speed;
-        break;
-      case 1: // right
-        x = w + 20; y = Math.random() * h;
-        vx = -speed; vy = (Math.random() - 0.5) * speed;
-        break;
-      case 2: // bottom
-        x = Math.random() * w; y = h + 20;
-        vx = (Math.random() - 0.5) * speed; vy = -speed;
-        break;
-      default: // left
-        x = -20; y = Math.random() * h;
-        vx = speed; vy = (Math.random() - 0.5) * speed;
-        break;
+  function renderNeuralNetwork(
+    ctx: CanvasRenderingContext2D, nodes: NeuralNode[], pulses: DataPulse[],
+    ripples: ActivationRipple[], time: number, enableBloom: boolean
+  ) {
+    // Connections
+    for (const node of nodes) {
+      for (const connIdx of node.connections) {
+        const target = nodes[connIdx];
+        const avgAct = (node.activation + target.activation) / 2;
+        const baseAlpha = 0.04 + avgAct * 0.18;
+
+        const grad = ctx.createLinearGradient(node.x, node.y, target.x, target.y);
+        grad.addColorStop(0, rgba(node.color, baseAlpha));
+        grad.addColorStop(0.5, rgba(lerpColor(node.color, target.color, 0.5), baseAlpha * 1.3));
+        grad.addColorStop(1, rgba(target.color, baseAlpha));
+
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 0.5 + avgAct * 1.5;
+        ctx.beginPath();
+        ctx.moveTo(node.x, node.y);
+        const midX = (node.x + target.x) / 2 + (node.y - target.y) * 0.05;
+        const midY = (node.y + target.y) / 2 + (target.x - node.x) * 0.05;
+        ctx.quadraticCurveTo(midX, midY, target.x, target.y);
+        ctx.stroke();
+
+        if (avgAct > 0.4 && enableBloom) {
+          ctx.strokeStyle = rgba(lerpColor(node.color, target.color, 0.5), avgAct * 0.06);
+          ctx.lineWidth = 3 + avgAct * 4;
+          ctx.beginPath();
+          ctx.moveTo(node.x, node.y);
+          ctx.quadraticCurveTo(midX, midY, target.x, target.y);
+          ctx.stroke();
+        }
+      }
     }
 
-    return {
-      x, y, vx, vy,
-      life: 1,
-      maxLife: 60 + Math.random() * 60,
-      size: 1.5 + Math.random() * 2,
-      color: COLOR_ARRAY[Math.floor(Math.random() * COLOR_ARRAY.length)],
-      trail: [],
-    };
+    // Data pulses
+    for (const pulse of pulses) {
+      if (pulse.life <= 0) continue;
+      const from = nodes[pulse.fromNode];
+      const to = nodes[pulse.toNode];
+      const t = Math.min(pulse.progress, 1);
+      const midX = (from.x + to.x) / 2 + (from.y - to.y) * 0.05;
+      const midY = (from.y + to.y) / 2 + (to.x - from.x) * 0.05;
+      const u = 1 - t;
+      const px = u * u * from.x + 2 * u * t * midX + t * t * to.x;
+      const py = u * u * from.y + 2 * u * t * midY + t * t * to.y;
+
+      const pulseGrad = ctx.createRadialGradient(px, py, 0, px, py, pulse.size * 6);
+      pulseGrad.addColorStop(0, rgba(pulse.color, 0.6 * pulse.life));
+      pulseGrad.addColorStop(0.5, rgba(pulse.color, 0.15 * pulse.life));
+      pulseGrad.addColorStop(1, rgba(pulse.color, 0));
+      ctx.fillStyle = pulseGrad;
+      ctx.fillRect(px - pulse.size * 6, py - pulse.size * 6, pulse.size * 12, pulse.size * 12);
+
+      ctx.fillStyle = rgba(PALETTE.white, 0.9 * pulse.life);
+      ctx.beginPath();
+      ctx.arc(px, py, pulse.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Activation ripples
+    for (const ripple of ripples) {
+      if (ripple.opacity <= 0) continue;
+      ctx.strokeStyle = rgba(ripple.color, ripple.opacity * 0.3);
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Nodes
+    for (const node of nodes) {
+      const pulse = 0.7 + 0.3 * Math.sin(node.pulsePhase + time * node.pulseSpeed);
+      const alpha = 0.3 + node.activation * 0.7;
+      const size = node.size * (0.8 + node.activation * 0.5) * pulse;
+
+      if (node.activation > 0.25 || enableBloom) {
+        const glowRad = size * (4 + node.activation * 6);
+        const glowGrad = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, glowRad);
+        glowGrad.addColorStop(0, rgba(node.color, alpha * 0.25));
+        glowGrad.addColorStop(0.5, rgba(node.color, alpha * 0.08));
+        glowGrad.addColorStop(1, rgba(node.color, 0));
+        ctx.fillStyle = glowGrad;
+        ctx.fillRect(node.x - glowRad, node.y - glowRad, glowRad * 2, glowRad * 2);
+      }
+
+      ctx.strokeStyle = rgba(node.color, alpha * 0.6);
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, size + 2, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = rgba(node.color, alpha);
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, size, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = rgba(PALETTE.white, alpha * 0.6);
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, size * 0.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
 
-  // ─── Main Engine ──────────────────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAYER 6: DATA STREAM COLUMNS
+  // ═══════════════════════════════════════════════════════════════════════════
+  interface DataStream {
+    x: number;
+    speed: number;
+    chars: { y: number; char: string; opacity: number; color: RGB }[];
+  }
+
+  const DATA_CHARS = '01\u03B1\u03B2\u03B3\u03B4\u03B5\u03B6\u03B7\u03B8\u03BB\u03BC\u03BD\u03BE\u03C0\u03C1\u03C3\u03C6\u03C8\u03C9\u0394\u03A3\u03A9\u2202\u222B\u2207\u2248\u2261\u221E\u00B1\u221A\u2208\u2200\u2203\u2282\u2283\u2227\u2228\u00AC\u2295\u2297';
+
+  function createDataStreams(w: number, h: number, count: number): DataStream[] {
+    const streams: DataStream[] = [];
+    for (let i = 0; i < count; i++) {
+      const charCount = 15 + Math.floor(Math.random() * 25);
+      const chars = [];
+      for (let c = 0; c < charCount; c++) {
+        chars.push({
+          y: Math.random() * h,
+          char: DATA_CHARS[Math.floor(Math.random() * DATA_CHARS.length)],
+          opacity: 0.05 + Math.random() * 0.2,
+          color: Math.random() < 0.3 ? PALETTE.cyan : Math.random() < 0.5 ? PALETTE.cometBlue : PALETTE.electricViolet,
+        });
+      }
+      streams.push({
+        x: w * (0.05 + (i / count) * 0.9) + (Math.random() - 0.5) * 40,
+        speed: 0.3 + Math.random() * 0.5,
+        chars,
+      });
+    }
+    return streams;
+  }
+
+  function renderDataStreams(ctx: CanvasRenderingContext2D, streams: DataStream[], h: number, dt: number) {
+    ctx.font = '11px "JetBrains Mono", "Fira Code", monospace';
+    ctx.textAlign = 'center';
+
+    for (const stream of streams) {
+      for (const ch of stream.chars) {
+        ch.y += stream.speed * dt;
+        if (ch.y > h + 20) {
+          ch.y = -20;
+          ch.char = DATA_CHARS[Math.floor(Math.random() * DATA_CHARS.length)];
+        }
+
+        const fadeTop = smoothstep(0, 80, ch.y);
+        const fadeBottom = smoothstep(h, h - 80, ch.y);
+        const alpha = ch.opacity * fadeTop * fadeBottom;
+
+        ctx.fillStyle = rgba(ch.color, alpha);
+        ctx.fillText(ch.char, stream.x, ch.y);
+      }
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAYER 7: WAVEFORM OSCILLOSCOPE
+  // ═══════════════════════════════════════════════════════════════════════════
+  function renderWaveform(ctx: CanvasRenderingContext2D, w: number, h: number, time: number) {
+    const yCenter = h * 0.85;
+    const amplitude = 25;
+
+    const waveConfigs = [
+      { freq: 0.008, speed: 0.002, color: PALETTE.cyan, opacity: 0.12, lineWidth: 1.2 },
+      { freq: 0.012, speed: 0.003, color: PALETTE.electricViolet, opacity: 0.08, lineWidth: 0.8 },
+      { freq: 0.005, speed: 0.001, color: PALETTE.cometBlue, opacity: 0.06, lineWidth: 0.6 },
+    ];
+
+    for (const cfg of waveConfigs) {
+      ctx.strokeStyle = rgba(cfg.color, cfg.opacity);
+      ctx.lineWidth = cfg.lineWidth;
+      ctx.beginPath();
+
+      for (let x = 0; x <= w; x += 2) {
+        const normalX = x / w;
+        const edgeFade = Math.sin(normalX * Math.PI);
+        const y = yCenter +
+          Math.sin(x * cfg.freq + time * cfg.speed) * amplitude * edgeFade +
+          Math.sin(x * cfg.freq * 2.3 + time * cfg.speed * 1.7) * amplitude * 0.3 * edgeFade;
+
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAYER 8: FLOATING EQUATIONS
+  // ═══════════════════════════════════════════════════════════════════════════
+  interface FloatingEquation {
+    x: number; y: number;
+    text: string;
+    opacity: number;
+    speed: number;
+    driftPhase: number;
+    size: number;
+    color: RGB;
+  }
+
+  const EQUATIONS = [
+    '\u2207\u00B2\u03C8 = -k\u00B2\u03C8', 'E = mc\u00B2', 'F = ma', '\u2202\u03C8/\u2202t = i\u0127\u0124\u03C8',
+    'S = k_B ln \u03A9', 'dS/dt \u2265 0', '\u222E E\u00B7dl = -d\u03A6/dt', 'R\u03BC\u03BD = 0',
+    'H = -\u03A3p log p', 'f(x) = \u03C3(Wx+b)', '\u2207\u00B7E = \u03C1/\u03B5\u2080', '\u0394x\u0394p \u2265 \u0127/2',
+    '\u03BB = h/mv', 'P(A|B) = P(B|A)P(A)/P(B)', '\u2202L/\u2202\u03B8 = 0',
+    'curl B = \u03BC\u2080J', 'a\u00B2 + b\u00B2 = c\u00B2',
+  ];
+
+  function createEquations(w: number, h: number): FloatingEquation[] {
+    const eqs: FloatingEquation[] = [];
+    const count = 12;
+    for (let i = 0; i < count; i++) {
+      eqs.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        text: EQUATIONS[i % EQUATIONS.length],
+        opacity: 0.04 + Math.random() * 0.06,
+        speed: 0.1 + Math.random() * 0.15,
+        driftPhase: Math.random() * Math.PI * 2,
+        size: 10 + Math.random() * 3,
+        color: Math.random() < 0.5 ? PALETTE.cyan : PALETTE.electricViolet,
+      });
+    }
+    return eqs;
+  }
+
+  function renderEquations(ctx: CanvasRenderingContext2D, equations: FloatingEquation[], w: number, h: number, time: number, dt: number) {
+    for (const eq of equations) {
+      eq.y -= eq.speed * 0.3 * dt;
+      eq.x += Math.sin(eq.driftPhase + time * 0.0003) * 0.2 * dt;
+      if (eq.y < -30) {
+        eq.y = h + 30;
+        eq.x = Math.random() * w;
+        eq.text = EQUATIONS[Math.floor(Math.random() * EQUATIONS.length)];
+      }
+
+      const fadeTop = smoothstep(0, 100, eq.y);
+      const fadeBottom = smoothstep(h, h - 100, eq.y);
+
+      ctx.font = `${eq.size}px "JetBrains Mono", "Fira Code", monospace`;
+      ctx.textAlign = 'center';
+      ctx.fillStyle = rgba(eq.color, eq.opacity * fadeTop * fadeBottom);
+      ctx.fillText(eq.text, eq.x, eq.y);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAYER 9: DNA HELIX
+  // ═══════════════════════════════════════════════════════════════════════════
+  function renderDNAHelix(ctx: CanvasRenderingContext2D, w: number, h: number, time: number) {
+    const helixX = w * 0.92;
+    const amplitude = 30;
+    const verticalSpacing = 20;
+    const phaseOffset = Math.PI;
+
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+
+    for (let y = 0; y < h; y += verticalSpacing) {
+      const phase = y * 0.04 + time * 0.001;
+      const x1 = helixX + Math.sin(phase) * amplitude;
+      const x2 = helixX + Math.sin(phase + phaseOffset) * amplitude;
+      const depth1 = (Math.cos(phase) + 1) / 2;
+      const depth2 = (Math.cos(phase + phaseOffset) + 1) / 2;
+
+      ctx.strokeStyle = rgba(PALETTE.cyan, 0.06);
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(x1, y);
+      ctx.lineTo(x2, y);
+      ctx.stroke();
+
+      ctx.fillStyle = rgba(PALETTE.cometBlue, 0.15 + depth1 * 0.2);
+      ctx.beginPath();
+      ctx.arc(x1, y, 1.5 + depth1 * 1.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = rgba(PALETTE.electricViolet, 0.15 + depth2 * 0.2);
+      ctx.beginPath();
+      ctx.arc(x2, y, 1.5 + depth2 * 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.restore();
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MAIN ENGINE
+  // ═══════════════════════════════════════════════════════════════════════════
   function initCosmicBackground() {
     const canvas = document.getElementById('cosmic-bg') as HTMLCanvasElement | null;
     if (!canvas) return;
@@ -317,32 +811,35 @@
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    const profile = detectDeviceCapability();
-    if (profile.particleCount === 0) {
-      // Reduced motion: don't render anything
+    const profile = detectDevice();
+    if (profile.neuralNodeCount === 0) {
       canvas.style.display = 'none';
       return;
     }
 
     let W = 0, H = 0;
-    let particles: Particle[] = [];
-    let orbitalPaths: OrbitalPath[] = [];
+    let nebulae: Nebula[] = [];
+    let stars: Star[] = [];
+    let orbitalRings: OrbitalRing[] = [];
     let neuralNodes: NeuralNode[] = [];
-    let comets: CometStreak[] = [];
+    let dataPulses: DataPulse[] = [];
+    let activationRipples: ActivationRipple[] = [];
+    let dataStreams: DataStream[] = [];
+    let equations: FloatingEquation[] = [];
 
-    // Interaction state
     let mouseX = -1000, mouseY = -1000;
     let mouseActive = false;
-    let prevMouseX = -1000, prevMouseY = -1000;
-    let mouseSpeed = 0;
     let scrollY = 0;
-    let lastCometSpawn = 0;
     let time = 0;
-
-    // FPS management
     let lastFrameTime = 0;
+    let animFrameId = 0;
+    let isVisible = true;
+
     const frameInterval = 1000 / profile.targetFPS;
-    let fpsDropCount = 0;
+    let lastPulseSpawn = 0;
+    const pulseSpawnInterval = 400;
+    let lastAutoActivation = 0;
+    const autoActivationInterval = 3000;
 
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -356,393 +853,186 @@
     }
 
     function initLayers() {
-      particles = [];
-      for (let i = 0; i < profile.particleCount; i++) {
-        particles.push(createParticle(W, H));
-      }
-      orbitalPaths = createOrbitalPaths(W, H, profile.orbitalNodes);
-      neuralNodes = createNeuralNetwork(W, H, profile.neuralNodes);
-      comets = [];
+      nebulae = createNebulae(W, H, profile.nebulaCount);
+      stars = createStars(W, H, profile.starCount);
+      orbitalRings = createOrbitalRings(W, H, profile.orbitalRingCount);
+      neuralNodes = createNeuralNetwork(W, H, profile.neuralNodeCount, profile.neuralLayerCount, profile.maxConnections);
+      dataStreams = createDataStreams(W, H, profile.dataStreamCount);
+      equations = profile.enableEquations ? createEquations(W, H) : [];
+      dataPulses = [];
+      activationRipples = [];
     }
 
-    // ─── Render: Particle Field ─────────────────────────────────────
-    function renderParticles(dt: number) {
-      const gravityRadius = 200;
-      const gravityStrength = 0.08;
+    function spawnDataPulse() {
+      const candidates = neuralNodes.filter(n => n.connections.length > 0);
+      if (candidates.length === 0) return;
+      const sourceIdx = neuralNodes.indexOf(candidates[Math.floor(Math.random() * candidates.length)]);
+      const source = neuralNodes[sourceIdx];
+      const targetIdx = source.connections[Math.floor(Math.random() * source.connections.length)];
 
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+      dataPulses.push({
+        fromNode: sourceIdx,
+        toNode: targetIdx,
+        progress: 0,
+        speed: 0.008 + Math.random() * 0.012,
+        color: lerpColor(source.color, neuralNodes[targetIdx].color, 0.5),
+        size: 1.5 + Math.random() * 1.5,
+        life: 1,
+      });
+    }
 
-        // Cursor gravity well
-        if (mouseActive) {
-          const dx = mouseX - p.x;
-          const dy = mouseY - p.y;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < gravityRadius && d > 1) {
-            const force = gravityStrength * (1 - d / gravityRadius);
-            p.vx += (dx / d) * force;
-            p.vy += (dy / d) * force;
-          }
-        }
+    function triggerActivationCascade(nodeIdx: number) {
+      const node = neuralNodes[nodeIdx];
+      node.targetActivation = 0.9 + Math.random() * 0.1;
 
-        // Dampen back to base velocity
-        p.vx = lerp(p.vx, p.baseVx, 0.02);
-        p.vy = lerp(p.vy, p.baseVy, 0.02);
+      activationRipples.push({
+        x: node.x, y: node.y,
+        radius: 0,
+        maxRadius: 80 + Math.random() * 60,
+        color: node.color,
+        opacity: 0.5,
+      });
 
-        // Scroll-driven parallax
-        if (profile.enableParallax) {
-          const parallaxFactor = (p.size / 2.5) * 0.05;
-          p.y -= scrollY * parallaxFactor * 0.1;
-        }
+      for (const connIdx of node.connections) {
+        neuralNodes[connIdx].targetActivation = Math.max(
+          neuralNodes[connIdx].targetActivation,
+          0.6 + Math.random() * 0.3
+        );
 
-        // Update position
-        p.x += p.vx * dt;
-        p.y += p.vy * dt;
-
-        // Wrap around edges (clear trail on wrap to avoid full-screen streak)
-        const prevX = p.x, prevY = p.y;
-        if (p.x < -10) p.x = W + 10;
-        if (p.x > W + 10) p.x = -10;
-        if (p.y < -10) p.y = H + 10;
-        if (p.y > H + 10) p.y = -10;
-        if (Math.abs(p.x - prevX) > 20 || Math.abs(p.y - prevY) > 20) {
-          p.trail = [];
-        }
-
-        // Update trail
-        p.trail.push({x: p.x, y: p.y});
-        if (p.trail.length > p.trailLength) p.trail.shift();
-
-        // Pulse
-        p.pulsePhase += p.pulseSpeed * dt;
-        const pulse = 0.6 + 0.4 * Math.sin(p.pulsePhase);
-
-        // Draw trail (comet-tail effect)
-        if (p.trail.length > 1) {
-          for (let t = 0; t < p.trail.length - 1; t++) {
-            const trailOpacity = (t / p.trail.length) * p.opacity * pulse * 0.3;
-            ctx!.beginPath();
-            ctx!.moveTo(p.trail[t].x, p.trail[t].y);
-            ctx!.lineTo(p.trail[t + 1].x, p.trail[t + 1].y);
-            ctx!.strokeStyle = rgba(p.color, trailOpacity);
-            ctx!.lineWidth = p.size * 0.5;
-            ctx!.stroke();
-          }
-        }
-
-        // Draw particle with glow
-        const currentOpacity = p.opacity * pulse;
-        if (profile.enableBloom) {
-          ctx!.beginPath();
-          ctx!.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2);
-          ctx!.fillStyle = rgba(p.color, currentOpacity * 0.08);
-          ctx!.fill();
-        }
-
-        ctx!.beginPath();
-        ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx!.fillStyle = rgba(p.color, currentOpacity);
-        ctx!.fill();
-
-        // Draw connections between nearby particles (limit to avoid O(n^2) on large sets)
-        if (i < 200) {
-          const limit = Math.min(particles.length, 200);
-          for (let j = i + 1; j < limit; j++) {
-            const p2 = particles[j];
-            const d = dist(p.x, p.y, p2.x, p2.y);
-            if (d < profile.connectionDistance) {
-              const lineOpacity = 0.04 * (1 - d / profile.connectionDistance) * pulse;
-              ctx!.beginPath();
-              ctx!.moveTo(p.x, p.y);
-              ctx!.lineTo(p2.x, p2.y);
-              ctx!.strokeStyle = rgba(p.color, lineOpacity);
-              ctx!.lineWidth = 0.5;
-              ctx!.stroke();
-            }
-          }
+        if (profile.enableDataPulses) {
+          dataPulses.push({
+            fromNode: nodeIdx,
+            toNode: connIdx,
+            progress: 0,
+            speed: 0.01 + Math.random() * 0.015,
+            color: lerpColor(node.color, neuralNodes[connIdx].color, 0.5),
+            size: 2 + Math.random() * 1.5,
+            life: 1,
+          });
         }
       }
     }
 
-    // ─── Render: Orbital Mechanics ──────────────────────────────────
-    function renderOrbits(dt: number) {
-      for (const path of orbitalPaths) {
-        // Slow rotation
-        path.rotation += path.rotationSpeed * dt;
-
-        // Draw orbital arc (Lissajous curve)
-        ctx!.beginPath();
-        const steps = 200;
-        for (let i = 0; i <= steps; i++) {
-          const t = (i / steps) * Math.PI * 2;
-          const pt = getLissajousPoint(path, t);
-          if (i === 0) ctx!.moveTo(pt.x, pt.y);
-          else ctx!.lineTo(pt.x, pt.y);
-        }
-        ctx!.closePath();
-        ctx!.strokeStyle = rgba(path.color, path.opacity);
-        ctx!.lineWidth = 0.8;
-        ctx!.stroke();
-
-        // Draw nodes moving along orbits
-        for (const node of path.nodes) {
-          node.phase += node.speed * dt;
-          const pt = getLissajousPoint(path, node.phase);
-
-          // Node glow
-          if (profile.enableBloom) {
-            const gradient = ctx!.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, node.glowSize);
-            gradient.addColorStop(0, rgba(node.color, 0.2));
-            gradient.addColorStop(1, rgba(node.color, 0));
-            ctx!.beginPath();
-            ctx!.arc(pt.x, pt.y, node.glowSize, 0, Math.PI * 2);
-            ctx!.fillStyle = gradient;
-            ctx!.fill();
+    function updateDataPulses(dt: number) {
+      for (let i = dataPulses.length - 1; i >= 0; i--) {
+        const pulse = dataPulses[i];
+        pulse.progress += pulse.speed * dt;
+        if (pulse.progress >= 1) {
+          pulse.life -= 0.05 * dt;
+          if (pulse.life <= 0) {
+            dataPulses.splice(i, 1);
           }
+        }
+      }
+      if (dataPulses.length > 60) {
+        dataPulses.splice(0, dataPulses.length - 60);
+      }
+    }
 
-          // Node core
-          ctx!.beginPath();
-          ctx!.arc(pt.x, pt.y, node.size, 0, Math.PI * 2);
-          ctx!.fillStyle = rgba(node.color, 0.6);
-          ctx!.fill();
-
-          // Bright center
-          ctx!.beginPath();
-          ctx!.arc(pt.x, pt.y, node.size * 0.4, 0, Math.PI * 2);
-          ctx!.fillStyle = rgba(node.color, 0.9);
-          ctx!.fill();
+    function updateRipples(dt: number) {
+      for (let i = activationRipples.length - 1; i >= 0; i--) {
+        const r = activationRipples[i];
+        r.radius += 1.5 * dt;
+        r.opacity -= 0.008 * dt;
+        if (r.opacity <= 0 || r.radius > r.maxRadius) {
+          activationRipples.splice(i, 1);
         }
       }
     }
 
-    // ─── Render: Neural Overlay ─────────────────────────────────────
-    function renderNeural(dt: number) {
-      // Update node positions (gentle drift)
-      for (const node of neuralNodes) {
-        node.drift.phase += node.drift.speed * dt;
-        node.x = node.baseX + Math.sin(node.drift.phase) * node.drift.dx;
-        node.y = node.baseY + Math.cos(node.drift.phase * 0.7) * node.drift.dy;
-
-        // Pulse phase
-        node.pulsePhase += node.pulseSpeed * dt;
-
-        // Activation detection (near cursor)
-        if (mouseActive) {
-          const d = dist(mouseX, mouseY, node.x, node.y);
-          if (d < 180) {
-            node.activated = true;
-            node.activationDecay = 1.0;
-          }
-        }
-
-        // Decay activation
-        if (node.activationDecay > 0) {
-          node.activationDecay -= 0.008 * dt;
-          if (node.activationDecay <= 0) {
-            node.activated = false;
-            node.activationDecay = 0;
-          }
-        }
+    // ─── Render Loop ─────────────────────────────────────────────────
+    function render(timestamp: number) {
+      if (!isVisible) {
+        animFrameId = requestAnimationFrame(render);
+        return;
       }
 
-      // Draw connections
-      for (const node of neuralNodes) {
-        for (const connIdx of node.connections) {
-          const other = neuralNodes[connIdx];
-          if (!other) continue;
-
-          const baseOpacity = 0.03;
-          const activatedBoost = (node.activated || other.activated)
-            ? Math.max(node.activationDecay, other.activationDecay) * 0.12
-            : 0;
-          const lineOpacity = baseOpacity + activatedBoost;
-
-          ctx!.beginPath();
-          ctx!.moveTo(node.x, node.y);
-          ctx!.lineTo(other.x, other.y);
-          ctx!.strokeStyle = rgba(node.color, lineOpacity);
-          ctx!.lineWidth = 0.4 + activatedBoost * 2;
-          ctx!.stroke();
-
-          // Energy pulse along connection when activated
-          if (node.activated && activatedBoost > 0.05) {
-            const pulseT = (Math.sin(node.pulsePhase * 3) + 1) / 2;
-            const px = lerp(node.x, other.x, pulseT);
-            const py = lerp(node.y, other.y, pulseT);
-            ctx!.beginPath();
-            ctx!.arc(px, py, 1.5, 0, Math.PI * 2);
-            ctx!.fillStyle = rgba(node.color, activatedBoost * 0.6);
-            ctx!.fill();
-          }
-        }
-      }
-
-      // Draw nodes
-      for (const node of neuralNodes) {
-        const pulse = 0.5 + 0.5 * Math.sin(node.pulsePhase);
-        const sizeMultiplier = node.activated ? 1 + node.activationDecay * 0.5 : 1;
-        const opacityMultiplier = node.activated ? 0.3 + node.activationDecay * 0.5 : 0.15 + pulse * 0.1;
-
-        // Glow ring on activation
-        if (node.activated && node.activationDecay > 0.3 && profile.enableBloom) {
-          ctx!.beginPath();
-          ctx!.arc(node.x, node.y, node.size * 6 * sizeMultiplier, 0, Math.PI * 2);
-          ctx!.fillStyle = rgba(node.color, node.activationDecay * 0.06);
-          ctx!.fill();
-        }
-
-        // Node
-        ctx!.beginPath();
-        ctx!.arc(node.x, node.y, node.size * sizeMultiplier, 0, Math.PI * 2);
-        ctx!.fillStyle = rgba(node.color, opacityMultiplier);
-        ctx!.fill();
-      }
-    }
-
-    // ─── Render: Comet Streaks ──────────────────────────────────────
-    function renderComets(dt: number) {
-      if (!profile.enableCometStreaks) return;
-
-      // Spawn comets based on mouse movement or periodically
-      const now = time;
-      const spawnInterval = mouseSpeed > 5 ? 30 : 300;
-      if (now - lastCometSpawn > spawnInterval && comets.length < 5) {
-        comets.push(spawnComet(W, H));
-        lastCometSpawn = now;
-      }
-
-      for (let i = comets.length - 1; i >= 0; i--) {
-        const c = comets[i];
-        c.trail.push({x: c.x, y: c.y, opacity: c.life});
-        if (c.trail.length > 30) c.trail.shift();
-
-        c.x += c.vx * dt;
-        c.y += c.vy * dt;
-        c.life -= (1 / c.maxLife) * dt;
-
-        if (c.life <= 0 || c.x < -100 || c.x > W + 100 || c.y < -100 || c.y > H + 100) {
-          comets.splice(i, 1);
-          continue;
-        }
-
-        // Draw trail
-        for (let t = 0; t < c.trail.length - 1; t++) {
-          const segOpacity = (t / c.trail.length) * c.trail[t].opacity * 0.4;
-          ctx!.beginPath();
-          ctx!.moveTo(c.trail[t].x, c.trail[t].y);
-          ctx!.lineTo(c.trail[t + 1].x, c.trail[t + 1].y);
-          ctx!.strokeStyle = rgba(c.color, segOpacity);
-          ctx!.lineWidth = c.size * (t / c.trail.length);
-          ctx!.stroke();
-        }
-
-        // Draw head
-        if (profile.enableBloom) {
-          const gradient = ctx!.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.size * 6);
-          gradient.addColorStop(0, rgba(c.color, c.life * 0.3));
-          gradient.addColorStop(1, rgba(c.color, 0));
-          ctx!.beginPath();
-          ctx!.arc(c.x, c.y, c.size * 6, 0, Math.PI * 2);
-          ctx!.fillStyle = gradient;
-          ctx!.fill();
-        }
-
-        ctx!.beginPath();
-        ctx!.arc(c.x, c.y, c.size, 0, Math.PI * 2);
-        ctx!.fillStyle = rgba(c.color, c.life * 0.8);
-        ctx!.fill();
-      }
-    }
-
-    // ─── Render: Subtle Energy Waves ────────────────────────────────
-    function renderEnergyWaves() {
-      if (!profile.enableBloom) return;
-
-      // Gradient-driven energy waves emanating from center
-      const waveCount = 2;
-      for (let i = 0; i < waveCount; i++) {
-        const phase = time * 0.0008 + (i * Math.PI);
-        const radius = (Math.sin(phase) + 1) * 0.5 * Math.max(W, H) * 0.4 + 100;
-        const opacity = 0.012 * (1 - (radius / (Math.max(W, H) * 0.5)));
-        if (opacity <= 0) continue;
-
-        const cx = W * 0.5;
-        const cy = H * 0.5;
-        const gradient = ctx!.createRadialGradient(cx, cy, radius * 0.8, cx, cy, radius);
-        gradient.addColorStop(0, rgba(COLORS.cyan, 0));
-        gradient.addColorStop(0.5, rgba(COLORS.electricViolet, Math.max(0, opacity)));
-        gradient.addColorStop(1, rgba(COLORS.cyan, 0));
-
-        ctx!.beginPath();
-        ctx!.arc(cx, cy, radius, 0, Math.PI * 2);
-        ctx!.fillStyle = gradient;
-        ctx!.fill();
-      }
-    }
-
-    // ─── Animation Loop ─────────────────────────────────────────────
-    let animId = 0;
-    let prevScrollY = 0;
-
-    function animate(timestamp: number) {
-      animId = requestAnimationFrame(animate);
-
-      // FPS throttling
       const elapsed = timestamp - lastFrameTime;
-      if (elapsed < frameInterval) return;
-
-      // Adaptive quality: if we're consistently dropping frames, reduce particle count
-      if (elapsed > frameInterval * 2.5) {
-        fpsDropCount++;
-        if (fpsDropCount > 30 && particles.length > 100) {
-          // Shed 10% of particles
-          particles.splice(0, Math.floor(particles.length * 0.1));
-          fpsDropCount = 0;
-        }
-      } else {
-        fpsDropCount = Math.max(0, fpsDropCount - 1);
+      if (elapsed < frameInterval) {
+        animFrameId = requestAnimationFrame(render);
+        return;
       }
-
       lastFrameTime = timestamp - (elapsed % frameInterval);
-      const dt = Math.min(elapsed / 16.67, 3); // Normalize to ~60fps, cap at 3x
+      time = timestamp;
+      const dt = Math.min(elapsed / 16.67, 3);
 
-      time += elapsed;
-
-      // Scroll delta
-      const currentScrollY = window.scrollY;
-      scrollY = currentScrollY - prevScrollY;
-      prevScrollY = currentScrollY;
-
-      // Mouse speed
-      if (mouseActive) {
-        mouseSpeed = dist(mouseX, mouseY, prevMouseX, prevMouseY);
-        prevMouseX = mouseX;
-        prevMouseY = mouseY;
-      }
-
-      // Clear
       ctx!.clearRect(0, 0, W, H);
 
-      // Render layers (back to front)
-      renderEnergyWaves();
-      renderOrbits(dt);
-      renderNeural(dt);
-      renderParticles(dt);
-      renderComets(dt);
+      // Layer 1: Nebulae
+      renderNebulae(ctx!, nebulae, time);
+
+      // Layer 2: Stars
+      renderStars(ctx!, stars, time);
+
+      // Layer 3: Scanning grid
+      renderScanGrid(ctx!, W, H, time, scrollY);
+
+      // Layer 4: Orbital rings
+      renderOrbitalRings(ctx!, orbitalRings, time);
+
+      // Layer 5: Neural network (centerpiece)
+      updateNeuralNetwork(neuralNodes, time, mouseX, mouseY, mouseActive, dt);
+
+      if (profile.enableDataPulses && time - lastPulseSpawn > pulseSpawnInterval) {
+        spawnDataPulse();
+        lastPulseSpawn = time;
+      }
+
+      if (time - lastAutoActivation > autoActivationInterval) {
+        const randomIdx = Math.floor(Math.random() * neuralNodes.length);
+        triggerActivationCascade(randomIdx);
+        lastAutoActivation = time;
+      }
+
+      updateDataPulses(dt);
+      updateRipples(dt);
+      renderNeuralNetwork(ctx!, neuralNodes, dataPulses, activationRipples, time, profile.enableBloom);
+
+      // Layer 6: Data streams
+      renderDataStreams(ctx!, dataStreams, H, dt);
+
+      // Layer 7: Waveform
+      if (profile.enableWaveform) {
+        renderWaveform(ctx!, W, H, time);
+      }
+
+      // Layer 8: Equations
+      if (profile.enableEquations) {
+        renderEquations(ctx!, equations, W, H, time, dt);
+      }
+
+      // Layer 9: DNA Helix
+      renderDNAHelix(ctx!, W, H, time);
+
+      animFrameId = requestAnimationFrame(render);
     }
 
-    // ─── Event Listeners ────────────────────────────────────────────
+    // ─── Event Handlers ──────────────────────────────────────────────
+    function onResize() {
+      resize();
+      initLayers();
+    }
+
     function onMouseMove(e: MouseEvent) {
       mouseX = e.clientX;
       mouseY = e.clientY;
       mouseActive = true;
+
+      for (let i = 0; i < neuralNodes.length; i++) {
+        const d = dist(mouseX, mouseY, neuralNodes[i].x, neuralNodes[i].y);
+        if (d < 50) {
+          triggerActivationCascade(i);
+          break;
+        }
+      }
     }
 
     function onMouseLeave() {
       mouseActive = false;
-      mouseSpeed = 0;
-      mouseX = -1000;
-      mouseY = -1000;
+    }
+
+    function onScroll() {
+      scrollY = window.scrollY;
     }
 
     function onTouchMove(e: TouchEvent) {
@@ -755,56 +1045,53 @@
 
     function onTouchEnd() {
       mouseActive = false;
-      mouseSpeed = 0;
-      mouseX = -1000;
-      mouseY = -1000;
     }
 
-    let resizeTimeout: ReturnType<typeof setTimeout>;
-    function onResize() {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        resize();
-        initLayers();
-      }, 200);
-    }
-
-    // ─── Visibility API: pause when tab is hidden ───────────────────
     function onVisibilityChange() {
       if (document.hidden) {
-        cancelAnimationFrame(animId);
+        cancelAnimationFrame(animFrameId);
+        isVisible = false;
       } else {
+        isVisible = true;
         lastFrameTime = performance.now();
-        animId = requestAnimationFrame(animate);
+        animFrameId = requestAnimationFrame(render);
       }
     }
 
-    // ─── Initialize ─────────────────────────────────────────────────
+    // ─── Setup ───────────────────────────────────────────────────────
     resize();
     initLayers();
-    lastFrameTime = performance.now();
-    animId = requestAnimationFrame(animate);
 
-    document.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
     document.addEventListener('mouseleave', onMouseLeave);
-    document.addEventListener('touchmove', onTouchMove, { passive: true });
-    document.addEventListener('touchend', onTouchEnd);
-    window.addEventListener('resize', onResize);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('touchend', onTouchEnd);
     document.addEventListener('visibilitychange', onVisibilityChange);
 
-    // Cleanup on page navigation (Astro view transitions)
-    document.addEventListener('astro:before-swap', () => {
-      cancelAnimationFrame(animId);
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseleave', onMouseLeave);
-      document.removeEventListener('touchmove', onTouchMove);
-      document.removeEventListener('touchend', onTouchEnd);
+    animFrameId = requestAnimationFrame(render);
+
+    // ─── Cleanup for Astro view transitions ─────────────────────────
+    function cleanup() {
+      cancelAnimationFrame(animFrameId);
       window.removeEventListener('resize', onResize);
+      window.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseleave', onMouseLeave);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
       document.removeEventListener('visibilitychange', onVisibilityChange);
-    }, { once: true });
+    }
+
+    document.addEventListener('astro:before-swap', cleanup, { once: true });
   }
 
-  // Run on initial load and on Astro page transitions
-  initCosmicBackground();
+  // Initialize on first load and on Astro page transitions
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCosmicBackground);
+  } else {
+    initCosmicBackground();
+  }
   document.addEventListener('astro:after-swap', initCosmicBackground);
 </script>
