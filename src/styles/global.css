@@ -59,6 +59,23 @@
   --radius-xl: 24px;
 }
 
+/* ===== NextGen Background Canvas ===== */
+.nextgen-bg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.nextgen-bg-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
 /* ===== Reset & Base ===== */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -79,6 +96,20 @@ body {
   line-height: 1.7;
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* NextGen Background Canvas Styles */
+canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Ensure content layers above the 3D background */
+main, nav, footer {
+  position: relative;
+  z-index: 10;
 }
 
 /* Animated background grid pattern — reduced to complement CosmicBackground canvas */

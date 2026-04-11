@@ -1,7 +1,7 @@
 ---
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
-import CosmicBackground from '../components/CosmicBackground.astro';
+import NextGenBackground from '../components/NextGenBackground';
 import '../styles/global.css';
 
 interface Props {
@@ -32,12 +32,15 @@ const siteTitle = `${title} | Nehal-aditya`;
   <title>{siteTitle}</title>
 </head>
 <body>
-  <CosmicBackground />
+  {/* NextGen 3D Background with transition:persist to prevent reload during navigation */}
+  <NextGenBackground client:only="react" transition:persist="nextgen-bg" />
+  
   <Navbar />
   <main>
     <slot />
   </main>
   <Footer />
+  
   <script>
     // Scroll reveal animation observer
     const revealObserver = new IntersectionObserver((entries) => {
