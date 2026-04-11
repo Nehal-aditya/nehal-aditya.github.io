@@ -27,9 +27,9 @@ const stats = [
   />
 
   <!-- Stats Section -->
-  <section class="section">
+  <section class="section stats-section">
     <div class="container">
-      <div class="reveal">
+      <div class="reveal slide-in-left">
         <StatsGrid stats={stats} />
       </div>
     </div>
@@ -44,22 +44,22 @@ const stats = [
         <p>This is the central portal for Nehal-aditya and the Deepcomet AI organization — a friend-driven, ecosystem-oriented institution building the next generation of intelligent computing. Explore our projects, research, documentation, and community.</p>
       </div>
 
-      <div class="grid-3 stagger-children">
-        <a href="/about/" class="card explore-card">
+      <div class="grid-3 stagger-children explore-grid">
+        <a href="/about/" class="card explore-card cursor-glow">
           <div class="icon-glow icon-glow-purple">
             <span>&#9733;</span>
           </div>
           <h3>About Us</h3>
           <p>Learn about Nehal-aditya, our mission within Deepcomet AI, and the vision driving vertical AI integration across every layer of the computing stack.</p>
         </a>
-        <a href="/ecosystem/" class="card explore-card">
+        <a href="/ecosystem/" class="card explore-card cursor-glow">
           <div class="icon-glow icon-glow-cyan">
             <span>&#9830;</span>
           </div>
           <h3>Ecosystem</h3>
           <p>Dive deep into Aurelia, Zenith Kernel, SkyOS, and The Forge — the four pillars of a complete AI-native computing platform.</p>
         </a>
-        <a href="/docs/" class="card explore-card">
+        <a href="/docs/" class="card explore-card cursor-glow">
           <div class="icon-glow icon-glow-green">
             <span>&#9776;</span>
           </div>
@@ -68,22 +68,22 @@ const stats = [
         </a>
       </div>
 
-      <div class="grid-3 stagger-children" style="margin-top: 2rem;">
-        <a href="/projects/" class="card explore-card">
+      <div class="grid-3 stagger-children explore-grid" style="margin-top: 2rem;">
+        <a href="/projects/" class="card explore-card cursor-glow">
           <div class="icon-glow icon-glow-pink">
             <span>&#9881;</span>
           </div>
           <h3>Projects</h3>
           <p>Explore our portfolio of projects including GeminiChat, this website, and our core ecosystem technologies under active development.</p>
         </a>
-        <a href="/blog/" class="card explore-card">
+        <a href="/blog/" class="card explore-card cursor-glow">
           <div class="icon-glow icon-glow-cyan">
             <span>&#9998;</span>
           </div>
           <h3>Blog</h3>
           <p>Read about our latest research, technical deep-dives into AI-native computing, language design decisions, and project updates.</p>
         </a>
-        <a href="/community/" class="card explore-card">
+        <a href="/community/" class="card explore-card cursor-glow">
           <div class="icon-glow icon-glow-purple">
             <span>&#9829;</span>
           </div>
@@ -103,8 +103,8 @@ const stats = [
         <p>Today's AI infrastructure is a patchwork of incompatible layers. Python scripts glued to C++ kernels, running on operating systems designed in the 1970s. Every layer introduces friction, latency, and security vulnerabilities.</p>
       </div>
 
-      <div class="problem-grid reveal">
-        <div class="problem-card card-glass">
+      <div class="problem-grid reveal problem-grid-animated">
+        <div class="problem-card card-glass cursor-glow">
           <div class="problem-number">01</div>
           <h3>The Language Gap</h3>
           <p>Python is slow. C++ is unsafe. Rust has no first-class tensor support. Every existing language forces AI developers to choose between performance and productivity. Researchers spend more time fighting tooling than innovating.</p>
@@ -112,7 +112,7 @@ const stats = [
             <strong>Our Answer:</strong> Aurelia — an AI-native systems language with first-class tensors, automatic differentiation, memory safety without a garbage collector, and direct MLIR compilation to NPUs.
           </div>
         </div>
-        <div class="problem-card card-glass">
+        <div class="problem-card card-glass cursor-glow">
           <div class="problem-number">02</div>
           <h3>The Kernel Bottleneck</h3>
           <p>General-purpose kernels treat AI workloads the same as a text editor. They cannot predict resource needs, cannot prioritize neural computation, and their security models are fundamentally reactive rather than proactive.</p>
@@ -120,7 +120,7 @@ const stats = [
             <strong>Our Answer:</strong> Zenith Kernel — a microkernel with probabilistic scheduling that anticipates resource needs 10ms before they arise, plus an immune-system-inspired AI-Watchdog for intrinsic security.
           </div>
         </div>
-        <div class="problem-card card-glass">
+        <div class="problem-card card-glass cursor-glow">
           <div class="problem-number">03</div>
           <h3>The OS Ceiling</h3>
           <p>Modern operating systems are glorified file managers. They cannot reason about user intent, generate interfaces on demand, or execute complex multi-step workflows autonomously. The desktop paradigm is a 40-year-old relic.</p>
@@ -141,7 +141,7 @@ const stats = [
         <p>Aurelia treats neural networks as first-class citizens. Tensors are a primitive type, not a library import. Automatic differentiation is built into the compiler, not a runtime framework. Code compiles directly to MLIR and then to NPU instructions — no Python interpreter, no CUDA driver, no overhead.</p>
       </div>
 
-      <div class="code-showcase reveal-scale">
+      <div class="code-showcase reveal-scale shimmer">
         <CodeBlock filename="neural_layer.aul">
           <pre><code>{`fn forward_pass(x: Tensor<f32, 2>) -> Tensor<f32, 2> {
   // Native tensor operations — no library imports needed
@@ -167,7 +167,7 @@ fn main() {
         </CodeBlock>
       </div>
 
-      <div class="code-features grid-3 stagger-children">
+      <div class="code-features grid-3 stagger-children code-features-animated">
         <div class="card">
           <div class="icon-glow icon-glow-cyan">
             <span>T</span>
@@ -262,7 +262,7 @@ fn main() {
         <p>Four interconnected technologies forming a complete, vertically integrated AI computing platform. Each component is designed to work seamlessly with the others, creating a system greater than the sum of its parts.</p>
       </div>
 
-      <div class="grid-2 stagger-children">
+      <div class="grid-2 stagger-children ecosystem-grid">
         <EcosystemCard
           title="Aurelia Language"
           badge="Core Tech"
@@ -331,10 +331,10 @@ fn main() {
   <!-- CTA Section -->
   <section class="section cta-section">
     <div class="container">
-      <div class="cta-content reveal-scale">
-        <h2>Ready to build the <span class="glow-text">future</span>?</h2>
+      <div class="cta-content reveal-scale bounce-in">
+        <h2>Ready to build the <span class="glow-text gradient-text">future</span>?</h2>
         <p>Join the Deepcomet AI ecosystem. Explore our open-source projects, read the documentation, contribute to the codebase, or just follow along as we build the next generation of intelligent computing.</p>
-        <div class="hero-actions">
+        <div class="hero-actions cta-actions">
           <a href="/ecosystem/" class="btn btn-primary">Explore the Ecosystem</a>
           <a href="https://github.com/Nehal-aditya" target="_blank" rel="noopener" class="btn btn-outline">View on GitHub</a>
         </div>
@@ -582,3 +582,58 @@ fn main() {
     }
   }
 </style>
+
+<script>
+  // Mouse tracking for cursor glow effect
+  document.addEventListener('mousemove', (e) => {
+    const glowElements = document.querySelectorAll('.cursor-glow');
+    glowElements.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      el.style.setProperty('--mouse-x', `${x}px`);
+      el.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+
+  // Stagger animation for explore cards
+  const exploreCards = document.querySelectorAll('.explore-grid .explore-card');
+  exploreCards.forEach((card, index) => {
+    card.style.animation = `slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s both`;
+  });
+
+  // Problem grid stagger
+  const problemCards = document.querySelectorAll('.problem-grid-animated .problem-card');
+  problemCards.forEach((card, index) => {
+    card.style.animation = `slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.15}s both`;
+  });
+
+  // Code features animation
+  const codeFeatures = document.querySelectorAll('.code-features-animated .card');
+  codeFeatures.forEach((card, index) => {
+    card.style.animation = `bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) ${index * 0.1}s both`;
+  });
+
+  // Ecosystem grid animation
+  const ecosystemCards = document.querySelectorAll('.ecosystem-grid > *');
+  ecosystemCards.forEach((card, index) => {
+    card.style.animation = `slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s both`;
+  });
+
+  // Add animation keyframes dynamically
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  `;
+  document.head.appendChild(style);
+</script>
