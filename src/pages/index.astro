@@ -4,6 +4,11 @@ import HeroSection from '../components/HeroSection.astro';
 import StatsGrid from '../components/StatsGrid.astro';
 import EcosystemCard from '../components/EcosystemCard.astro';
 import CodeBlock from '../components/CodeBlock.astro';
+import ScientificTools from '../components/ScientificTools.astro';
+import DataPipeline from '../components/DataPipeline.astro';
+import InteractiveChart from '../components/InteractiveChart';
+import TechRadar from '../components/TechRadar';
+import LiveMetrics from '../components/LiveMetrics';
 
 const stats = [
   { value: '10x', label: 'Faster Compilation' },
@@ -295,11 +300,56 @@ fn main() {
     </div>
   </section>
 
+  <!-- Live Metrics Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-cyan">Telemetry</span>
+        <h2>Stack <span class="glow-text">Metrics</span></h2>
+        <p>Live performance telemetry from the Deepcomet AI ecosystem — compilation throughput, inference latency, NPU utilization, and more.</p>
+      </div>
+      <div class="reveal">
+        <LiveMetrics client:visible />
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Charts Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="badge badge-cyan">Benchmarks</span>
+        <h2>Performance <span class="glow-text">Data</span></h2>
+        <p>Interactive benchmark charts comparing Aurelia against leading systems languages across compilation time, inference latency, and memory operations.</p>
+      </div>
+      <div class="charts-grid reveal">
+        <InteractiveChart client:visible />
+        <TechRadar client:visible />
+      </div>
+    </div>
+  </section>
+
+  <!-- Scientific Tools Section -->
+  <section class="section">
+    <div class="container">
+      <ScientificTools />
+    </div>
+  </section>
+
+  <!-- Data Pipeline Section -->
+  <section class="section">
+    <div class="container">
+      <div class="reveal">
+        <DataPipeline />
+      </div>
+    </div>
+  </section>
+
   <!-- Philosophy -->
   <section class="section">
     <div class="container">
       <div class="section-header reveal">
-        <span class="badge badge-purple">Philosophy</span>
+        <span class="badge badge-cyan">Philosophy</span>
         <h2>Built by <span class="glow-text">Friends</span>, for the Future</h2>
       </div>
 
@@ -538,6 +588,29 @@ fn main() {
   .quote-attr {
     font-size: 0.85rem;
     color: var(--text-muted);
+  }
+
+  /* Charts grid */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .charts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.3); }
   }
 
   /* CTA */

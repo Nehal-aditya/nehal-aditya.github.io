@@ -1,0 +1,326 @@
+---
+const tools = [
+  {
+    id: 'tensor-ops',
+    badge: 'Core Primitive',
+    badgeColor: 'cyan',
+    icon: 'T',
+    title: 'Tensor Operations',
+    description: 'First-class multi-dimensional array computations with compile-time shape verification. Native operators for matmul, convolution, and broadcasting.',
+    stats: [
+      { label: 'Rank Support', value: 'N-dim' },
+      { label: 'Precision', value: 'f16/f32/f64' },
+      { label: 'Target', value: 'NPU/GPU/CPU' },
+    ],
+    code: 'let w: Tensor<f32,2> = rand([256,512]);',
+    tag: 'tensor',
+  },
+  {
+    id: 'autodiff',
+    badge: 'Compiler Feature',
+    badgeColor: 'cyan',
+    icon: '∂',
+    title: 'Auto-Differentiation',
+    description: 'Symbolic differentiation baked into the Aurelia compiler. Generates optimal gradient computation graphs at compile time — zero runtime overhead.',
+    stats: [
+      { label: 'Mode', value: 'Reverse-Mode' },
+      { label: 'Overhead', value: '0ms runtime' },
+      { label: 'Graph Build', value: 'Compile-time' },
+    ],
+    code: 'let grad = gradient(loss_fn, params);',
+    tag: 'compiler',
+  },
+  {
+    id: 'mlir',
+    badge: 'Compiler Backend',
+    badgeColor: 'cyan',
+    icon: 'IR',
+    title: 'MLIR Pipeline',
+    description: 'Multi-Level Intermediate Representation compilation enables hardware-agnostic optimization passes followed by target-specific lowering to NPU/GPU machine code.',
+    stats: [
+      { label: 'Backends', value: 'NPU/GPU/CPU' },
+      { label: 'Passes', value: '24 opt passes' },
+      { label: 'Fusion', value: 'Kernel fusion' },
+    ],
+    code: '@target(npu="hexagon") fn infer() {}',
+    tag: 'ir',
+  },
+  {
+    id: 'scheduler',
+    badge: 'Kernel Feature',
+    badgeColor: 'cyan',
+    icon: 'Σ',
+    title: 'Probabilistic Scheduler',
+    description: 'Zenith Kernel trains ML models on workload telemetry to predict resource requirements 10ms ahead — eliminating scheduling jitter for real-time AI pipelines.',
+    stats: [
+      { label: 'Lookahead', value: '10ms' },
+      { label: 'Accuracy', value: '97.3%' },
+      { label: 'Latency', value: '~0 jitter' },
+    ],
+    code: 'zen::schedule::predict(task, 10ms)',
+    tag: 'kernel',
+  },
+  {
+    id: 'watchdog',
+    badge: 'Security',
+    badgeColor: 'cyan',
+    icon: '⚡',
+    title: 'AI-Watchdog',
+    description: 'Formally verified intrusion detection subsystem using behavioral anomaly models. Detects zero-day exploits through deviation analysis — no signature databases required.',
+    stats: [
+      { label: 'Detection', value: 'Behavioral' },
+      { label: 'Response', value: '<1μs' },
+      { label: 'Verified', value: 'Formally' },
+    ],
+    code: 'zen::watchdog::register(handler)',
+    tag: 'security',
+  },
+  {
+    id: 'lam',
+    badge: 'SkyOS Layer',
+    badgeColor: 'cyan',
+    icon: 'λ',
+    title: 'Large Action Models',
+    description: 'LAMs are trained on billions of interaction sequences to understand user intent at a semantic level. They generate actions — not text — directly shaping the SkyOS workspace.',
+    stats: [
+      { label: 'Training', value: '1.2B seqs' },
+      { label: 'Latency', value: '<50ms' },
+      { label: 'Mode', value: 'On-device' },
+    ],
+    code: 'lam.execute("analyze dataset", ctx)',
+    tag: 'skyos',
+  },
+];
+---
+
+<div class="sci-tools-wrapper">
+  <div class="sci-header">
+    <span class="sci-badge">Scientific Computing</span>
+    <h2 class="sci-title">Core <span class="glow-text">Scientific Tools</span></h2>
+    <p class="sci-desc">The Deepcomet AI ecosystem exposes a set of mathematically rigorous, hardware-accelerated primitives for AI-native scientific computation.</p>
+  </div>
+
+  <div class="sci-grid">
+    {tools.map((tool) => (
+      <div class="sci-card" data-tag={tool.tag}>
+        <div class="sci-card-top">
+          <div class="sci-icon">{tool.icon}</div>
+          <span class="sci-card-badge">{tool.badge}</span>
+        </div>
+        <h3 class="sci-card-title">{tool.title}</h3>
+        <p class="sci-card-desc">{tool.description}</p>
+        <div class="sci-stats">
+          {tool.stats.map((s) => (
+            <div class="sci-stat">
+              <div class="sci-stat-value">{s.value}</div>
+              <div class="sci-stat-label">{s.label}</div>
+            </div>
+          ))}
+        </div>
+        <div class="sci-code">
+          <code>{tool.code}</code>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .sci-tools-wrapper {
+    position: relative;
+  }
+
+  .sci-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .sci-badge {
+    display: inline-block;
+    padding: 0.35em 1em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    color: var(--neon-cyan);
+    background: rgba(0, 240, 255, 0.08);
+    margin-bottom: 1rem;
+  }
+
+  .sci-title {
+    font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .sci-desc {
+    max-width: 560px;
+    margin: 0 auto;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .sci-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .sci-card {
+    background: rgba(12, 12, 20, 0.7);
+    border: 1px solid rgba(0, 240, 255, 0.08);
+    border-radius: 16px;
+    padding: 1.75rem;
+    backdrop-filter: blur(12px);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sci-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,240,255,0.3), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .sci-card:hover {
+    border-color: rgba(0, 240, 255, 0.2);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(0, 240, 255, 0.08), 0 4px 16px rgba(0,0,0,0.3);
+    background: rgba(0, 240, 255, 0.04);
+  }
+
+  .sci-card:hover::before {
+    opacity: 1;
+  }
+
+  .sci-card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .sci-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    color: var(--neon-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    flex-shrink: 0;
+    box-shadow: 0 0 16px rgba(0, 240, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .sci-card:hover .sci-icon {
+    box-shadow: 0 0 24px rgba(0, 240, 255, 0.3);
+    transform: scale(1.1);
+  }
+
+  .sci-card-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(0, 240, 255, 0.7);
+    background: rgba(0, 240, 255, 0.06);
+    border: 1px solid rgba(0, 240, 255, 0.12);
+    border-radius: 6px;
+    padding: 2px 8px;
+  }
+
+  .sci-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .sci-card-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
+    flex: 1;
+  }
+
+  .sci-stats {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 0.75rem;
+    margin-top: auto;
+  }
+
+  .sci-stat {
+    flex: 1;
+    min-width: 60px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 6px 8px;
+    text-align: center;
+  }
+
+  .sci-stat-value {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    font-family: var(--font-mono);
+    line-height: 1.2;
+  }
+
+  .sci-stat-label {
+    font-size: 0.65rem;
+    color: #52525b;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  .sci-code {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 240, 255, 0.08);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: rgba(0, 240, 255, 0.7);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1024px) {
+    .sci-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .sci-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

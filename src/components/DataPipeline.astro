@@ -1,0 +1,363 @@
+---
+const pipelineStages = [
+  { id: 1, label: 'Data Ingestion', icon: '⬇', color: 'cyan', desc: 'Raw tensors from sensors, datasets, or streams', latency: '0.2ms' },
+  { id: 2, label: 'Preprocessing', icon: '⚙', color: 'cyan', desc: 'Normalization, augmentation, batching', latency: '0.8ms' },
+  { id: 3, label: 'MLIR Compile', icon: 'IR', color: 'cyan', desc: 'Aurelia source to optimized MLIR dialects', latency: '1.4ms' },
+  { id: 4, label: 'NPU Dispatch', icon: '⚡', color: 'cyan', desc: 'Zenith routes ops to target hardware', latency: '0.1ms' },
+  { id: 5, label: 'Inference', icon: '∇', color: 'cyan', desc: 'Parallel execution on NPU/GPU cores', latency: '1.8ms' },
+  { id: 6, label: 'Result', icon: '✓', color: 'cyan', desc: 'Typed output tensor with confidence', latency: '0.3ms' },
+];
+
+const dataFormats = [
+  { name: 'Tensor<f32,4>', desc: 'Image batch NCHW', size: '12.4 MB' },
+  { name: 'Tensor<f16,2>', desc: 'Embedding matrix', size: '3.2 MB' },
+  { name: 'Tensor<i8,3>', desc: 'Quantized weights', size: '1.1 MB' },
+  { name: 'Tensor<bf16,3>', desc: 'Activation maps', size: '6.8 MB' },
+];
+---
+
+<div class="pipeline-wrapper">
+  <div class="pipeline-header">
+    <span class="pipeline-badge">Data Pipeline</span>
+    <h3 class="pipeline-title">AI Inference <span class="glow-text">Pipeline</span></h3>
+    <p class="pipeline-desc">End-to-end data flow through the Deepcomet AI stack — from raw tensor ingestion to typed output in under 5ms.</p>
+  </div>
+
+  <div class="pipeline-container">
+    <div class="pipeline-stages">
+      {pipelineStages.map((stage, i) => (
+        <div class="pipeline-step-wrapper">
+          <div class="pipeline-step" data-step={stage.id}>
+            <div class="step-number">{stage.id}</div>
+            <div class="step-icon">{stage.icon}</div>
+            <div class="step-info">
+              <div class="step-label">{stage.label}</div>
+              <div class="step-desc">{stage.desc}</div>
+            </div>
+            <div class="step-latency">{stage.latency}</div>
+          </div>
+          {i < pipelineStages.length - 1 && (
+            <div class="pipeline-connector">
+              <div class="connector-line"></div>
+              <div class="connector-dot"></div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <div class="pipeline-sidebar">
+      <div class="sidebar-section">
+        <h4 class="sidebar-heading">Tensor Format Registry</h4>
+        <div class="format-list">
+          {dataFormats.map((fmt) => (
+            <div class="format-item">
+              <div class="format-name"><code>{fmt.name}</code></div>
+              <div class="format-meta">
+                <span class="format-desc">{fmt.desc}</span>
+                <span class="format-size">{fmt.size}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="sidebar-section total-latency">
+        <div class="latency-label">Total Pipeline</div>
+        <div class="latency-value">4.6<span class="latency-unit">ms</span></div>
+        <div class="latency-bar">
+          <div class="latency-fill"></div>
+        </div>
+        <div class="latency-compare">vs. 48ms Python baseline</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pipeline-wrapper {
+    background: rgba(12, 12, 20, 0.7);
+    border: 1px solid rgba(0, 240, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pipeline-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,240,255,0.4), transparent);
+  }
+
+  .pipeline-header {
+    margin-bottom: 2rem;
+  }
+
+  .pipeline-badge {
+    display: inline-block;
+    padding: 0.3em 0.9em;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    color: var(--neon-cyan);
+    background: rgba(0, 240, 255, 0.08);
+    margin-bottom: 0.75rem;
+  }
+
+  .pipeline-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem;
+  }
+
+  .pipeline-desc {
+    color: #71717a;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .pipeline-container {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .pipeline-stages {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pipeline-step-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pipeline-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .pipeline-step:hover {
+    background: rgba(0, 240, 255, 0.04);
+    border-color: rgba(0, 240, 255, 0.15);
+    transform: translateX(4px);
+  }
+
+  .step-number {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    color: var(--neon-cyan);
+    font-size: 0.7rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+  }
+
+  .step-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(0, 240, 255, 0.08);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    color: var(--neon-cyan);
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+  }
+
+  .step-info {
+    flex: 1;
+  }
+
+  .step-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .step-desc {
+    font-size: 0.75rem;
+    color: #71717a;
+  }
+
+  .step-latency {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+    font-family: var(--font-mono);
+    background: rgba(0, 240, 255, 0.08);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    border-radius: 6px;
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+
+  .pipeline-connector {
+    display: flex;
+    align-items: center;
+    padding: 2px 0 2px 20px;
+    gap: 0;
+    position: relative;
+  }
+
+  .connector-line {
+    width: 1px;
+    height: 16px;
+    background: linear-gradient(180deg, rgba(0,240,255,0.3), rgba(0,240,255,0.1));
+    margin-left: 11px;
+  }
+
+  .connector-dot {
+    display: none;
+  }
+
+  .pipeline-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .sidebar-section {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  .sidebar-heading {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #71717a;
+    margin-bottom: 0.75rem;
+  }
+
+  .format-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .format-item {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 6px 10px;
+  }
+
+  .format-name code {
+    font-size: 0.7rem;
+    color: var(--neon-cyan);
+    font-family: var(--font-mono);
+    background: none;
+    padding: 0;
+  }
+
+  .format-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2px;
+  }
+
+  .format-desc {
+    font-size: 0.65rem;
+    color: #52525b;
+  }
+
+  .format-size {
+    font-size: 0.65rem;
+    color: #71717a;
+    font-family: var(--font-mono);
+  }
+
+  .total-latency {
+    text-align: center;
+    background: rgba(0, 240, 255, 0.04);
+    border-color: rgba(0, 240, 255, 0.12);
+  }
+
+  .latency-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #71717a;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .latency-value {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--neon-cyan);
+    font-family: var(--font-mono);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+
+  .latency-unit {
+    font-size: 1rem;
+    color: #71717a;
+    margin-left: 2px;
+  }
+
+  .latency-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+
+  .latency-fill {
+    height: 100%;
+    width: 9.6%;
+    background: linear-gradient(90deg, var(--neon-cyan), rgba(168,85,247,0.6));
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(0,240,255,0.4);
+    animation: fillBar 1.5s ease-out 0.5s both;
+  }
+
+  @keyframes fillBar {
+    from { width: 0; }
+    to { width: 9.6%; }
+  }
+
+  .latency-compare {
+    font-size: 0.65rem;
+    color: #52525b;
+  }
+
+  @media (max-width: 768px) {
+    .pipeline-container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
