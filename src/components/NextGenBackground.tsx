@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Stars, OrbitControls, Preload } from '@react-three/drei';
+import { Preload } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -9,86 +9,47 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Galaxy Component - Central 3D celestial object with animated rings
- */
-function Galaxy() {
-  const meshRef = useRef<THREE.Group>(null);
-
-  useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += 0.0001;
-      meshRef.current.rotation.z += 0.0003;
-    }
-  });
-
-  return (
-    <group ref={meshRef} position={[0, 0, 0]}>
-      {/* Central sphere */}
-      <mesh>
-        <sphereGeometry args={[1, 64, 64]} />
-        <meshPhongMaterial
-          color="#00d9ff"
-          emissive="#0099cc"
-          emissiveIntensity={0.5}
-          wireframe={false}
-        />
-      </mesh>
-
-      {/* Outer glow sphere */}
-      <mesh scale={1.3}>
-        <sphereGeometry args={[1, 32, 32]} />
-        <meshBasicMaterial
-          color="#00d9ff"
-          transparent
-          opacity={0.15}
-          wireframe={false}
-        />
-      </mesh>
-
-      {/* Animated rings */}
-      <mesh rotation={[Math.PI / 2.5, 0, 0]}>
-        <torusGeometry args={[2, 0.3, 16, 100]} />
-        <meshPhongMaterial
-          color="#ff006e"
-          emissive="#ff0066"
-          emissiveIntensity={0.3}
-        />
-      </mesh>
-
-      <mesh rotation={[Math.PI / 3, 0, 0]}>
-        <torusGeometry args={[2.5, 0.2, 16, 100]} />
-        <meshPhongMaterial
-          color="#00d9ff"
-          emissive="#0099cc"
-          emissiveIntensity={0.2}
-        />
-      </mesh>
-    </group>
-  );
-}
-
-/**
  * Neural Network Node - Individual floating node with glow effect
  */
 interface NeuralNodeProps {
-  position: [number, number, number];
+  position: THREE.Vector3;
   id: number;
+  mousePos: React.MutableRefObject<THREE.Vector2>;
 }
 
-function NeuralNode({ position, id }: NeuralNodeProps) {
+function NeuralNode({ position, id, mousePos }: NeuralNodeProps) {
   const meshRef = useRef<THREE.Mesh>(null);
+  const initialPos = useMemo(() => position.clone(), [position]);
   const [hovered, setHovered] = useState(false);
 
-  useFrame(() => {
+  useFrame((state) => {
     if (meshRef.current) {
+      const time = state.clock.getElapsedTime();
+      
       // Subtle floating animation
-      meshRef.current.position.y += Math.sin(Date.now() * 0.0005 + id) * 0.0005;
-      meshRef.current.rotation.x += 0.01;
-      meshRef.current.rotation.y += 0.01;
+      meshRef.current.position.x = initialPos.x + Math.sin(time * 0.5 + id) * 0.2;
+      meshRef.current.position.y = initialPos.y + Math.cos(time * 0.3 + id) * 0.2;
+      meshRef.current.position.z = initialPos.z + Math.sin(time * 0.4 + id) * 0.2;
+
+      // Interaction with mouse
+      const mouseX = (mousePos.current.x * state.viewport.width) / 2;
+      const mouseY = (mousePos.current.y * state.viewport.height) / 2;
+      
+      const dist = meshRef.current.position.distanceTo(new THREE.Vector3(mouseX, mouseY, 0));
+      if (dist < 3) {
+        const force = (3 - dist) / 3;
+        meshRef.current.position.lerp(new THREE.Vector3(mouseX, mouseY, 0), force * 0.05);
+        if (!hovered) setHovered(true);
+      } else {
+        if (hovered) setHovered(false);
+      }
 
       // Scale pulse effect
       const scale = hovered ? 1.5 : 1;
       meshRef.current.scale.lerp(new THREE.Vector3(scale, scale, scale), 0.1);
+      
+      meshRef.current.rotation.x += 0.01;
+      meshRef.current.rotation.y += 0.01;
     }
   });
 
@@ -96,169 +57,121 @@ function NeuralNode({ position, id }: NeuralNodeProps) {
     <mesh
       ref={meshRef}
       position={position}
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
     >
-      <octahedronGeometry args={[0.3, 0]} />
+      <octahedronGeometry args={[0.15, 0]} />
       <meshPhongMaterial
         color={hovered ? '#ff006e' : '#00d9ff'}
         emissive={hovered ? '#ff0066' : '#0099cc'}
-        emissiveIntensity={hovered ? 0.8 : 0.4}
-        wireframe={false}
+        emissiveIntensity={hovered ? 2 : 0.8}
+        transparent
+        opacity={0.8}
       />
     </mesh>
   );
 }
 
 /**
- * Neural Network Line - Pulsing connections between nodes
+ * Neural Network Connections - Optimized line rendering
  */
-interface NeuralLineProps {
-  start: [number, number, number];
-  end: [number, number, number];
-  id: number;
-}
+function NeuralConnections({ nodes, mousePos }: { nodes: THREE.Vector3[], mousePos: React.MutableRefObject<THREE.Vector2> }) {
+  const linesRef = useRef<THREE.LineSegments>(null);
+  
+  const connections = useMemo(() => {
+    const points: THREE.Vector3[] = [];
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dist = nodes[i].distanceTo(nodes[j]);
+        if (dist < 5) {
+          points.push(nodes[i], nodes[j]);
+        }
+      }
+    }
+    return points;
+  }, [nodes]);
 
-function NeuralLine({ start, end, id }: NeuralLineProps) {
-  const lineRef = useRef<THREE.Line>(null);
+  const geometry = useMemo(() => {
+    return new THREE.BufferGeometry().setFromPoints(connections);
+  }, [connections]);
 
-  useFrame(() => {
-    if (lineRef.current) {
-      // Pulsing opacity effect
-      const opacity = 0.3 + Math.sin(Date.now() * 0.003 + id) * 0.3;
-      (lineRef.current.material as THREE.LineBasicMaterial).opacity = opacity;
+  useFrame((state) => {
+    if (linesRef.current) {
+      const time = state.clock.getElapsedTime();
+      (linesRef.current.material as THREE.LineBasicMaterial).opacity = 0.2 + Math.sin(time) * 0.1;
+      
+      // Subtle rotation
+      linesRef.current.rotation.y = Math.sin(time * 0.1) * 0.1;
+      linesRef.current.rotation.x = Math.cos(time * 0.1) * 0.1;
     }
   });
 
-  const points = [new THREE.Vector3(...start), new THREE.Vector3(...end)];
-  const geometry = new THREE.BufferGeometry().setFromPoints(points);
-
   return (
-    <line ref={lineRef} geometry={geometry}>
-      <lineBasicMaterial
-        color="#00d9ff"
-        transparent
-        opacity={0.5}
-        linewidth={2}
-      />
-    </line>
+    <lineSegments ref={linesRef} geometry={geometry}>
+      <lineBasicMaterial color="#00d9ff" transparent opacity={0.2} linewidth={1} />
+    </lineSegments>
   );
 }
 
 /**
- * Neural Network - Interactive network of nodes and connections
+ * Neural Network - Main interactive network
  */
 function NeuralNetwork() {
-  const groupRef = useRef<THREE.Group>(null);
-  const [nodes, setNodes] = useState<Array<{ id: number; pos: [number, number, number] }>>([]);
-  const [connections, setConnections] = useState<Array<{ id: number; start: [number, number, number]; end: [number, number, number] }>>([]);
-
+  const mousePos = useRef(new THREE.Vector2(0, 0));
+  
   useEffect(() => {
-    // Generate random neural network nodes
-    const nodeCount = 15;
-    const generatedNodes = Array.from({ length: nodeCount }, (_, i) => ({
-      id: i,
-      pos: [
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 20,
-        (Math.random() - 0.5) * 20,
-      ] as [number, number, number],
-    }));
-
-    setNodes(generatedNodes);
-
-    // Generate connections between nearby nodes
-    const generatedConnections = [];
-    let connectionId = 0;
-
-    for (let i = 0; i < generatedNodes.length; i++) {
-      for (let j = i + 1; j < generatedNodes.length; j++) {
-        const dist = Math.hypot(
-          generatedNodes[i].pos[0] - generatedNodes[j].pos[0],
-          generatedNodes[i].pos[1] - generatedNodes[j].pos[1],
-          generatedNodes[i].pos[2] - generatedNodes[j].pos[2]
-        );
-
-        // Connect nodes that are within a certain distance
-        if (dist < 12) {
-          generatedConnections.push({
-            id: connectionId++,
-            start: generatedNodes[i].pos,
-            end: generatedNodes[j].pos,
-          });
-        }
-      }
-    }
-
-    setConnections(generatedConnections);
+    const handleMouseMove = (event: MouseEvent) => {
+      mousePos.current.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mousePos.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  useFrame(() => {
-    if (groupRef.current) {
-      groupRef.current.rotation.x += 0.0001;
-      groupRef.current.rotation.y += 0.0002;
-    }
-  });
+  const nodeCount = 60;
+  const nodes = useMemo(() => {
+    return Array.from({ length: nodeCount }, () => new THREE.Vector3(
+      (Math.random() - 0.5) * 25,
+      (Math.random() - 0.5) * 25,
+      (Math.random() - 0.5) * 15
+    ));
+  }, []);
 
   return (
-    <group ref={groupRef}>
-      {/* Render neural network lines */}
-      {connections.map((conn) => (
-        <NeuralLine key={conn.id} start={conn.start} end={conn.end} id={conn.id} />
-      ))}
-
-      {/* Render neural network nodes */}
-      {nodes.map((node) => (
-        <NeuralNode key={node.id} position={node.pos} id={node.id} />
+    <group>
+      <NeuralConnections nodes={nodes} mousePos={mousePos} />
+      {nodes.map((pos, i) => (
+        <NeuralNode key={i} id={i} position={pos} mousePos={mousePos} />
       ))}
     </group>
   );
 }
 
 /**
- * Camera Controller - Manages scroll-based camera movement with GSAP
+ * Camera Controller - Manages scroll-based camera movement
  */
 function CameraController() {
   const { camera } = useThree();
-  const cameraRef = useRef({
-    x: 0,
-    y: 0,
-    z: 15,
-  });
-
+  
   useEffect(() => {
-    // Initial camera position
     camera.position.set(0, 0, 15);
-    camera.lookAt(0, 0, 0);
-
-    // Create scroll trigger animation
-    gsap.to(cameraRef.current, {
+    
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: 'body',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 1, // Smooth scrubbing
-        onUpdate: (self) => {
-          // Move camera through the neural network as user scrolls
-          const progress = self.progress;
+        scrub: 1.5,
+      }
+    });
 
-          cameraRef.current.x = Math.sin(progress * Math.PI * 2) * 15;
-          cameraRef.current.y = (progress * 30) - 15;
-          cameraRef.current.z = 15 - progress * 10;
-
-          camera.position.set(
-            cameraRef.current.x,
-            cameraRef.current.y,
-            cameraRef.current.z
-          );
-          camera.lookAt(0, 0, 0);
-        },
-      },
-      duration: 1,
+    tl.to(camera.position, {
+      z: 8,
+      y: -5,
+      x: 2,
+      ease: "none"
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      ScrollTrigger.getAll().forEach(t => t.kill());
     };
   }, [camera]);
 
@@ -266,32 +179,17 @@ function CameraController() {
 }
 
 /**
- * Scene Component - Main 3D scene container
+ * Scene Component
  */
 function Scene() {
   return (
     <>
-      {/* Lighting */}
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ff006e" />
-
-      {/* Background stars */}
-      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={0.1} />
-
-      {/* Central galaxy */}
-      <Galaxy />
-
-      {/* Neural network */}
+      <ambientLight intensity={0.4} />
+      <pointLight position={[10, 10, 10]} intensity={1.5} color="#00d9ff" />
+      <pointLight position={[-10, -10, -10]} intensity={1} color="#ff006e" />
+      
       <NeuralNetwork />
-
-      {/* Camera controller */}
       <CameraController />
-
-      {/* Orbit controls for fallback interaction */}
-      <OrbitControls enableZoom={true} enablePan={true} enableRotate={true} />
-
-      {/* Preload assets */}
       <Preload all />
     </>
   );
@@ -310,19 +208,30 @@ export default function NextGenBackground() {
         width: '100%',
         height: '100vh',
         zIndex: -1,
-        background: 'radial-gradient(ellipse at center, #0a0a15 0%, #000000 100%)',
+        background: '#05050a',
+        pointerEvents: 'none', // Allow clicking through to content
       }}
     >
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'radial-gradient(circle at 50% 50%, rgba(10, 10, 30, 0.5) 0%, rgba(0, 0, 0, 1) 100%)',
+        zIndex: 0
+      }} />
       <Canvas
-        camera={{ position: [0, 0, 15], fov: 75 }}
+        camera={{ position: [0, 0, 15], fov: 60 }}
         style={{
           width: '100%',
           height: '100%',
+          zIndex: 1,
+          pointerEvents: 'auto', // Re-enable for the canvas itself
         }}
         gl={{
           antialias: true,
           alpha: true,
-          preserveDrawingBuffer: false,
         }}
       >
         <Scene />
